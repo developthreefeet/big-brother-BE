@@ -4,3 +4,19 @@ server:
 spring:
   main:
     debug: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  # 로컬디비 - 태태
+  datasource:
+    url: jdbc:mysql://localhost:3306/bigbrother?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
