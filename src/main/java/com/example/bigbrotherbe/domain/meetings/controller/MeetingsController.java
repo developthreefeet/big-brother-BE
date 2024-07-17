@@ -4,22 +4,30 @@ import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/meeting")
+@RequestMapping("/api/big-brother/meetings")
 public class MeetingsController {
 
     private final MeetingsService meetingsService;
 
     @PostMapping
     public ResponseEntity<Void> registerMeetings(@RequestBody MeetingsRegisterRequest meetingsRegisterRequest) {
+        meetingsService.registerMeetings(meetingsRegisterRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{meetingsId}")
+    public ResponseEntity<Void> updateMeetings(@PathVariable("meetingsId") Long meetingsId) {
 
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{meetingsId}")
+    public ResponseEntity<Void> deleteMeetings(@PathVariable("meetingsId") Long meetingsId) {
+
+        return ResponseEntity.ok().build();
+    }
 }

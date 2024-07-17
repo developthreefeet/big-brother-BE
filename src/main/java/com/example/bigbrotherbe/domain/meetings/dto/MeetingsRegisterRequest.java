@@ -10,11 +10,14 @@ import lombok.NoArgsConstructor;
 public class MeetingsRegisterRequest {
     private String title;
     private String content;
+    private Long affiliationId;
 
     public Meetings toMeetingsEntity() {
         return Meetings.builder()
                 .title(title)
                 .content(content)
+                .isPublic(true)
+                .affiliationId(affiliationId)
                 .build();
     }
 }

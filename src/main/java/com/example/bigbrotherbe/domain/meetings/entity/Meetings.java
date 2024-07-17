@@ -22,7 +22,9 @@ public class Meetings extends BaseTimeEntity {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "is_public", columnDefinition = "BOOLEAN DEFAULT true")
-    private String isPublic;
+    @Column(name = "is_public")
+    private boolean isPublic;
+
+    private Long affiliationId;
 
 }
