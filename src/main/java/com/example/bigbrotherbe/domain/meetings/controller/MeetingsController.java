@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.meetings.controller;
 
 import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class MeetingsController {
     }
 
     @PutMapping("/{meetingsId}")
-    public ResponseEntity<Void> updateMeetings(@PathVariable("meetingsId") Long meetingsId) {
-
+    public ResponseEntity<Void> updateMeetings(@PathVariable("meetingsId") Long meetingsId, @RequestBody MeetingsUpdateRequest meetingsUpdateRequest) {
+        meetingsService.updateMeetings(meetingsId, meetingsUpdateRequest);
         return ResponseEntity.ok().build();
     }
 

@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class MeetingsUpdateRequest {
     private String title;
     private String content;
-
+    private boolean isPublic;
 }

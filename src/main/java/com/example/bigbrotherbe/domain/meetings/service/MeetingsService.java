@@ -1,10 +1,14 @@
 package com.example.bigbrotherbe.domain.meetings.service;
 
 import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -12,7 +16,7 @@ public class MeetingsService {
 
     private final MeetingsRepository meetingsRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest) {
 //
 //        Member member = authUtil.getLoginMember();
@@ -30,5 +34,13 @@ public class MeetingsService {
         // res 할때 boardInfo에 이미지 파일 있으면 넣어서
 
         meetingsRepository.save(meetingsRegisterRequest.toMeetingsEntity());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest) {
+        Meetings meetings = meetingsRepository.findById(meetingsId)
+                .orElseThrow(() -> new NoSuchElementException("없어요~~"));
+
+        meetings.update(meetingsUpdateRequest.getTitle(), meetingsUpdateRequest.getContent(), meetingsUpdateRequest.isPublic());
     }
 }
