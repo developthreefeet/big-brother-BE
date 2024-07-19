@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService{
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     @Transactional
+    @Override
     public JwtToken signIn(String username, String password){
 
         // 1. 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교
@@ -47,8 +48,7 @@ public class MemberServiceImpl implements MemberService{
             authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
-        return jwtToken;
+        return jwtTokenProvider.generateToken(authentication);
     }
     @Transactional
     @Override
