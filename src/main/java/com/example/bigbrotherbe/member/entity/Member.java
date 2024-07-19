@@ -5,9 +5,12 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -27,8 +30,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder
 @EqualsAndHashCode(of = "id")
 public class Member implements UserDetails {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", updatable = false, unique = true, nullable = false)
     private Long id;
 
@@ -37,6 +41,19 @@ public class Member implements UserDetails {
 
     @Column(nullable = false,name = "member_password")
     private String password;
+
+    @Column
+    private String email;
+
+    @Column
+    private String is_active;
+
+    @Column
+    private LocalDateTime create_at;
+
+    @Column
+    private LocalDateTime update_at;
+
 
 
     @ElementCollection(fetch = FetchType.EAGER)
