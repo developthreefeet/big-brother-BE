@@ -4,3 +4,20 @@ server:
 spring:
   main:
     debug: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/big_brother
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+jwt:
+  secret: 3d474a6db6a2c179324bc299518d1ff18f02c1b23de8b0fa693f03ba1dcb93da
+
