@@ -5,7 +5,9 @@ import com.example.bigbrotherbe.member.entity.dto.request.MemberDto;
 import com.example.bigbrotherbe.member.entity.dto.request.SignUpDto;
 
 public interface MemberService {
-    public JwtToken signIn(String username, String password);
+    public JwtToken userSignIN(String username, String password);
 
-    public MemberDto signUp(SignUpDto signUpDto);
+    public MemberDto userSignUp(SignUpDto signUpDto);
+
+    MemberDto adminSignUp(SignUpDto signUpDto);
 }
