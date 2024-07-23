@@ -5,11 +5,11 @@ spring:
   main:
     debug: true
 
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_NAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  #datasource:
+   # url: ${DB_URL}
+    #username: ${DB_NAME}
+    #password: ${DB_PASSWORD}
+    # driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -22,7 +22,6 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-
 
   # 로컬디비 - 태태
   datasource:

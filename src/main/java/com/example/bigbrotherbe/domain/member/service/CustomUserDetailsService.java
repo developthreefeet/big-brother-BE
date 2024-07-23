@@ -1,7 +1,7 @@
-package com.example.bigbrotherbe.member.service;
+package com.example.bigbrotherbe.domain.member.service;
 
-import com.example.bigbrotherbe.member.entity.Member;
-import com.example.bigbrotherbe.member.repository.MemberRepository;
+import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

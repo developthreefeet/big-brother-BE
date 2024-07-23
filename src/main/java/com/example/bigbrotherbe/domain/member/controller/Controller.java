@@ -1,9 +1,8 @@
-package com.example.bigbrotherbe.member.controller;
+package com.example.bigbrotherbe.domain.member.controller;
 
-import com.example.bigbrotherbe.member.service.MemberService;
+import com.example.bigbrotherbe.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class Controller {
     private final MemberService memberService;
+
     @GetMapping("/test")
-    public String login(){
+    public String login() {
         return "test";
     }
 }
