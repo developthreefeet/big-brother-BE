@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.member.entity.dto.request;
+package com.example.bigbrotherbe.domain.member.entity.dto.request;
 
 
 import lombok.Getter;

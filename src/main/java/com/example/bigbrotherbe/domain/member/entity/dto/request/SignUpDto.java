@@ -1,11 +1,8 @@
-package com.example.bigbrotherbe.member.entity.dto.request;
+package com.example.bigbrotherbe.domain.member.entity.dto.request;
 
-import com.example.bigbrotherbe.member.entity.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.bigbrotherbe.domain.member.entity.Member;
+
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

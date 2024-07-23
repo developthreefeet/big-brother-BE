@@ -2,11 +2,11 @@ package com.example.bigbrotherbe.member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.example.bigbrotherbe.member.entity.dto.request.MemberDto;
-import com.example.bigbrotherbe.member.entity.dto.request.SignUpDto;
-import com.example.bigbrotherbe.member.service.MemberService;
+import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberDto;
+import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.service.MemberService;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

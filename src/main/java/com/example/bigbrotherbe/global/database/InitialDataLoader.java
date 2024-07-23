@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.global.database;
 
-import com.example.bigbrotherbe.member.entity.Member;
-import com.example.bigbrotherbe.member.repository.MemberRepository;
+import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
