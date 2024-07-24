@@ -1,5 +1,6 @@
-package com.example.bigbrotherbe.member.entity;
+package com.example.bigbrotherbe.notice.entry;
 
+import com.example.bigbrotherbe.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +22,10 @@ public class Notice {
     @Column(nullable = false, name = "notice_title")
     private String title;
 
-    @Column(nullable = false,name = "notice_type")
+    @Column(nullable = false, name = "notice_type")
     private String type;
 
-    @Column(nullable = false,name = "notice_content")
+    @Column(nullable = false, name = "notice_content", columnDefinition = "TEXT") // 긴 문자열
     private String content;
 
     @Column
