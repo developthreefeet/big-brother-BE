@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.member.entity;
+package com.example.bigbrotherbe.domain.member.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

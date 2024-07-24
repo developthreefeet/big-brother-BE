@@ -27,35 +27,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
-            .httpBasic(HttpBasicConfigurer::disable)
-            .csrf(CsrfConfigurer::disable)
-            // JWT를 사용하기 때문에 세션을 사용하지 않음
-            .sessionManagement(
-                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize
-                // 해당 API에 대해서는 모든 요청을 허가
-                .requestMatchers("/members/sign-in").permitAll()
-                .requestMatchers("/members/sign-up").permitAll()
-                // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers("/members/test").hasRole("USER")
-                .requestMatchers("/manager").hasRole("ADMIN")
-                // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-                .anyRequest().permitAll()
-            )
-            // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
+                // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
+                .httpBasic(HttpBasicConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
+                // JWT를 사용하기 때문에 세션을 사용하지 않음
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        // 해당 API에 대해서는 모든 요청을 허가
+                        .requestMatchers("/members/sign-in").permitAll()
+                        .requestMatchers("/members/sign-up").permitAll()
+                        // USER 권한이 있어야 요청할 수 있음
+                        .requestMatchers("/members/test").hasRole("USER")
+                        .requestMatchers("/manager").hasRole("ADMIN")
+                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
+                        .anyRequest().permitAll()
+                )
+                // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         // BCrypt Encoder 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    public static String getCurrentUserName(){
+
+    public static String getCurrentUserName() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || authentication.getName() == null){
+        if (authentication == null || authentication.getName() == null) {
             throw new RuntimeException("No authentication information");
         }
         return authentication.getName();

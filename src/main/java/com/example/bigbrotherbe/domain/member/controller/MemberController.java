@@ -1,11 +1,11 @@
-package com.example.bigbrotherbe.member.controller;
+package com.example.bigbrotherbe.domain.member.controller;
 
+import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberDto;
+import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
+import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
-import com.example.bigbrotherbe.member.entity.dto.request.MemberDto;
-import com.example.bigbrotherbe.member.entity.dto.request.MemberRequest;
-import com.example.bigbrotherbe.member.entity.dto.request.SignUpDto;
-import com.example.bigbrotherbe.member.service.MemberService;
+import com.example.bigbrotherbe.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class MemberController {
         JwtToken jwtToken = memberService.userSignIN(username, password);
         log.info("request username = {}, password = {}", username, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken());
+                jwtToken.getRefreshToken());
         return jwtToken;
     }
 
@@ -53,7 +53,7 @@ public class MemberController {
         JwtToken jwtToken = memberService.userSignIN(username, password);
         log.info("request username = {}, password = {}", username, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken());
+                jwtToken.getRefreshToken());
         return jwtToken;
     }
 

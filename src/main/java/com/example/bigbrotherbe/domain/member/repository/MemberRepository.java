@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.member.repository;
+package com.example.bigbrotherbe.domain.member.repository;
 
-import com.example.bigbrotherbe.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
