@@ -1,6 +1,7 @@
-package com.example.bigbrotherbe.notice.entry;
+package com.example.bigbrotherbe.domain.notice.entry;
 
-import com.example.bigbrotherbe.member.entity.Member;
+import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor                             // 모든 매개변수 생성자 -> access 지정 안하면 접근 권한 공개로 설정
 @Builder                                        // 빌더 패턴으로 초기화할 수 있게 만듦
 @EqualsAndHashCode(of = "id")                   // equals, hashcode 메서드 자동 생성
-public class Notice {
+public class Notice extends BaseTimeEntity {
     @Id                                                 //pk
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값 자동 생성
     @Column(name = "notice_id", updatable = false, unique = true, nullable = false)
@@ -27,12 +28,6 @@ public class Notice {
 
     @Column(nullable = false, name = "notice_content", columnDefinition = "TEXT") // 긴 문자열
     private String content;
-
-    @Column
-    private LocalDateTime create_at;
-
-    @Column
-    private LocalDateTime update_at;
 
     @Column
     private String affiliation; // 일단 String type 으로

@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.notice.controller;
+package com.example.bigbrotherbe.domain.notice.controller;
 
-import com.example.bigbrotherbe.notice.service.NoticeService;
+import com.example.bigbrotherbe.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;

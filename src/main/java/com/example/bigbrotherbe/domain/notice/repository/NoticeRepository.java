@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.notice.repository;
+package com.example.bigbrotherbe.domain.notice.repository;
 
-import com.example.bigbrotherbe.notice.entry.Notice;
+import com.example.bigbrotherbe.domain.notice.entry.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,7 +1,7 @@
-package com.example.bigbrotherbe.notice.entry.dto;
+package com.example.bigbrotherbe.domain.notice.dto;
 
-import com.example.bigbrotherbe.member.entity.Member;
-import com.example.bigbrotherbe.notice.entry.Notice;
+import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.notice.entry.Notice;
 import lombok.*;
 
 @Getter
