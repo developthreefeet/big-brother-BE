@@ -1,16 +1,17 @@
 package com.example.bigbrotherbe.domain.member.entity;
 
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -56,17 +57,16 @@ public class Member implements UserDetails {
     @Column
     private LocalDateTime update_at;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<AffiliationMember> affiliations = new ArrayList<>();
 
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-            .map(SimpleGrantedAuthority::new)
+        return this.affiliations.stream()
+            .map(affiliationMember -> new SimpleGrantedAuthority(affiliationMember.getRole()))
             .collect(Collectors.toList());
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
