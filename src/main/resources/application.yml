@@ -5,23 +5,23 @@ spring:
   main:
     debug: true
 
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_NAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  # 환경 변수를 사용하는 데이터베이스 설정 (주석 해제 필요시)
+  # datasource:
+  #   url: ${DB_URL}
+  #   username: ${DB_NAME}
+  #   password: ${DB_PASSWORD}
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # 로컬디비 - 태태
-  #datasource:
-   # url: jdbc:mysql://localhost:3306/bigbrother?serverTimezone=UTC
-   # driver-class-name: com.mysql.cj.jdbc.Driver
-   # username: root
-   # password: 1234
+  # 태태 로컬 데이터베이스 설정
+  datasource:
+    url: jdbc:mysql://localhost:3306/bigbrother?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
 
   jpa:
     hibernate:
-      ddl-auto: update
-
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -30,3 +30,14 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
 
+cloud:
+  aws:
+    s3:
+      bucket: big-brother-storage
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
