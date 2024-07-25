@@ -9,14 +9,10 @@ spring:
     url: ${DB_URL}
     username: ${DB_NAME}
     password: ${DB_PASSWORD}
+    hikari:
+      max-lifetime: 177000  # 177초, hikari는 RDS wait_timeout(180초) 보다 2 ~ 3초 정도 짧게 줄 것을 권장
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # 로컬디비 - 태태
-  #datasource:
-   # url: jdbc:mysql://localhost:3306/bigbrother?serverTimezone=UTC
-   # driver-class-name: com.mysql.cj.jdbc.Driver
-   # username: root
-   # password: 1234
 
   jpa:
     hibernate:
@@ -26,6 +22,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
 
 jwt:
   secret: ${JWT_SECRET}
