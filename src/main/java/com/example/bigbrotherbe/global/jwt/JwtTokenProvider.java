@@ -60,22 +60,21 @@ public JwtToken generateToken(Authentication authentication){
             .refreshToken(refreshToken)
             .build();
     }
-    public Authentication getAuthentication(String accessToken){
-        Claims claims = parseClaims(accessToken);
-
-        if(claims.get("auth") == null) {
+    public Authentication getAuthentication(String token) {
+        Claims claims = parseClaims(token);
+        log.info("Parsed claims: {}", claims);
+        if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
-            Arrays.stream(claims.get("auth").toString().split(",")).map(SimpleGrantedAuthority::new)
-                .toList();
+            Arrays.stream(claims.get("auth").toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-        // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails interface.  User UserDetails를 구현한 class
-        UserDetails principal = new User(claims.getSubject(),"", authorities);
-        return new UsernamePasswordAuthenticationToken(principal,"",authorities);
+        UserDetails principal = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities);
+        log.info("Authorities from token: {}", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     public boolean validateToken(String token){
