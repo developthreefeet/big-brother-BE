@@ -10,4 +10,6 @@ public interface MemberService {
     public MemberResponse userSignUp(SignUpDto signUpDto);
 
     public MemberResponse inquireMemberInfo(String memberName);
+
+    void sendCodeToEmail(String email);
 }
