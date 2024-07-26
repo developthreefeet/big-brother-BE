@@ -1,9 +1,12 @@
 package com.example.bigbrotherbe.domain.notice.service;
 
+import com.example.bigbrotherbe.domain.notice.dto.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.NoticeRegisterRequest;
+
 public interface NoticeService {
-    public boolean register();
+    public void register(NoticeRegisterRequest noticeRegisterRequest);
 
-    public boolean modify();
+    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest);
 
-    public boolean delete();
+    public void delete(Long noticeId);
 }

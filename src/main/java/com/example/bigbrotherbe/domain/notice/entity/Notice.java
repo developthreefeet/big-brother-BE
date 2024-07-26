@@ -1,11 +1,9 @@
-package com.example.bigbrotherbe.domain.notice.entry;
+package com.example.bigbrotherbe.domain.notice.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity                                         // 데이터베이스 테이블과 매핑
 @Getter                                         // lombok 라이브러리 -> 모든 필드 대상
@@ -30,9 +28,14 @@ public class Notice extends BaseTimeEntity {
     private String content;
 
     @Column
-    private String affiliation; // 일단 String type 으로
+    private Long affiliationId; //
 
-    @ManyToOne(fetch = FetchType.LAZY)                  // lazy loading
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+//    @ManyToOne(fetch = FetchType.LAZY)                  // lazy loading
+//    @JoinColumn(name = "member_id", nullable = false)
+//    private Member member;
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

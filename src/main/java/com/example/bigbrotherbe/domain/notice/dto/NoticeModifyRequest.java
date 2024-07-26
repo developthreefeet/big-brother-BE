@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.notice.dto;
 
-import com.example.bigbrotherbe.domain.notice.entry.Notice;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import lombok.*;
 
 @Getter
@@ -9,11 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class NoticeModifyRequest {
+    private String title;
+    private String content;
 
-
-    public Notice toEntity(){
-        return Notice.builder().
-
-                build();
-    }
 }

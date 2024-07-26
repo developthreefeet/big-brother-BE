@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.notice.dto;
 
-import com.example.bigbrotherbe.domain.notice.entry.Notice;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import lombok.*;
 
 @Getter
@@ -9,9 +9,17 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class NoticeRegisterRequest {
-    public Notice toEntity(){
-        return Notice.builder().
+    private String title;
+    private String type;
+    private String content;
+    private Long affiliationId;
 
-                build();
+    public Notice toNoticeEntity(){
+        return Notice.builder()
+                .title(title)
+                .type(type)
+                .content(content)
+                .affiliationId(affiliationId)
+                .build();
     }
 }
