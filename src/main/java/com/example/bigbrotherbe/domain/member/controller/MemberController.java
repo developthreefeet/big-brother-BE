@@ -3,6 +3,7 @@ package com.example.bigbrotherbe.domain.member.controller;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
@@ -80,9 +81,9 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/emails/verifications")
-//    public ResponseEntity<MemberResponse> verificationEmail(@RequestParam("email") String email){
-//
-//    }
+    @GetMapping("/emails/verifications")
+    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code){
+        return ResponseEntity.ok(memberService.verifiedCode(email, code)) ;
+    }
 
 }
