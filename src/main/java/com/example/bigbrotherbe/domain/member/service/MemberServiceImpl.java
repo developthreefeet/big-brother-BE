@@ -1,5 +1,7 @@
 package com.example.bigbrotherbe.domain.member.service;
 
+import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX;
+
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
@@ -7,6 +9,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.global.email.EmailConfig;
+import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.email.MailService;
 import com.example.bigbrotherbe.global.email.RedisService;
 import com.example.bigbrotherbe.global.exception.BusinessLogicException;
@@ -132,7 +135,7 @@ public class MemberServiceImpl implements MemberService{
         String authCode = this.createCode();
         mailService.sendEmail(toEmail, title, authCode);
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
-        redisService.setValues(EmailConfig.AUTH_CODE_PREFIX + toEmail,
+        redisService.setValues(AUTH_CODE_PREFIX + toEmail,
             authCode, Duration.ofMillis(this.authCodeExpirationMillis));
     }
 
@@ -140,7 +143,7 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
             log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
-//            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXIT);
         }
     }
     private String createCode() {
@@ -158,13 +161,13 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
-//    public EmailVerificationResult verifiedCode(String email, String authCode) {
-//        this.checkDuplicatedEmail(email);
-////        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
-////        boolean authResult = redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode);
-//
-////        return EmailVerificationResult.of(authResult);
-//    }
+    public EmailVerificationResult verifiedCode(String email, String authCode) {
+        this.checkDuplicatedEmail(email);
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
+        boolean authResult = redisAuthCode.equals(authCode);
+
+        return EmailVerificationResult.of(authResult);
+    }
 
     private Member findByUserName(String username) {
         return memberRepository.findByUsername(username)
