@@ -15,4 +15,6 @@ public interface MemberService {
     void sendCodeToEmail(String email);
 
     EmailVerificationResult verifiedCode(String email, String authCode);
+
+    EmailVerificationResult verificateEmail(String email);
 }

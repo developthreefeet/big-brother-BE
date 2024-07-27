@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
+import com.example.bigbrotherbe.domain.member.entity.EMailVerification;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
@@ -74,11 +75,17 @@ public class MemberController {
         return SecurityConfig.getCurrentUserName();
     }
 
-    @PostMapping("/emails/verification-requests")
-    public ResponseEntity<MemberResponse> sendMessage(@RequestBody Map<String,String> email){
+
+    @GetMapping("/emails/verification")
+    public ResponseEntity<EmailVerificationResult> verificateEmail(@RequestParam Map<String,String> email){
+       return ResponseEntity.ok(memberService.verificateEmail(email.get("email")));
+    }
+
+    @PostMapping("/emails/request-code")
+    public ResponseEntity<EmailVerificationResult> sendMessage(@RequestBody Map<String,String> email){
         memberService.sendCodeToEmail(email.get("email"));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(EmailVerificationResult.builder().authResult(true).build());
     }
 
     @GetMapping("/emails/verifications")
