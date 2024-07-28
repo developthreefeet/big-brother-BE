@@ -8,10 +8,8 @@ import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
-import com.example.bigbrotherbe.global.email.EmailConfig;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.email.MailService;
-import com.example.bigbrotherbe.global.email.RedisService;
 import com.example.bigbrotherbe.global.exception.BusinessLogicException;
 import com.example.bigbrotherbe.global.exception.ExceptionCode;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
@@ -26,7 +24,6 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -49,7 +46,6 @@ public class MemberServiceImpl implements MemberService{
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-    private final RedisService redisService;
 
 //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
@@ -128,17 +124,43 @@ public class MemberServiceImpl implements MemberService{
             .toList()).build();
     }
 
+    
+    // 인증코드 요청 및 일시 저장
     @Override
+    @Transactional
     public void sendCodeToEmail(String toEmail) {
-        this.checkDuplicatedEmail(toEmail);
-        String title = "Travel with me 이메일 인증 번호";
+        String title = "명지대 big brother 이메일 인증 번호";
         String authCode = this.createCode();
         mailService.sendEmail(toEmail, title, authCode);
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
-        redisService.setValues(AUTH_CODE_PREFIX + toEmail,
-            authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+        mailService.saveEmailAuthCode(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
     }
 
+
+
+    public EmailVerificationResult verifiedCode(String email, String authCode) {
+        this.checkDuplicatedEmail(email);
+        String redisAuthCode = mailService.getAuthCode(AUTH_CODE_PREFIX + email);
+        boolean authResult = redisAuthCode.equals(authCode);
+
+        return EmailVerificationResult.of(authResult);
+    }
+
+    // 이메일 중복 체크
+    @Override
+    public EmailVerificationResult verificateEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent()) {
+            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXIT);
+        }
+        return EmailVerificationResult.builder().authResult(true).build();
+    }
+
+    private Member findByUserName(String username) {
+        return memberRepository.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
+    }
     private void checkDuplicatedEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
@@ -160,18 +182,4 @@ public class MemberServiceImpl implements MemberService{
             throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
         }
     }
-
-    public EmailVerificationResult verifiedCode(String email, String authCode) {
-        this.checkDuplicatedEmail(email);
-        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
-        boolean authResult = redisAuthCode.equals(authCode);
-
-        return EmailVerificationResult.of(authResult);
-    }
-
-    private Member findByUserName(String username) {
-        return memberRepository.findByUsername(username)
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
-    }
-
 }
