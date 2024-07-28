@@ -8,7 +8,9 @@ import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class MemberController {
         JwtToken jwtToken = memberService.userSignIN(username, password);
         log.info("request username = {}, password = {}", username, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken());
+                jwtToken.getRefreshToken());
         return jwtToken;
     }
 
@@ -49,13 +51,13 @@ public class MemberController {
         return SecurityConfig.getCurrentUserName();
     }
 
-        @PostMapping("/sign-up")
-        public ResponseEntity<MemberResponse> signUp(@RequestBody SignUpDto signUpDto) {
-            return ResponseEntity.ok(memberService.userSignUp(signUpDto));
-        }
+    @PostMapping("/sign-up")
+    public ResponseEntity<MemberResponse> signUp(@RequestBody SignUpDto signUpDto) {
+        return ResponseEntity.ok(memberService.userSignUp(signUpDto));
+    }
 
     @GetMapping("/{member_name}")
-    public ResponseEntity<MemberResponse> inquireMemberInfo(@PathVariable String member_name){
+    public ResponseEntity<MemberResponse> inquireMemberInfo(@PathVariable String member_name) {
         return ResponseEntity.ok(memberService.inquireMemberInfo(member_name));
     }
 
@@ -66,7 +68,7 @@ public class MemberController {
         JwtToken jwtToken = memberService.userSignIN(memberName, password);
         log.info("request memberName = {}, password = {}", memberName, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken());
+                jwtToken.getRefreshToken());
         return jwtToken;
     }
 
@@ -77,20 +79,20 @@ public class MemberController {
 
 
     @GetMapping("/emails/verification")
-    public ResponseEntity<EmailVerificationResult> verificateEmail(@RequestParam Map<String,String> email){
-       return ResponseEntity.ok(memberService.verificateEmail(email.get("email")));
+    public ResponseEntity<EmailVerificationResult> verificateEmail(@RequestParam Map<String, String> email) {
+        return ResponseEntity.ok(memberService.verificateEmail(email.get("email")));
     }
 
     @PostMapping("/emails/request-code")
-    public ResponseEntity<EmailVerificationResult> sendMessage(@RequestBody Map<String,String> email){
+    public ResponseEntity<EmailVerificationResult> sendMessage(@RequestBody Map<String, String> email) {
         memberService.sendCodeToEmail(email.get("email"));
 
         return ResponseEntity.ok(EmailVerificationResult.builder().authResult(true).build());
     }
 
     @GetMapping("/emails/verifications")
-    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code){
-        return ResponseEntity.ok(memberService.verifiedCode(email, code)) ;
+    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code) {
+        return ResponseEntity.ok(memberService.verifiedCode(email, code));
     }
 
 }

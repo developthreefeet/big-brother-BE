@@ -25,7 +25,7 @@ public class Meetings extends BaseTimeEntity {
     @Column(name = "is_public")
     private boolean isPublic;
 
-    // 이것도 매핑시켜야하나,,?
+    // 이것도 매핑시켜야하나,,? 안하고 해 ㄱㄱㄱ
     private Long affiliationId;
 
     public void update(String title, String content, boolean isPublic) {

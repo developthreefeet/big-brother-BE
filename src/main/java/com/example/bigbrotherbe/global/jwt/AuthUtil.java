@@ -6,20 +6,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-    @Component
-    @RequiredArgsConstructor
-    public class AuthUtil {
+@Component
+@RequiredArgsConstructor
+public class AuthUtil {
 
-        private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-        public Member getLoginMember() {
-            try {
-                String loginMember = SecurityContextHolder.getContext().getAuthentication().getName();
-                return memberRepository.findByUsername(loginMember)
+    public Member getLoginMember() {
+        try {
+            String loginMember = SecurityContextHolder.getContext().getAuthentication().getName();
+            return memberRepository.findByUsername(loginMember)
                     .orElseThrow(() -> new IllegalArgumentException("상수처리 해야함. 없는 멤버"));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("상수처링");
-            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("상수처링");
         }
     }
+}
 
