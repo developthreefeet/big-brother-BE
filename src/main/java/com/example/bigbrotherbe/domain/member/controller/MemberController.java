@@ -3,18 +3,23 @@ package com.example.bigbrotherbe.domain.member.controller;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -43,10 +48,10 @@ public class MemberController {
         return SecurityConfig.getCurrentUserName();
     }
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<MemberResponse> signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok(memberService.userSignUp(signUpDto));
-    }
+        @PostMapping("/sign-up")
+        public ResponseEntity<MemberResponse> signUp(@RequestBody SignUpDto signUpDto) {
+            return ResponseEntity.ok(memberService.userSignUp(signUpDto));
+        }
 
     @GetMapping("/{member_name}")
     public ResponseEntity<MemberResponse> inquireMemberInfo(@PathVariable String member_name){
@@ -68,4 +73,17 @@ public class MemberController {
     public String adminTest() {
         return SecurityConfig.getCurrentUserName();
     }
+
+    @PostMapping("/emails/verification-requests")
+    public ResponseEntity<MemberResponse> sendMessage(@RequestBody Map<String,String> email){
+        memberService.sendCodeToEmail(email.get("email"));
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/emails/verifications")
+    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code){
+        return ResponseEntity.ok(memberService.verifiedCode(email, code)) ;
+    }
+
 }

@@ -1,18 +1,32 @@
 package com.example.bigbrotherbe.domain.member.service;
 
+import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX;
+
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
+import com.example.bigbrotherbe.global.email.EmailConfig;
+import com.example.bigbrotherbe.global.email.EmailVerificationResult;
+import com.example.bigbrotherbe.global.email.MailService;
+import com.example.bigbrotherbe.global.email.RedisService;
+import com.example.bigbrotherbe.global.exception.BusinessLogicException;
+import com.example.bigbrotherbe.global.exception.ExceptionCode;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,6 +48,12 @@ public class MemberServiceImpl implements MemberService{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+    private final RedisService redisService;
+
+//    @Value("${spring.mail.auth-code-expiration-millis}")
+    private final long authCodeExpirationMillis = 1800000;
+
     @Transactional
     @Override
     public JwtToken userSignIN(String username, String password){
@@ -106,6 +126,47 @@ public class MemberServiceImpl implements MemberService{
         return MemberResponse.builder().id(member.getId()).memberName(member.getUsername()).create_at(member.getCreate_at()).update_at(member.getUpdate_at()).roles(member.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .toList()).build();
+    }
+
+    @Override
+    public void sendCodeToEmail(String toEmail) {
+        this.checkDuplicatedEmail(toEmail);
+        String title = "Travel with me 이메일 인증 번호";
+        String authCode = this.createCode();
+        mailService.sendEmail(toEmail, title, authCode);
+        // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
+        redisService.setValues(AUTH_CODE_PREFIX + toEmail,
+            authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+    }
+
+    private void checkDuplicatedEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent()) {
+            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXIT);
+        }
+    }
+    private String createCode() {
+        int lenth = 6;
+        try {
+            Random random = SecureRandom.getInstanceStrong();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < lenth; i++) {
+                builder.append(random.nextInt(10));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            log.debug("MemberService.createCode() exception occur");
+            throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
+        }
+    }
+
+    public EmailVerificationResult verifiedCode(String email, String authCode) {
+        this.checkDuplicatedEmail(email);
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
+        boolean authResult = redisAuthCode.equals(authCode);
+
+        return EmailVerificationResult.of(authResult);
     }
 
     private Member findByUserName(String username) {
