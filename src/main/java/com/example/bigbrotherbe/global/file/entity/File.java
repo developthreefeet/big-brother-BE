@@ -2,6 +2,8 @@ package com.example.bigbrotherbe.global.file.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.checkerframework.checker.units.qual.A;
@@ -14,9 +16,14 @@ import org.checkerframework.checker.units.qual.A;
 public class File extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String fileType;
 
     private String url;
+
+    public void update(String url) {
+        this.url = url;
+    }
 }

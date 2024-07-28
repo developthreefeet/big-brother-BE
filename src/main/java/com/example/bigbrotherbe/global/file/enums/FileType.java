@@ -1,16 +1,19 @@
 package com.example.bigbrotherbe.global.file.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public enum FileType {
-    NOTICE(1,"공지사항"),
-    FAQ(2,"FAQ"),
+    NOTICE(1, "공지사항"),
+    FAQ(2, "FAQ"),
     MEETINGS(3, "회의록"),
-    EVENT(4,"행사"),
-    RULE(5,"회칙"),
-    MEMBER(6,"프로필"),
+    EVENT(4, "행사"),
+    RULE(5, "회칙"),
+    Affiliation(6, "학생회");
+
+    private final int val;
+    private final String type;
 
 }

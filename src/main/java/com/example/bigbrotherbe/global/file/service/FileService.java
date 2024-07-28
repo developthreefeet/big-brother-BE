@@ -1,14 +1,13 @@
 package com.example.bigbrotherbe.global.file.service;
 
-import com.example.bigbrotherbe.global.file.util.S3Util;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.entity.File;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-@RequiredArgsConstructor
-public class FileService {
+import java.util.List;
 
-    private final S3Util s3Util;
-
-
+public interface FileService {
+    List<File> saveFile(FileSaveDTO fileSaveDTO);
+//    void updateFile();
+//    void deleteFile();
 }
