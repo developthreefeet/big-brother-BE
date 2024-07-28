@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.aws;
+package com.example.bigbrotherbe.global.file.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
