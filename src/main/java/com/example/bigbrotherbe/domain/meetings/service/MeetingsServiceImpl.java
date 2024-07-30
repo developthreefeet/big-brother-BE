@@ -30,11 +30,10 @@ public class MeetingsServiceImpl implements MeetingsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest, List<MultipartFile> multipartFiles) {
+        Member member = authUtil.getLoginMember();
 
         // 해당 소속이 있는지 필터링 affiliation _id 없으면 exception
         // role에 따라 권한있는지 필터링 없으면 exception
-
-        Member member = authUtil.getLoginMember();
 
         FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                 .fileType(FileType.MEETINGS.getType())
