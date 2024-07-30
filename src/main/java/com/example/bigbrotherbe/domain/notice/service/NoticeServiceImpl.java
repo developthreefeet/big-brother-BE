@@ -24,12 +24,19 @@ public class NoticeServiceImpl implements NoticeService {
                 .orElseThrow(() -> new NoSuchElementException("do not exist"));
 
         notice.update(noticeModifyRequest.getTitle(), noticeModifyRequest.getContent());
-        return;
     }
 
     @Override
     public void delete(Long noticeId) {
-        return;
+        Notice notice = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new NoSuchElementException("do not exist"));
+//        Member member = authUtil.getLoginMember();
+//
+//        if (participantService.findParticipantInfo(member, notice.getMeeting()).getRole() != Role.HOST) {
+//            throw new BusinessException(NOT_HOST_OF_MEETING);
+//        }
+
+        noticeRepository.delete(notice);
     }
 
 
