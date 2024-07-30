@@ -12,7 +12,9 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
+
     private final NoticeRepository noticeRepository;
+
     @Override
     public void register(NoticeRegisterRequest noticeRegisterRequest) {
         noticeRepository.save(noticeRegisterRequest.toNoticeEntity());
