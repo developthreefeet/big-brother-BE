@@ -23,6 +23,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Random;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,25 +38,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final AffiliationRepository affiliationRepository;
     private final AffiliationMemberRepository affiliationMemberRepository;
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
-//    @Value("${spring.mail.auth-code-expiration-millis}")
+    //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
 
     @Transactional
     @Override
-    public JwtToken userSignIN(String username, String password){
+    public JwtToken userSignIN(String username, String password) {
         // 1. 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교
         Member member = memberRepository.findByUsername(username)
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
         log.info("Found member: {}", member);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
@@ -65,7 +67,7 @@ public class MemberServiceImpl implements MemberService{
 
         // 2. 인증 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(username, password);
+                new UsernamePasswordAuthenticationToken(username, password);
         log.info("Created authentication token");
 
         // 2. 실제 검증. authenticate() 메서드를 통해 요청된 Member에 대한 검증 진행
@@ -86,45 +88,45 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public MemberResponse userSignUp(SignUpDto signUpDto){
+    public MemberResponse userSignUp(SignUpDto signUpDto) {
         if (memberRepository.existsByUsername(signUpDto.getUsername())) {
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
         // Password 암호화
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
-        Member savedMember = memberRepository.save(signUpDto.toEntity(signUpDto,encodedPassword));
+        Member savedMember = memberRepository.save(signUpDto.toEntity(signUpDto, encodedPassword));
 
         // Affiliation 조회
         Affiliation affiliation = affiliationRepository.findByAffiliationName(signUpDto.getAffiliation())
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
 
         // AffiliationMember 엔티티 생성
         AffiliationMember affiliationMember = AffiliationMember.builder()
-            .member(savedMember)
-            .affiliation(affiliation)
-            .role("ROLE_USER")
-            .build();
+                .member(savedMember)
+                .affiliation(affiliation)
+                .role("ROLE_USER")
+                .build();
         affiliationMemberRepository.save(affiliationMember);
 
         savedMember = memberRepository.findById(savedMember.getId()).orElseThrow(
-            () -> new IllegalArgumentException("Member를 다시 로드할 수 없습니다.")
+                () -> new IllegalArgumentException("Member를 다시 로드할 수 없습니다.")
         );
 //        List<String> roles = savedMember.getAuthorities().stream()
 //            .map(GrantedAuthority::getAuthority)
 //            .toList();
 
-        return MemberResponse.form(savedMember.getId(),savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreate_at());
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreate_at());
     }
 
     @Override
     public MemberResponse inquireMemberInfo(String memberName) {
         Member member = findByUserName(memberName);
         return MemberResponse.builder().id(member.getId()).memberName(member.getUsername()).create_at(member.getCreate_at()).update_at(member.getUpdate_at()).roles(member.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .toList()).build();
+                .map(GrantedAuthority::getAuthority)
+                .toList()).build();
     }
 
-    
+
     // 인증코드 요청 및 일시 저장
     @Override
     @Transactional
@@ -135,7 +137,6 @@ public class MemberServiceImpl implements MemberService{
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
         mailService.saveEmailAuthCode(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
     }
-
 
 
     public EmailVerificationResult verifiedCode(String email, String authCode) {
@@ -157,10 +158,20 @@ public class MemberServiceImpl implements MemberService{
         return EmailVerificationResult.builder().authResult(true).build();
     }
 
+    /*
+    [MEETINGS]
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkExistAffiliationById(Long affiliationId) {
+        return affiliationRepository.existsById(affiliationId);
+    }
+
     private Member findByUserName(String username) {
         return memberRepository.findByUsername(username)
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
     }
+
     private void checkDuplicatedEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
@@ -168,6 +179,7 @@ public class MemberServiceImpl implements MemberService{
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXIT);
         }
     }
+
     private String createCode() {
         int lenth = 6;
         try {

@@ -5,48 +5,72 @@ import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.service.MemberService;
+import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.NoSuchElementException;
+import java.util.List;
+
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_MEETINGS;
 
 @Service
 @RequiredArgsConstructor
-public class MeetingsServiceImpl implements MeetingsService{
+public class MeetingsServiceImpl implements MeetingsService {
 
     private final MeetingsRepository meetingsRepository;
+
+    private final FileService fileService;
+    private final MemberService memberService;
+
     private final AuthUtil authUtil;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest) {
-//
-        Member member = authUtil.getLoginMember();
+    public void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest, List<MultipartFile> multipartFiles) {
+        if (!memberService.checkExistAffiliationById(meetingsRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NO_EXIST_AFFILIATION);
+        }
 
-        // 해당 소속이 있는지 필터링 affiliation _id 없으면 exception
+        //        Member member = authUtil.getLoginMember();
         // role에 따라 권한있는지 필터링 없으면 exception
-        // save 해서 meetings pk(Mettings_id) 받기
 
-        meetingsRepository.save(meetingsRegisterRequest.toMeetingsEntity());
+        List<File> files = null;
+        if (checkExistRequestFile(multipartFiles)) {
+            FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
+                    .fileType(FileType.MEETINGS.getType())
+                    .multipartFileList(multipartFiles)
+                    .build();
 
-        // s3에 파일 저장 url 반환 -> 뭐 씌워야 한다고 했음 -> pre-signed 이거 나중에
-        // 그거 가지고 meetingsPk(targetPk) & file_type으로 저장 -> files에
-
-        // meetings에서 조회할 때 FILE TABLE에서 targetPk와 type에 맞는 해당 url
-        // 버디에 담아서 res
-
-        // res 할때 boardInfo에 이미지 파일 있으면 넣어서
-
+            files = fileService.saveFile(fileSaveDTO);
+        }
+        meetingsRepository.save(meetingsRegisterRequest.toMeetingsEntity(files));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest) {
         Meetings meetings = meetingsRepository.findById(meetingsId)
-                .orElseThrow(() -> new NoSuchElementException("없어요~~"));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
         meetings.update(meetingsUpdateRequest.getTitle(), meetingsUpdateRequest.getContent(), meetingsUpdateRequest.isPublic());
+    }
+
+    private boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
+        for (MultipartFile file : multipartFiles) {
+            if (file.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
