@@ -17,4 +17,6 @@ public interface MemberService {
     EmailVerificationResult verifiedCode(String email, String authCode);
 
     EmailVerificationResult verificateEmail(String email);
+
+    boolean checkExistAffiliationById(Long affiliationId);
 }

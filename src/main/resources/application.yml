@@ -41,7 +41,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -51,6 +51,12 @@ spring:
     redis:
       port: 6379
       host: localhost
+
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 300MB
+      max-file-size: 300MB
 
 
 jwt:

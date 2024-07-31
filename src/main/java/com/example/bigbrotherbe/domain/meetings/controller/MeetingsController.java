@@ -18,9 +18,9 @@ public class MeetingsController {
     private final MeetingsServiceImpl meetingsServiceImpl;
 
     @PostMapping
-    public ResponseEntity<Void> registerMeetings(@RequestPart MeetingsRegisterRequest meetingsRegisterRequest,
-                                                 @RequestPart(value = "File") List<MultipartFile> multipartFiles) {
-        meetingsServiceImpl.registerMeetings(meetingsRegisterRequest ,multipartFiles);
+    public ResponseEntity<Void> registerMeetings(@RequestPart(value = "meetingsRegisterRequest") MeetingsRegisterRequest meetingsRegisterRequest,
+                                                 @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        meetingsServiceImpl.registerMeetings(meetingsRegisterRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 

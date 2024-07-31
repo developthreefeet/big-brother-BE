@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.global.exception;
 
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
