@@ -46,7 +46,6 @@ public class MeetingsServiceImpl implements MeetingsService {
 
         List<File> files = null;
         if (checkExistRequestFile(multipartFiles)) {
-            System.out.println("엥 일로들어온다고?");
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(FileType.MEETINGS.getType())
                     .multipartFileList(multipartFiles)

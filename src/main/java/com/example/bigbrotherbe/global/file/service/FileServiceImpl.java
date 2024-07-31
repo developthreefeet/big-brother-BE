@@ -24,9 +24,11 @@ public class FileServiceImpl implements FileService {
     public List<File> saveFile(FileSaveDTO fileSaveDTO) {
         List<File> files = new ArrayList<>();
 
+        String fileType = fileSaveDTO.getFileType();
         List<MultipartFile> multipartFileList = fileSaveDTO.getMultipartFileList();
+
         multipartFileList.forEach(file -> {
-            String url = s3Util.uploadFile(file);
+            String url = s3Util.uploadFile(file, fileType);
             File fileEntity = fileRepository.save(fileSaveDTO.toFileEntity(url));
             files.add(fileEntity);
         });
