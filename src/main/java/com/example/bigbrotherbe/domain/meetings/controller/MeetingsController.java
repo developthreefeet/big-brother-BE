@@ -6,6 +6,9 @@ import com.example.bigbrotherbe.domain.meetings.service.MeetingsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,8 +18,9 @@ public class MeetingsController {
     private final MeetingsServiceImpl meetingsServiceImpl;
 
     @PostMapping
-    public ResponseEntity<Void> registerMeetings(@RequestBody MeetingsRegisterRequest meetingsRegisterRequest) {
-        meetingsServiceImpl.registerMeetings(meetingsRegisterRequest);
+    public ResponseEntity<Void> registerMeetings(@RequestPart(value = "meetingsRegisterRequest") MeetingsRegisterRequest meetingsRegisterRequest,
+                                                 @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        meetingsServiceImpl.registerMeetings(meetingsRegisterRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 
