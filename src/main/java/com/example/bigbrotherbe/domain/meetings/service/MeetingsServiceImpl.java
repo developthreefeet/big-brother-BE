@@ -85,6 +85,15 @@ public class MeetingsServiceImpl implements MeetingsService {
         meetings.update(meetingsUpdateRequest.getTitle(), meetingsUpdateRequest.getContent(), meetingsUpdateRequest.isPublic(), files);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteMeetings(Long meetingsId) {
+        Meetings meetings = meetingsRepository.findById(meetingsId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        meetingsRepository.delete(meetings);
+    }
+
     private boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
         for (MultipartFile file : multipartFiles) {
             if (file.isEmpty()) {

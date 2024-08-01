@@ -10,4 +10,6 @@ public interface MeetingsService {
     void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest, List<MultipartFile> multipartFiles);
 
     void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest, List<MultipartFile> multipartFiles);
+
+    void deleteMeetings(Long meetingsId);
 }

@@ -3,7 +3,7 @@ package com.example.bigbrotherbe.domain.meetings.controller;
 import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
-import com.example.bigbrotherbe.domain.meetings.service.MeetingsServiceImpl;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ import java.util.List;
 public class MeetingsController {
 
     private final MeetingsService meetingsService;
-    private final MeetingsServiceImpl meetingsServiceImpl;
 
     @PostMapping
     public ResponseEntity<Void> registerMeetings(@RequestPart(value = "meetingsRegisterRequest") MeetingsRegisterRequest meetingsRegisterRequest,
@@ -36,7 +35,7 @@ public class MeetingsController {
 
     @DeleteMapping("/{meetingsId}")
     public ResponseEntity<Void> deleteMeetings(@PathVariable("meetingsId") Long meetingsId) {
-
+        meetingsService.deleteMeetings(meetingsId);
         return ResponseEntity.ok().build();
     }
 }
