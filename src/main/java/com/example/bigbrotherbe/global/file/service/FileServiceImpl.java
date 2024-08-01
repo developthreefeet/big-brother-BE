@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.global.file.service;
 
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.repository.FileRepository;
 import com.example.bigbrotherbe.global.file.util.S3Util;
@@ -20,7 +21,7 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public List<File> saveFile(FileSaveDTO fileSaveDTO) {
         List<File> files = new ArrayList<>();
 
@@ -34,5 +35,28 @@ public class FileServiceImpl implements FileService {
         });
 
         return files;
+    }
+
+    @Transactional
+    public List<File> updateFile(FileUpdateDTO fileUpdateDTO) {
+        List<File> updatedFiles = new ArrayList<>();
+
+        List<File> files = fileUpdateDTO.getFiles();
+        List<MultipartFile> multipartFileList = fileUpdateDTO.getMultipartFileList();
+        String fileType = fileUpdateDTO.getFileType();
+
+        files.forEach(file -> {
+            String fileName = file.getUrl().split("/")[3];
+            s3Util.deleteFile(fileType + "/" + fileName);
+        });
+
+        multipartFileList.forEach(file -> {
+            String url = s3Util.uploadFile(file, fileType);
+            files.forEach(fileEntity -> {
+                fileEntity.update(url);
+                updatedFiles.add(fileEntity);
+            });
+        });
+        return updatedFiles;
     }
 }

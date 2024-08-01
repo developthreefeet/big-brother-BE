@@ -5,6 +5,9 @@ spring:
   main:
     debug: true
 
+  jackson:
+    time-zone: Asia/Seoul
+
   # 환경 변수를 사용하는 데이터베이스 설정 (주석 해제 필요시)
   # datasource:
   #   url: ${DB_URL}

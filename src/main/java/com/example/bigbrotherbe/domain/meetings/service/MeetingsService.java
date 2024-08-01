@@ -9,5 +9,5 @@ import java.util.List;
 public interface MeetingsService {
     void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest, List<MultipartFile> multipartFiles);
 
-    void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest);
+    void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest, List<MultipartFile> multipartFiles);
 }

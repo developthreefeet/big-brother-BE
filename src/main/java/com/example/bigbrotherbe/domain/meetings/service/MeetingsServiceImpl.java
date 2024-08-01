@@ -8,6 +8,7 @@ import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
@@ -53,16 +54,35 @@ public class MeetingsServiceImpl implements MeetingsService {
 
             files = fileService.saveFile(fileSaveDTO);
         }
-        meetingsRepository.save(meetingsRegisterRequest.toMeetingsEntity(files));
+        Meetings meetings = meetingsRegisterRequest.toMeetingsEntity(files);
+
+        if (files != null) {
+            files.forEach(file -> {
+                file.linkMeeting(meetings);
+            });
+        }
+
+        meetingsRepository.save(meetings);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest) {
+    public void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest, List<MultipartFile> multipartFiles) {
         Meetings meetings = meetingsRepository.findById(meetingsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
-        meetings.update(meetingsUpdateRequest.getTitle(), meetingsUpdateRequest.getContent(), meetingsUpdateRequest.isPublic());
+        List<File> files = null;
+        if (checkExistRequestFile(multipartFiles)) {
+            FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
+                    .fileType(FileType.MEETINGS.getType())
+                    .multipartFileList(multipartFiles)
+                    .files(meetings.getFiles())
+                    .build();
+
+            files = fileService.updateFile(fileUpdateDTO);
+        }
+
+        meetings.update(meetingsUpdateRequest.getTitle(), meetingsUpdateRequest.getContent(), meetingsUpdateRequest.isPublic(), files);
     }
 
     private boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
