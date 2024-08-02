@@ -23,13 +23,13 @@ public class NoticeController {
     }
 
     @PutMapping("/{noticeId}")
-    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, NoticeModifyRequest noticeModifyRequest){
+    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest){
         noticeService.modify(noticeId, noticeModifyRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{noticeId}")
-    public  ResponseEntity<Void> deleteNotice(@PathVariable("noticeId") Long noticeId){
+    public ResponseEntity<Void> deleteNotice(@PathVariable("noticeId") Long noticeId){
         noticeService.delete(noticeId);
         return ResponseEntity.ok().build();
     }
