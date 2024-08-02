@@ -2,8 +2,11 @@ package com.example.bigbrotherbe.domain.notice.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
 import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.global.file.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity                                         // 데이터베이스 테이블과 매핑
 @Getter                                         // lombok 라이브러리 -> 모든 필드 대상
@@ -28,8 +31,13 @@ public class Notice extends BaseTimeEntity {
     private String content;
 
     @Column
-    private Long affiliationId; //
+    private Long affiliationId;
 
+//    @OneToMany
+//    @JoinColumn(name = "notice_id")
+//    private List<File> files;
+
+    //멤버랑은 여기서 연결 안하는게 맞나..?
 //    @ManyToOne(fetch = FetchType.LAZY)                  // lazy loading
 //    @JoinColumn(name = "member_id", nullable = false)
 //    private Member member;
