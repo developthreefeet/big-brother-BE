@@ -42,11 +42,11 @@ public class MeetingsServiceImpl implements MeetingsService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-        //        Member member = authUtil.getLoginMember();
+//                Member member = authUtil.getLoginMember();
         // role에 따라 권한있는지 필터링 없으면 exception
 
         List<File> files = null;
-        if (checkExistRequestFile(multipartFiles)) {
+        if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(FileType.MEETINGS.getType())
                     .multipartFileList(multipartFiles)
@@ -72,7 +72,7 @@ public class MeetingsServiceImpl implements MeetingsService {
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
         List<File> files = null;
-        if (checkExistRequestFile(multipartFiles)) {
+        if (fileService.checkExistRequestFile(multipartFiles)) {
             FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
                     .fileType(FileType.MEETINGS.getType())
                     .multipartFileList(multipartFiles)
@@ -92,14 +92,5 @@ public class MeetingsServiceImpl implements MeetingsService {
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
         meetingsRepository.delete(meetings);
-    }
-
-    private boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
-        for (MultipartFile file : multipartFiles) {
-            if (file.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
     }
 }
