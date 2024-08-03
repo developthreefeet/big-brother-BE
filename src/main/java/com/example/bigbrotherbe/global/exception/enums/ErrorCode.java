@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     // NOTICE
     NO_EXIST_NOTICE(HttpStatus.NOT_FOUND, "NOTICE-001", "존재하지 않는 공지사항입니다."),
+
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다.");
 
