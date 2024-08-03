@@ -1,7 +1,10 @@
 package com.example.bigbrotherbe.domain.notice.dto;
 
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.global.file.entity.File;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @ToString
@@ -14,12 +17,13 @@ public class NoticeRegisterRequest {
     private String content;
     private Long affiliationId;
 
-    public Notice toNoticeEntity(){
+    public Notice toNoticeEntity(List<File> files){
         return Notice.builder()
                 .title(title)
                 .type(type)
                 .content(content)
                 .affiliationId(affiliationId)
+                .files(files)
                 .build();
     }
 }

@@ -33,9 +33,9 @@ public class Notice extends BaseTimeEntity {
     @Column
     private Long affiliationId;
 
-//    @OneToMany
-//    @JoinColumn(name = "notice_id")
-//    private List<File> files;
+    @OneToMany
+    @JoinColumn(name = "notice_id")
+    private List<File> files;
 
     //멤버랑은 여기서 연결 안하는게 맞나..?
 //    @ManyToOne(fetch = FetchType.LAZY)                  // lazy loading
