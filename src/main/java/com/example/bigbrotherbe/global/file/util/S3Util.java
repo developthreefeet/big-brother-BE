@@ -1,9 +1,12 @@
 package com.example.bigbrotherbe.global.file.util;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URL;
 import java.util.UUID;
+
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_TO_DELETE;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_TO_UPLOAD;
 
 
 @Component
@@ -42,24 +48,18 @@ public class S3Util {
             return fileUrl.toString();
         } catch (IOException e) {
             e.printStackTrace();
-            // 예외 처리: 실패한 경우 null을 반환하거나 적절한 방식으로 처리
-            return null;
+            throw new BusinessException(FAIL_TO_UPLOAD);
+        } catch (AmazonServiceException e) {
+            throw new BusinessException(FAIL_TO_UPLOAD);
         }
     }
 
-    //    public List<String> uploadFiles(List<MultipartFile> files) {
-    //        List<String> fileUrls = new ArrayList<>();
-    //        for (MultipartFile file : files) {
-    //            String fileUrl = uploadFile(file);
-    //            if (fileUrl != null) {
-    //                fileUrls.add(fileUrl);
-    //            }
-    //        }
-    //        return fileUrls;
-    //    }
-
     public void deleteFile(String path) {
-        amazonS3Client.deleteObject(bucket, path);
+        try {
+            amazonS3Client.deleteObject(bucket, path);
+        } catch (AmazonServiceException e) {
+            throw new BusinessException(FAIL_TO_DELETE);
+        }
     }
 
 }

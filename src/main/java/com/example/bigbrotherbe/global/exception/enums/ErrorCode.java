@@ -25,7 +25,11 @@ public enum ErrorCode {
     NO_EXIST_FAQ(HttpStatus.NOT_FOUND, "FAQ-001", "존재하지 않는 FAQ 입니다."),
 
     // AFFILIATION
-    NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다.");
+    NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다."),
+
+    // FILE
+    FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001","파일 업로드에 실패하였습니다."),
+    FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002","파일 삭제에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;
