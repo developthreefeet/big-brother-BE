@@ -1,6 +1,5 @@
 package com.example.bigbrotherbe.domain.meetings.controller;
 
-import com.amazonaws.Response;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
@@ -53,11 +52,12 @@ public class MeetingsController {
         return ResponseEntity.ok().body(meetingsResponse);
     }
 
-    @GetMapping()
-    public ResponseEntity<Page<Meetings>> getMeetingsList(@RequestParam(name = "page", defaultValue = "0") int page,
+    @GetMapping("all/{affiliationId}")
+    public ResponseEntity<Page<Meetings>> getMeetingsList(@PathVariable("affiliationId") Long affiliationId,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page,
                                                           @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Meetings> meetingsPage = meetingsService.getMeetings(pageable);
+        Page<Meetings> meetingsPage = meetingsService.getMeetings(affiliationId, pageable);
         return ResponseEntity.ok().body(meetingsPage);
     }
 }

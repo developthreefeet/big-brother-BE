@@ -19,5 +19,5 @@ public interface MeetingsService {
 
     MeetingsResponse getMeetingsById(Long meetingsId);
 
-    Page<Meetings> getMeetings(Pageable pageable);
+    Page<Meetings> getMeetings(Long affiliationId, Pageable pageable);
 }
