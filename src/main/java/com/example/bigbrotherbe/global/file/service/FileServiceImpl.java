@@ -35,4 +35,13 @@ public class FileServiceImpl implements FileService {
 
         return files;
     }
+
+    public boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
+        for (MultipartFile file : multipartFiles) {
+            if (file.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
