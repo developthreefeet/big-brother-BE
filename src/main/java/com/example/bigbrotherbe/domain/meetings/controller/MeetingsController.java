@@ -1,11 +1,18 @@
 package com.example.bigbrotherbe.domain.meetings.controller;
 
+import com.amazonaws.Response;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
+import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,5 +51,13 @@ public class MeetingsController {
     public ResponseEntity<MeetingsResponse> getMeetingsById(@PathVariable("meetingsId") Long MeetingsId) {
         MeetingsResponse meetingsResponse = meetingsService.getMeetingsById(MeetingsId);
         return ResponseEntity.ok().body(meetingsResponse);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Page<Meetings>> getMeetingsList(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                          @RequestParam(name = "size", defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Meetings> meetingsPage = meetingsService.getMeetings(pageable);
+        return ResponseEntity.ok().body(meetingsPage);
     }
 }

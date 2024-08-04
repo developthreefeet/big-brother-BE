@@ -15,6 +15,8 @@ import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,6 +105,7 @@ public class MeetingsServiceImpl implements MeetingsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MeetingsResponse getMeetingsById(Long meetingsId) {
         Meetings meetings = meetingsRepository.findById(meetingsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
@@ -112,5 +115,11 @@ public class MeetingsServiceImpl implements MeetingsService {
                 .toList();
 
         return MeetingsResponse.fromMeetingsResponse(meetings, urlList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Meetings> getMeetings(Pageable pageable) {
+        return meetingsRepository.findAll(pageable);
     }
 }
