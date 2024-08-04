@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
 
@@ -41,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
         // role에 따라 권한있는지 필터링 없으면 exception
 
         List<File> files = null;
-        if (checkExistRequestFile(multipartFiles)) {
+        if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(FileType.MEETINGS.getType())
                     .multipartFileList(multipartFiles)

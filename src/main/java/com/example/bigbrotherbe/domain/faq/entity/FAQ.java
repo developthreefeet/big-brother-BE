@@ -30,7 +30,7 @@ public class FAQ extends BaseTimeEntity {
     private Long affiliationId;
 
     @OneToMany
-    @JoinColumn(name = "notice_id")
+    @JoinColumn(name = "faq_id")
     private List<File> files;
 
     public void update(String title, String content) {

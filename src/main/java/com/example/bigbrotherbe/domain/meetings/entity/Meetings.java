@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,16 +29,19 @@ public class Meetings extends BaseTimeEntity {
     @Column(name = "is_public")
     private boolean isPublic;
 
-    // 이것도 매핑시켜야하나,,? 안하고 해 ㄱㄱㄱ
+    @Column(name = "affiliation_id")
     private Long affiliationId;
 
-    @OneToMany
-    @JoinColumn(name = "meetings_id")
-    private List<File> files;
+    @OneToMany(mappedBy = "meetings", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> files = new ArrayList<>();
 
-    public void update(String title, String content, boolean isPublic) {
+    public void update(String title, String content, boolean isPublic, List<File> files) {
         this.title = title;
         this.content = content;
         this.isPublic = isPublic;
+        if (files != null) {
+            this.files.addAll(files);
+            files.forEach(file -> file.linkMeeting(this));
+        }
     }
 }

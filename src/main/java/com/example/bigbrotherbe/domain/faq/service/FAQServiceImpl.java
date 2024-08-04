@@ -38,7 +38,7 @@ public class FAQServiceImpl implements FAQService{
         // role에 따라 권한있는지 필터링 없으면 exception
 
         List<File> files = null;
-        if (checkExistRequestFile(multipartFiles)) {
+        if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(FileType.MEETINGS.getType())
                     .multipartFileList(multipartFiles)
@@ -53,21 +53,17 @@ public class FAQServiceImpl implements FAQService{
     @Transactional(rollbackFor = Exception.class)
     public void modify(Long faqId, FAQModifyRequest faqModifyRequest) {
         FAQ faq = faqRepository.findById(faqId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
 
         faq.update(faqModifyRequest.getTitle(), faqModifyRequest.getContent());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long noticeId) {
-        FAQ faq = faqRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
-//        Member member = authUtil.getLoginMember();
-//
-//        if (participantService.findParticipantInfo(member, notice.getMeeting()).getRole() != Role.HOST) {
-//            throw new BusinessException(NOT_HOST_OF_MEETING);
-//        }
+    public void delete(Long faqId) {
+        FAQ faq = faqRepository.findById(faqId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+
 
         faqRepository.delete(faq);
     }

@@ -1,10 +1,10 @@
 package com.example.bigbrotherbe.global.file.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.bigbrotherbe.domain.faq.entity.FAQ;
+import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import jakarta.persistence.*;
 import lombok.*;
 import org.checkerframework.checker.units.qual.A;
 
@@ -23,7 +23,32 @@ public class File extends BaseTimeEntity {
 
     private String url;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "meetings_id")
+    private Meetings meetings;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "faq_id")
+    private FAQ faq;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "notice_id")
+    private Notice notice;
+
+
     public void update(String url) {
         this.url = url;
+    }
+
+    public void linkMeeting(Meetings meetings) {
+        this.meetings = meetings;
+    }
+
+    public void linkFAQ(FAQ faq){
+        this.faq = faq;
+    }
+
+    public void linkNotice(Notice notice){
+        this.notice = notice;
     }
 }
