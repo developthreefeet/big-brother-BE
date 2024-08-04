@@ -2,10 +2,10 @@ package com.example.bigbrotherbe.global.email;
 
 import com.example.bigbrotherbe.domain.member.entity.EMailVerification;
 import com.example.bigbrotherbe.domain.member.repository.MailRepository;
+import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.BusinessLogicException;
-import com.example.bigbrotherbe.global.exception.ExceptionCode;
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import java.time.Duration;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,7 +29,7 @@ public class MailService {
         } catch (RuntimeException e) {
             log.debug("MailService.sendEmail exception occur toEmail: {}, " +
                 "title: {}, text: {}", toEmail, title, text);
-            throw new BusinessLogicException(ExceptionCode.UNABLE_TO_SEND_EMAIL);
+            throw new BusinessException(ErrorCode.UNABLE_TO_SEND_EMAIL);
         }
     }
 

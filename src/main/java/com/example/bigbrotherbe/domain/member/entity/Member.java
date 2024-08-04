@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(of = "id")
 public class Member implements UserDetails {
 
@@ -60,6 +60,9 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AffiliationMember> affiliations = new ArrayList<>();
 
+    // 정적 필드로 정의된 정규식 패턴 객체
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.affiliations.stream()
@@ -82,8 +85,30 @@ public class Member implements UserDetails {
         return true;
     }
 
+    @Builder
+    public Member(String username, String password, String email, String is_active, LocalDateTime create_at, LocalDateTime update_at) {
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
+        }
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.is_active = is_active;
+        this.create_at = create_at;
+        this.update_at = update_at;
+    }
+
+
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void changePassword(String memberPass) {
+        this.password = memberPass;
+    }
+
+    private static boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 }

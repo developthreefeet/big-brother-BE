@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
 @ToString
 @NoArgsConstructor
 public class MemberRequest {
-    private String memberName;
+    private String memberEmail;
     private String memberPass;
 }
