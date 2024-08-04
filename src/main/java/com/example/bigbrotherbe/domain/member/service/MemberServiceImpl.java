@@ -214,7 +214,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
 
-    private List<String> getMemberRole(Member member) {
+    public List<String> getMemberRole(Member member) {
         return member.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority).toList();
     }
