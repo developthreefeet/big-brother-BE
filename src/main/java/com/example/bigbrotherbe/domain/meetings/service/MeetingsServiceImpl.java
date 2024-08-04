@@ -7,6 +7,7 @@ import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -91,6 +92,12 @@ public class MeetingsServiceImpl implements MeetingsService {
         Meetings meetings = meetingsRepository.findById(meetingsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
+        FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
+                .fileType(FileType.MEETINGS.getType())
+                .files(meetings.getFiles())
+                .build();
+
+        fileService.deleteFile(fileDeleteDTO);
         meetingsRepository.delete(meetings);
     }
 }

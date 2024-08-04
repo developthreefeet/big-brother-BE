@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.global.file.service;
 
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -13,5 +14,6 @@ public interface FileService {
     List<File> saveFile(FileSaveDTO fileSaveDTO);
 
     List<File> updateFile(FileUpdateDTO fileUpdateDTO);
-//    void deleteFile();
+
+    void deleteFile(FileDeleteDTO deleteDTO);
 }
