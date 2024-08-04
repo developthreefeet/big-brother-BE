@@ -1,12 +1,13 @@
 package com.example.bigbrotherbe.domain.meetings.service;
 
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
-import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -14,11 +15,14 @@ import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_MEETINGS;
@@ -91,6 +95,38 @@ public class MeetingsServiceImpl implements MeetingsService {
         Meetings meetings = meetingsRepository.findById(meetingsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
 
+        FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
+                .fileType(FileType.MEETINGS.getType())
+                .files(meetings.getFiles())
+                .build();
+
+        fileService.deleteFile(fileDeleteDTO);
         meetingsRepository.delete(meetings);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MeetingsResponse getMeetingsById(Long meetingsId) {
+        Meetings meetings = meetingsRepository.findById(meetingsId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        List<String> urlList = meetings.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return MeetingsResponse.fromMeetingsResponse(meetings, urlList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Meetings> getMeetings(Long affiliationId, Pageable pageable) {
+        return meetingsRepository.findByAffiliationId(affiliationId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Meetings> searchMeetings(Long affiliationId, String title, Pageable pageable) {
+        return meetingsRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
+    }
+
 }

@@ -58,6 +58,9 @@ dependencies {
 
     // S3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
+    // Pageable
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 }
 
 tasks.named('test') {

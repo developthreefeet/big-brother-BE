@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.global.file.service;
 
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -60,11 +61,21 @@ public class FileServiceImpl implements FileService {
         return updatedFiles;
     }
 
+    public void deleteFile(FileDeleteDTO deleteDTO) {
+        List<File> files = deleteDTO.getFiles();
+        String fileType = deleteDTO.getFileType();
+        files.forEach(file -> {
+            String fileName = file.getUrl().split("/")[3];
+            s3Util.deleteFile(fileType + "/" + fileName);
+        });
+    }
+
     @Override
     public boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
-        if(multipartFiles == null){
+        if (multipartFiles == null) {
             return false;
         }
+
         for (MultipartFile file : multipartFiles) {
             if (file.isEmpty()) {
                 return false;

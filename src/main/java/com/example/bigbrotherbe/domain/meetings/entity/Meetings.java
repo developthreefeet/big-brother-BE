@@ -2,6 +2,8 @@ package com.example.bigbrotherbe.domain.meetings.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
 import com.example.bigbrotherbe.global.file.entity.File;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +34,7 @@ public class Meetings extends BaseTimeEntity {
     @Column(name = "affiliation_id")
     private Long affiliationId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "meetings", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> files = new ArrayList<>();
 
