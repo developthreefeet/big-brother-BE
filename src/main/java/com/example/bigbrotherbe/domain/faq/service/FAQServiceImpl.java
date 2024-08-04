@@ -1,10 +1,10 @@
-package com.example.bigbrotherbe.domain.notice.service;
+package com.example.bigbrotherbe.domain.faq.service;
 
+import com.example.bigbrotherbe.domain.faq.dto.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.FAQRegisterRequest;
+import com.example.bigbrotherbe.domain.faq.entity.FAQ;
+import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
-import com.example.bigbrotherbe.domain.notice.dto.NoticeModifyRequest;
-import com.example.bigbrotherbe.domain.notice.dto.NoticeRegisterRequest;
-import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -13,7 +13,6 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,20 +20,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
-
 @Service
 @RequiredArgsConstructor
-public class NoticeServiceImpl implements NoticeService {
-
-    private final NoticeRepository noticeRepository;
+public class FAQServiceImpl implements FAQService{
+    private final FAQRepository faqRepository;
 
     private final FileService fileService;
     private final MemberService memberService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)   // 트랜잭션 시작 및 커밋 -> 모든 예외상황 발생시 롤백
-    public void register(NoticeRegisterRequest noticeRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(noticeRegisterRequest.getAffiliationId())) {
+    public void register(FAQRegisterRequest faqRegisterRequest, List<MultipartFile> multipartFiles) {
+        if (!memberService.checkExistAffiliationById(faqRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
@@ -44,56 +41,50 @@ public class NoticeServiceImpl implements NoticeService {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.MEETINGS.getType())
+                    .fileType(FileType.FAQ.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
             files = fileService.saveFile(fileSaveDTO);
         }
-        Notice notice = noticeRegisterRequest.toNoticeEntity(files);
+        FAQ faq = faqRegisterRequest.toFAQEntity(files);
 
-        if (files != null){
+        if (files != null) {
             files.forEach(file -> {
-                file.linkNotice(notice);
+                file.linkFAQ(faq);
             });
         }
 
-        noticeRepository.save(notice);
+        faqRepository.save(faq);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
-        Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+    public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
+        FAQ faq = faqRepository.findById(faqId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
-                    .fileType(FileType.NOTICE.getType())
+                    .fileType(FileType.FAQ.getType())
                     .multipartFileList(multipartFiles)
-                    .files(notice.getFiles())
+                    .files(faq.getFiles())
                     .build();
 
             files = fileService.updateFile(fileUpdateDTO);
         }
 
-        notice.update(noticeModifyRequest.getTitle(), noticeModifyRequest.getContent(), files);
+        faq.update(faqModifyRequest.getTitle(), faqModifyRequest.getContent(), files);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long noticeId) {
-        Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
-//        Member member = authUtil.getLoginMember();
-//
-//        if (participantService.findParticipantInfo(member, notice.getMeeting()).getRole() != Role.HOST) {
-//            throw new BusinessException(NOT_HOST_OF_MEETING);
-//        }
+    public void delete(Long faqId) {
+        FAQ faq = faqRepository.findById(faqId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
 
-        noticeRepository.delete(notice);
+
+        faqRepository.delete(faq);
     }
-
-
 }

@@ -62,6 +62,9 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public boolean checkExistRequestFile(List<MultipartFile> multipartFiles) {
+        if(multipartFiles == null){
+            return false;
+        }
         for (MultipartFile file : multipartFiles) {
             if (file.isEmpty()) {
                 return false;

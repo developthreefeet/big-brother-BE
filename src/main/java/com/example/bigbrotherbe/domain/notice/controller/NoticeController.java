@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j                                          // 로깅 기능 추가
 @RestController                                 // RESTful 웹서비스 컨트롤러
@@ -17,14 +20,16 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @PostMapping
-    public ResponseEntity<Void> registerNotice(@RequestBody NoticeRegisterRequest noticeRegisterRequest){
-        noticeService.register(noticeRegisterRequest);
+    public ResponseEntity<Void> registerNotice(@RequestBody NoticeRegisterRequest noticeRegisterRequest,
+                                               @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        noticeService.register(noticeRegisterRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{noticeId}")
-    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest){
-        noticeService.modify(noticeId, noticeModifyRequest);
+    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest,
+                                             @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles){
+        noticeService.modify(noticeId, noticeModifyRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 

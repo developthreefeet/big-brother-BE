@@ -33,17 +33,21 @@ public class Notice extends BaseTimeEntity {
     @Column
     private Long affiliationId;
 
-//    @OneToMany
-//    @JoinColumn(name = "notice_id")
-//    private List<File> files;
+    @OneToMany
+    @JoinColumn(name = "notice_id")
+    private List<File> files;
 
     //멤버랑은 여기서 연결 안하는게 맞나..?
 //    @ManyToOne(fetch = FetchType.LAZY)                  // lazy loading
 //    @JoinColumn(name = "member_id", nullable = false)
 //    private Member member;
 
-    public void update(String title, String content) {
+    public void update(String title, String content, List<File> files) {
         this.title = title;
         this.content = content;
+        if (files != null) {
+            this.files.addAll(files);
+            files.forEach(file -> file.linkNotice(this));
+        }
     }
 }

@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.domain.notice.dto;
+package com.example.bigbrotherbe.domain.faq.dto;
 
-import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.global.file.entity.File;
 import lombok.*;
 
@@ -11,16 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NoticeRegisterRequest {
+public class FAQRegisterRequest {
     private String title;
-    private String type;
     private String content;
     private Long affiliationId;
 
-    public Notice toNoticeEntity(List<File> files){
-        return Notice.builder()
+    public FAQ toFAQEntity(List<File> files){
+        return FAQ.builder()
                 .title(title)
-                .type(type)
                 .content(content)
                 .affiliationId(affiliationId)
                 .files(files)
