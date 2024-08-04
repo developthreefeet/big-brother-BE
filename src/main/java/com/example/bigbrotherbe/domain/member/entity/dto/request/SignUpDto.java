@@ -6,7 +6,6 @@ import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

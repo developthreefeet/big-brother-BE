@@ -3,7 +3,6 @@ package com.example.bigbrotherbe.global.email;
 import com.example.bigbrotherbe.domain.member.entity.EMailVerification;
 import com.example.bigbrotherbe.domain.member.repository.MailRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.BusinessLogicException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +42,7 @@ public class MailService {
 
         return message;
     }
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveEmailAuthCode(String emailAddress, String authCode, Duration duration) {
         mailRepository.save(
             EMailVerification.builder().emailAddress(emailAddress).verificationCode(authCode)
