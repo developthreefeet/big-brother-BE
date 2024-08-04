@@ -37,11 +37,11 @@ public class SecurityConfig {
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 // 해당 API에 대해서는 모든 요청을 허가
-                .requestMatchers("/members/sign-in").permitAll()
-                .requestMatchers("/members/sign-up").permitAll()
+                .requestMatchers("/api/big-brother/members/sign-in").permitAll()
+                .requestMatchers("/api/big-brother/members/sign-up/**").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers("/members/test").hasRole("USER")
-                .requestMatchers("/members/manager").hasRole("ADMIN")
+                .requestMatchers("/api/big-brother/members/test").hasRole("USER")
+                .requestMatchers("/api/big-brother/members/manager").hasRole("ADMIN")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                 .anyRequest().permitAll()
             )
