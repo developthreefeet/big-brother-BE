@@ -55,9 +55,15 @@ public class MeetingsController {
     @GetMapping("all/{affiliationId}")
     public ResponseEntity<Page<Meetings>> getMeetingsList(@PathVariable("affiliationId") Long affiliationId,
                                                           @RequestParam(name = "page", defaultValue = "0") int page,
-                                                          @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                          @RequestParam(name = "size", defaultValue = "10") int size,
+                                                          @RequestParam(name = "search", required = false) String search) {
+        Page<Meetings> meetingsPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Meetings> meetingsPage = meetingsService.getMeetings(affiliationId, pageable);
+        if (search != null && !search.isEmpty()) {
+            meetingsPage = meetingsService.searchMeetings(affiliationId, search, pageable);
+        } else {
+            meetingsPage = meetingsService.getMeetings(affiliationId, pageable);
+        }
         return ResponseEntity.ok().body(meetingsPage);
     }
 }

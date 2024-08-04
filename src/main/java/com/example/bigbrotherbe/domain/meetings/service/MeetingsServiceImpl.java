@@ -122,4 +122,11 @@ public class MeetingsServiceImpl implements MeetingsService {
     public Page<Meetings> getMeetings(Long affiliationId, Pageable pageable) {
         return meetingsRepository.findByAffiliationId(affiliationId, pageable);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Meetings> searchMeetings(Long affiliationId, String title, Pageable pageable) {
+        return meetingsRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
+    }
+
 }

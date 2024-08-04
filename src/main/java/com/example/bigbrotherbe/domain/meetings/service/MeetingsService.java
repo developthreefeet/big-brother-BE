@@ -20,4 +20,6 @@ public interface MeetingsService {
     MeetingsResponse getMeetingsById(Long meetingsId);
 
     Page<Meetings> getMeetings(Long affiliationId, Pageable pageable);
+
+    Page<Meetings> searchMeetings(Long affiliationId, String title, Pageable pageable);
 }
