@@ -1,7 +1,8 @@
 package com.example.bigbrotherbe.domain.meetings.controller;
 
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class MeetingsController {
     public ResponseEntity<Void> deleteMeetings(@PathVariable("meetingsId") Long meetingsId) {
         meetingsService.deleteMeetings(meetingsId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{meetingsId}")
+    public ResponseEntity<MeetingsResponse> getMeetingsById(@PathVariable("meetingsId") Long MeetingsId) {
+        MeetingsResponse meetingsResponse = meetingsService.getMeetingsById(MeetingsId);
+        return ResponseEntity.ok().body(meetingsResponse);
     }
 }

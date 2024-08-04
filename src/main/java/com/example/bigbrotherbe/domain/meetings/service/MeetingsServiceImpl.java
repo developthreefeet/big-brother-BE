@@ -1,10 +1,10 @@
 package com.example.bigbrotherbe.domain.meetings.service;
 
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
-import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_MEETINGS;
@@ -99,5 +100,17 @@ public class MeetingsServiceImpl implements MeetingsService {
 
         fileService.deleteFile(fileDeleteDTO);
         meetingsRepository.delete(meetings);
+    }
+
+    @Override
+    public MeetingsResponse getMeetingsById(Long meetingsId) {
+        Meetings meetings = meetingsRepository.findById(meetingsId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        List<String> urlList = meetings.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return MeetingsResponse.fromMeetingsResponse(meetings, urlList);
     }
 }
