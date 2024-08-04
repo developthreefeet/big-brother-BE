@@ -27,8 +27,9 @@ public class FAQController {
     }
 
     @PutMapping("/{faqId}")
-    public ResponseEntity<Void> modifyFAQ(@PathVariable("faqId") Long faqId, @RequestBody FAQModifyRequest faqModifyRequest){
-        faqService.modify(faqId, faqModifyRequest);
+    public ResponseEntity<Void> modifyFAQ(@PathVariable("faqId") Long faqId, @RequestBody FAQModifyRequest faqModifyRequest,
+                                          @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles){
+        faqService.modify(faqId, faqModifyRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 

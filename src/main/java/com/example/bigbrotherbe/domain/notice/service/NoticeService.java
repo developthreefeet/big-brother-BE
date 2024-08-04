@@ -9,7 +9,7 @@ import java.util.List;
 public interface NoticeService {
     public void register(NoticeRegisterRequest noticeRegisterRequest, List<MultipartFile> multipartFiles);
 
-    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest);
+    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles);
 
     public void delete(Long noticeId);
 }

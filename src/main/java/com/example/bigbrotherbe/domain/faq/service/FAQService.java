@@ -11,7 +11,7 @@ import java.util.List;
 public interface FAQService {
     public void register(FAQRegisterRequest faqRegisterRequest, List<MultipartFile> multipartFiles);
 
-    public void modify(Long faqId, FAQModifyRequest faqModifyRequest);
+    public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles);
 
     public void delete(Long faqId);
 }

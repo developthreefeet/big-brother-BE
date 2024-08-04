@@ -42,8 +42,12 @@ public class Notice extends BaseTimeEntity {
 //    @JoinColumn(name = "member_id", nullable = false)
 //    private Member member;
 
-    public void update(String title, String content) {
+    public void update(String title, String content, List<File> files) {
         this.title = title;
         this.content = content;
+        if (files != null) {
+            this.files.addAll(files);
+            files.forEach(file -> file.linkNotice(this));
+        }
     }
 }

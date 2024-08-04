@@ -8,6 +8,7 @@ import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
@@ -40,22 +41,41 @@ public class FAQServiceImpl implements FAQService{
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.MEETINGS.getType())
+                    .fileType(FileType.FAQ.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
             files = fileService.saveFile(fileSaveDTO);
         }
-        faqRepository.save(faqRegisterRequest.toFAQEntity(files));
+        FAQ faq = faqRegisterRequest.toFAQEntity(files);
+
+        if (files != null) {
+            files.forEach(file -> {
+                file.linkFAQ(faq);
+            });
+        }
+
+        faqRepository.save(faq);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modify(Long faqId, FAQModifyRequest faqModifyRequest) {
+    public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
 
-        faq.update(faqModifyRequest.getTitle(), faqModifyRequest.getContent());
+        List<File> files = null;
+        if (fileService.checkExistRequestFile(multipartFiles)) {
+            FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
+                    .fileType(FileType.FAQ.getType())
+                    .multipartFileList(multipartFiles)
+                    .files(faq.getFiles())
+                    .build();
+
+            files = fileService.updateFile(fileUpdateDTO);
+        }
+
+        faq.update(faqModifyRequest.getTitle(), faqModifyRequest.getContent(), files);
     }
 
     @Override

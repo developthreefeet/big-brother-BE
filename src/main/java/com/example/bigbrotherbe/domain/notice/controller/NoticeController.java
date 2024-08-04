@@ -27,8 +27,9 @@ public class NoticeController {
     }
 
     @PutMapping("/{noticeId}")
-    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest){
-        noticeService.modify(noticeId, noticeModifyRequest);
+    public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest,
+                                             @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles){
+        noticeService.modify(noticeId, noticeModifyRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 

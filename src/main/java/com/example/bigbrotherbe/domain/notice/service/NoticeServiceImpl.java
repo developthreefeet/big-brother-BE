@@ -8,10 +8,12 @@ import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,16 +50,35 @@ public class NoticeServiceImpl implements NoticeService {
 
             files = fileService.saveFile(fileSaveDTO);
         }
-        noticeRepository.save(noticeRegisterRequest.toNoticeEntity(files));
+        Notice notice = noticeRegisterRequest.toNoticeEntity(files);
+
+        if (files != null){
+            files.forEach(file -> {
+                file.linkNotice(notice);
+            });
+        }
+
+        noticeRepository.save(notice);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest) {
+    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
 
-        notice.update(noticeModifyRequest.getTitle(), noticeModifyRequest.getContent());
+        List<File> files = null;
+        if (fileService.checkExistRequestFile(multipartFiles)) {
+            FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
+                    .fileType(FileType.NOTICE.getType())
+                    .multipartFileList(multipartFiles)
+                    .files(notice.getFiles())
+                    .build();
+
+            files = fileService.updateFile(fileUpdateDTO);
+        }
+
+        notice.update(noticeModifyRequest.getTitle(), noticeModifyRequest.getContent(), files);
     }
 
     @Override

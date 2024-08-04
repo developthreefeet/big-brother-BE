@@ -33,8 +33,12 @@ public class FAQ extends BaseTimeEntity {
     @JoinColumn(name = "faq_id")
     private List<File> files;
 
-    public void update(String title, String content) {
+    public void update(String title, String content, List<File> files) {
         this.title = title;
         this.content = content;
+        if (files != null) {
+            this.files.addAll(files);
+            files.forEach(file -> file.linkFAQ(this));
+        }
     }
 }
