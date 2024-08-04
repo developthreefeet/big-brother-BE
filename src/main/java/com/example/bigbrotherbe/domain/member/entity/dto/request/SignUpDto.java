@@ -3,8 +3,10 @@ package com.example.bigbrotherbe.domain.member.entity.dto.request;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 
 
+import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SignUpDto {
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     private String username;
     private String password;
@@ -26,7 +29,20 @@ public class SignUpDto {
     private String affiliation;
 
     public Member toEntity(SignUpDto signUpDto, String password) {
-        return Member.builder().username(signUpDto.getUsername()).password(password).email(signUpDto.getEmail())
-            .is_active("true").create_at(LocalDateTime.now()).update_at(LocalDateTime.now()).build();
+        if(!isVaildEmail(signUpDto.getEmail())){
+            throw new BusinessException(ErrorCode.INVALID_EMAIL_FORMAT);
+        }
+        return Member.builder()
+            .username(signUpDto.getUsername())
+            .password(password)
+            .email(signUpDto.getEmail())
+            .is_active("true")
+            .create_at(LocalDateTime.now())
+            .update_at(LocalDateTime.now())
+            .build();
+    }
+
+    private boolean isVaildEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 }

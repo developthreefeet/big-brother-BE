@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.service;
 
+import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -19,4 +20,6 @@ public interface MemberService {
     EmailVerificationResult verificateEmail(String email);
 
     boolean checkExistAffiliationById(Long affiliationId);
+
+    MemberResponse changePasswrd(String memberId, MemberRequest memberRequest);
 }
