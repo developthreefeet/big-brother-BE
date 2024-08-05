@@ -1,8 +1,6 @@
 package com.example.bigbrotherbe.domain.faq.dto.response;
 
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
-import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
