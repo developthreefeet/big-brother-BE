@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.global.file.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
@@ -35,6 +36,10 @@ public class File extends BaseTimeEntity {
     @JoinColumn(name = "notice_id")
     private Notice notice;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "event_id")
+    private Event event;
+
 
     public void update(String url) {
         this.url = url;
@@ -44,11 +49,15 @@ public class File extends BaseTimeEntity {
         this.meetings = meetings;
     }
 
-    public void linkFAQ(FAQ faq){
+    public void linkFAQ(FAQ faq) {
         this.faq = faq;
     }
 
-    public void linkNotice(Notice notice){
+    public void linkNotice(Notice notice) {
         this.notice = notice;
+    }
+
+    public void linkEvent(Event evnet) {
+        this.event = evnet;
     }
 }
