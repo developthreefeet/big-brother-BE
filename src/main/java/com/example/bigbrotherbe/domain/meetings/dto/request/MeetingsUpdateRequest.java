@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.meetings.dto;
+package com.example.bigbrotherbe.domain.meetings.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

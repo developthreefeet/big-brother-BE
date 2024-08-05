@@ -1,11 +1,10 @@
-package com.example.bigbrotherbe.domain.meetings.dto;
+package com.example.bigbrotherbe.domain.meetings.dto.request;
 
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 
 import com.example.bigbrotherbe.global.file.entity.File;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

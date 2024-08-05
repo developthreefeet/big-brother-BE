@@ -3,7 +3,6 @@ package com.example.bigbrotherbe.global.file.dto;
 import com.example.bigbrotherbe.global.file.entity.File;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
