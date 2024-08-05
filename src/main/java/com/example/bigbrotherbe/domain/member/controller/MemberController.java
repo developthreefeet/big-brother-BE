@@ -1,105 +1,34 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
-import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
-import com.example.bigbrotherbe.global.email.EmailVerificationResult;
-import com.example.bigbrotherbe.global.jwt.JwtToken;
-import com.example.bigbrotherbe.global.security.SecurityConfig;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
-
-import java.util.Map;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
-@RestController
+
+
 @RequestMapping("/api/big-brother/members")
 @CrossOrigin(origins = "http://localhost:8080")
-@RequiredArgsConstructor
-public class MemberController {
+@Tag(name = "멤버", description = "회원가입,로그인 API")
+public interface MemberController {
 
-    private final MemberService memberService;
-
+    @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/sign-up")
-    public ResponseEntity<MemberResponse> signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok(memberService.userSignUp(signUpDto));
-    }
-
-
-    @PostMapping("/sign-in")
-    public JwtToken signIn(@RequestBody MemberRequest memberRequest) {
-        String memberEmail = memberRequest.getMemberEmail();
-        String password = memberRequest.getMemberPass();
-        // 컨트롤러가 없어도 굴러가게 만들어야 하는 데 그러면 Request 객체를 그대로 넘겨주나?
-        JwtToken jwtToken = memberService.userSignIN(memberEmail, password);
-        log.info("request memberEmail = {}, password = {}", memberEmail, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-                jwtToken.getRefreshToken());
-        return jwtToken;
-    }
-
-    @PostMapping("/test")
-    public String test() {
-//        return "suess";
-        return SecurityConfig.getCurrentUserName();
-    }
-
-    // member 상세 조회
-    @GetMapping
-    public ResponseEntity<MemberResponse> inquireMemberInfo(@RequestParam(name = "member_email") String memberEmail) {
-        return ResponseEntity.ok(memberService.inquireMemberInfo(memberEmail));
-    }
-
-    @PostMapping("/admins")
-    public JwtToken adminLogin(@RequestBody MemberRequest memberRequest) {
-        String memberEmail = memberRequest.getMemberEmail();
-        String password = memberRequest.getMemberPass();
-        JwtToken jwtToken = memberService.userSignIN(memberEmail, password);
-        log.info("request memberName = {}, password = {}", memberEmail, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-                jwtToken.getRefreshToken());
-        return jwtToken;
-    }
-
-    @PostMapping("/manager")
-    public String adminTest() {
-        return SecurityConfig.getCurrentUserName();
-    }
-
-
-
-    // 이메일 중복 확인
-    @GetMapping("/sign-up/emails/verification")
-    public ResponseEntity<EmailVerificationResult> verificateEmail(@RequestParam(name = "member-email") String email) {
-        return ResponseEntity.ok(memberService.verificateEmail(email));
-    }
-
-    // 이메일 인증 코드 요구
-    @PostMapping("/sign-up/emails/request-code")
-    public ResponseEntity<EmailVerificationResult> sendMessage(@RequestBody Map<String, String> email) {
-        memberService.sendCodeToEmail(email.get("email"));
-
-        return ResponseEntity.ok(EmailVerificationResult.builder().authResult(true).build());
-    }
-
-    @GetMapping("/sign-up/emails/verifications")
-    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code) {
-        return ResponseEntity.ok(memberService.verifiedCode(email, code));
-    }
-
-    @PatchMapping()
-    public ResponseEntity<MemberResponse> changePassword(@RequestParam(name = "id") String memberId,@RequestBody MemberRequest memberRequest){
-        return ResponseEntity.ok(memberService.changePasswrd(memberId,memberRequest));
-    }
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",description = "Success",
+            content = {@Content(schema = @Schema(implementation = MemberResponse.class))}),
+        @ApiResponse(responseCode = "404", description = "?")
+    })
+    ResponseEntity<MemberResponse> signUp(@RequestBody @Valid SignUpDto signUpDto);
 }
