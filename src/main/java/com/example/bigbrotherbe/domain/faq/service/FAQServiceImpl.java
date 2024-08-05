@@ -1,7 +1,8 @@
 package com.example.bigbrotherbe.domain.faq.service;
 
-import com.example.bigbrotherbe.domain.faq.dto.FAQModifyRequest;
-import com.example.bigbrotherbe.domain.faq.dto.FAQRegisterRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
+import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
@@ -13,6 +14,8 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_FAQ;
+
 @Service
 @RequiredArgsConstructor
 public class FAQServiceImpl implements FAQService{
@@ -86,5 +91,30 @@ public class FAQServiceImpl implements FAQService{
 
 
         faqRepository.delete(faq);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public FAQResponse getFAQById(Long faqId) {
+        FAQ faq = faqRepository.findById(faqId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
+
+        List<String> urlList = faq.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return FAQResponse.fromFAQResponse(faq, urlList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<FAQ> getFAQ(Long affiliationId, Pageable pageable) {
+        return faqRepository.findByAffiliationId(affiliationId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<FAQ> searchFAQ(Long affiliationId, String title, Pageable pageable) {
+        return faqRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }
