@@ -6,8 +6,6 @@ import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 
-import com.example.bigbrotherbe.global.constant.Constant;
-import com.example.bigbrotherbe.global.exception.enums.SuccessCode;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
