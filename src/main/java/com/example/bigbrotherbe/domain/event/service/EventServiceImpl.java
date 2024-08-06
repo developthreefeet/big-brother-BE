@@ -18,6 +18,8 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,5 +115,17 @@ public class EventServiceImpl implements EventService {
                 .toList();
 
         return EventResponse.fromEventResponse(event, urlList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Event> getEvents(Long affiliationId, Pageable pageable) {
+        return eventRepository.findByAffiliationId(affiliationId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Event> searchEvent(Long affiliationId, String title, Pageable pageable) {
+        return eventRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }
