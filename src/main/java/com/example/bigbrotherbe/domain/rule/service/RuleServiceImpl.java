@@ -2,10 +2,12 @@ package com.example.bigbrotherbe.domain.rule.service;
 
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
+import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -16,6 +18,8 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,5 +100,30 @@ public class RuleServiceImpl implements RuleService {
 
         fileService.deleteFile(fileDeleteDTO);
         ruleRepository.delete(rule);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public RuleResponse getRuleById(Long ruleId) {
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
+
+        List<String> urlList = rule.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return RuleResponse.fromRuleResponse(rule, urlList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Rule> getRules(Long affiliationId, Pageable pageable) {
+        return ruleRepository.findByAffiliationId(affiliationId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Rule> searchRules(Long affiliationId, String title, Pageable pageable) {
+        return ruleRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }
