@@ -24,16 +24,22 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> registerEvent(@RequestPart(value = "eventRegisterRequest") EventRegisterRequest eventRegisterRequest,
-                                              @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+                                                           @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
         eventService.registerEvent(eventRegisterRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{eventId}")
     public ResponseEntity<ApiResponse<Void>> updateEvent(@PathVariable("eventId") Long eventId,
-                                                            @RequestPart(value = "eventUpdateRequest") EventUpdateRequest eventUpdateRequest,
-                                                            @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+                                                         @RequestPart(value = "eventUpdateRequest") EventUpdateRequest eventUpdateRequest,
+                                                         @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
         eventService.updateEvent(eventId, eventUpdateRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable("eventId") Long eventId) {
+        eventService.deleteEvent(eventId);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 }

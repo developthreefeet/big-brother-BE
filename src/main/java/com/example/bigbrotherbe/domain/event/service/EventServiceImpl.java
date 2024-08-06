@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateReques
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -82,5 +83,20 @@ public class EventServiceImpl implements EventService {
                 eventUpdateRequest.getStartDateTime(),
                 eventUpdateRequest.getStartDateTime(),
                 files);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+
+        FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
+                .fileType(FileType.EVENT.getType())
+                .files(event.getFiles())
+                .build();
+
+        fileService.deleteFile(fileDeleteDTO);
+        eventRepository.delete(event);
     }
 }
