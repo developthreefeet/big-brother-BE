@@ -29,4 +29,12 @@ public class Rule extends BaseTimeEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> files = new ArrayList<>();
+
+    public void update(String title, List<File> files) {
+        this.title = title;
+        if (files != null) {
+            this.files.addAll(files);
+            files.forEach(file -> file.linkRule(this));
+        }
+    }
 }
