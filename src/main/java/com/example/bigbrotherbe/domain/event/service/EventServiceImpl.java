@@ -2,10 +2,12 @@ package com.example.bigbrotherbe.domain.event.service;
 
 import com.example.bigbrotherbe.domain.event.dto.request.EventRegisterRequest;
 import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
+import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -98,5 +100,18 @@ public class EventServiceImpl implements EventService {
 
         fileService.deleteFile(fileDeleteDTO);
         eventRepository.delete(event);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EventResponse getEventById(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+
+        List<String> urlList = event.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return EventResponse.fromEventResponse(event, urlList);
     }
 }

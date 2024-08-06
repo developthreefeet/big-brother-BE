@@ -2,9 +2,11 @@ package com.example.bigbrotherbe.domain.event.controller;
 
 import com.example.bigbrotherbe.domain.event.dto.request.EventRegisterRequest;
 import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
+import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.service.EventService;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +44,11 @@ public class EventController {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<ApiResponse<EventResponse>> getEventById(@PathVariable("eventId") Long eventId) {
+        EventResponse eventResponse = eventService.getEventById(eventId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, eventResponse));
+    }
+
 }
