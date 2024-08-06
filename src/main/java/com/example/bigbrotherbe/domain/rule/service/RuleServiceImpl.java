@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -80,5 +81,20 @@ public class RuleServiceImpl implements RuleService {
         }
 
         rule.update(ruleUpdateRequest.getTitle(), files);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteRule(Long ruleId) {
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
+
+        FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
+                .fileType(FileType.RULE.getType())
+                .files(rule.getFiles())
+                .build();
+
+        fileService.deleteFile(fileDeleteDTO);
+        ruleRepository.delete(rule);
     }
 }

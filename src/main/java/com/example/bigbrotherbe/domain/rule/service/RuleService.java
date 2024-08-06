@@ -10,4 +10,6 @@ public interface RuleService {
     void registerRule(RuleRegisterRequest ruleRegisterRequest, List<MultipartFile> multipartFiles);
 
     void updateRule(Long ruleId, RuleUpdateRequest ruleUpdateRequest, List<MultipartFile> multipartFiles);
+
+    void deleteRule(Long ruleId);
 }

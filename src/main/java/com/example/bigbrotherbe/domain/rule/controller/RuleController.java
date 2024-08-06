@@ -29,11 +29,17 @@ public class RuleController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
-    @PutMapping("/{meetingsId}")
+    @PutMapping("/{ruleId}")
     public ResponseEntity<ApiResponse<Void>> updateRule(@PathVariable("ruleId") Long ruleId,
                                                         @RequestPart(value = "ruleUpdateRequest") RuleUpdateRequest ruleUpdateRequest,
                                                         @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
         ruleService.updateRule(ruleId, ruleUpdateRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{ruleId}")
+    public ResponseEntity<ApiResponse<Void>> deleteRule(@PathVariable("ruleId") Long ruleId) {
+        ruleService.deleteRule(ruleId);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
