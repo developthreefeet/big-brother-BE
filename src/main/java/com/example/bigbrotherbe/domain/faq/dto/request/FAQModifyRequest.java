@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.faq.dto;
+package com.example.bigbrotherbe.domain.faq.dto.request;
 
 import lombok.*;
 

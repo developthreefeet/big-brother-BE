@@ -1,9 +1,10 @@
 package com.example.bigbrotherbe.domain.notice.service;
 
-import com.example.bigbrotherbe.domain.member.service.MemberService;
-import com.example.bigbrotherbe.domain.notice.dto.NoticeModifyRequest;
-import com.example.bigbrotherbe.domain.notice.dto.NoticeRegisterRequest;
+import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.domain.member.service.MemberService;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
@@ -13,14 +14,15 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +97,25 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.delete(notice);
     }
 
+    @Override
+    public NoticeResponse getNoticeById(Long noticeId) {
+        Notice notice = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
+        List<String> urlList = notice.getFiles().stream()
+                .map(File::getUrl)
+                .toList();
+
+        return NoticeResponse.fromNoticeResponse(notice, urlList);
+    }
+
+    @Override
+    public Page<Notice> getNotice(Long affiliationId, Pageable pageable) {
+        return noticeRepository.findByAffiliationId(affiliationId, pageable);
+    }
+
+    @Override
+    public Page<Notice> searchNotice(Long affiliationId, String title, Pageable pageable) {
+        return noticeRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
+    }
 }

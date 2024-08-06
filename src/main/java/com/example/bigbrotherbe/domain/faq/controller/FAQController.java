@@ -1,10 +1,17 @@
 package com.example.bigbrotherbe.domain.faq.controller;
 
-import com.example.bigbrotherbe.domain.faq.dto.FAQModifyRequest;
-import com.example.bigbrotherbe.domain.faq.dto.FAQRegisterRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
+import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
+import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.service.FAQService;
+import com.example.bigbrotherbe.global.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,5 +44,26 @@ public class FAQController {
     public ResponseEntity<Void> deleteFAQ(@PathVariable("faqId") Long faqId){
         faqService.delete(faqId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{faqId}")
+    public ResponseEntity<FAQResponse> getFAQById(@PathVariable("faqId") Long faqId){
+        FAQResponse faqResponse = faqService.getFAQById(faqId);
+        return ResponseEntity.ok().body(faqResponse);
+    }
+
+    @GetMapping("all/{affiliationId}")
+    public ResponseEntity<Page<FAQ>> getFAQList(@PathVariable("affiliationId") Long affiliationId,
+                                                @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
+                                                @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
+                                                @RequestParam(name = "search", required = false) String search){
+        Page<FAQ> faqPage;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        if(search != null && !search.isEmpty()){
+            faqPage = faqService.searchFAQ(affiliationId, search, pageable);
+        }else {
+            faqPage = faqService.getFAQ(affiliationId, pageable);
+        }
+        return ResponseEntity.ok().body(faqPage);
     }
 }

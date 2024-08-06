@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.notice.dto;
+package com.example.bigbrotherbe.domain.notice.dto.request;
 
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import lombok.*;

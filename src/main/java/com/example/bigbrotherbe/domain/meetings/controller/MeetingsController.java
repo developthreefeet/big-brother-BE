@@ -6,6 +6,7 @@ import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 
+import com.example.bigbrotherbe.global.constant.Constant;
 import com.example.bigbrotherbe.global.exception.enums.SuccessCode;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +59,8 @@ public class MeetingsController {
 
     @GetMapping("all/{affiliationId}")
     public ResponseEntity<ApiResponse<Page<Meetings>>> getMeetingsList(@PathVariable("affiliationId") Long affiliationId,
-                                                                       @RequestParam(name = "page", defaultValue = "0") int page,
-                                                                       @RequestParam(name = "size", defaultValue = "10") int size,
+                                                                       @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
+                                                                       @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
                                                                        @RequestParam(name = "search", required = false) String search) {
         Page<Meetings> meetingsPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));

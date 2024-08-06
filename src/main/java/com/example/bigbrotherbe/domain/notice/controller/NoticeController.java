@@ -1,10 +1,17 @@
 package com.example.bigbrotherbe.domain.notice.controller;
 
-import com.example.bigbrotherbe.domain.notice.dto.NoticeModifyRequest;
-import com.example.bigbrotherbe.domain.notice.dto.NoticeRegisterRequest;
+import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.service.NoticeService;
+import com.example.bigbrotherbe.global.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,5 +44,26 @@ public class NoticeController {
     public ResponseEntity<Void> deleteNotice(@PathVariable("noticeId") Long noticeId){
         noticeService.delete(noticeId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<NoticeResponse> getNoticeById(@PathVariable("noticeId") Long noticeId){
+        NoticeResponse noticeResponse = noticeService.getNoticeById(noticeId);
+        return ResponseEntity.ok().body(noticeResponse);
+    }
+
+    @GetMapping("all/{affiliationId}")
+    public ResponseEntity<Page<Notice>> getNoticeList(@PathVariable("affiliationId") Long affiliationId,
+                                                @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
+                                                @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
+                                                @RequestParam(name = "search", required = false) String search){
+        Page<Notice> noticePage;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        if(search != null && !search.isEmpty()){
+            noticePage = noticeService.searchNotice(affiliationId, search, pageable);
+        }else {
+            noticePage = noticeService.getNotice(affiliationId, pageable);
+        }
+        return ResponseEntity.ok().body(noticePage);
     }
 }
