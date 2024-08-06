@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.example.bigbrotherbe.global.constant.Constant.getContent.PAGE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.constant.Constant.getContent.SIZE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
@@ -59,8 +61,8 @@ public class MeetingsController {
 
     @GetMapping("all/{affiliationId}")
     public ResponseEntity<ApiResponse<Page<Meetings>>> getMeetingsList(@PathVariable("affiliationId") Long affiliationId,
-                                                                       @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
-                                                                       @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
+                                                                       @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
+                                                                       @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                        @RequestParam(name = "search", required = false) String search) {
         Page<Meetings> meetingsPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
