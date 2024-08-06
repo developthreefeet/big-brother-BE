@@ -1,15 +1,15 @@
-package com.example.bigbrotherbe.domain.event.service;
+package com.example.bigbrotherbe.domain.rule.service;
 
-import com.example.bigbrotherbe.domain.event.dto.request.EventRegisterRequest;
-import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
-import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
-import com.example.bigbrotherbe.domain.event.entity.Event;
-import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
+import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
+import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
+import com.example.bigbrotherbe.domain.rule.entity.Rule;
+import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -30,102 +30,100 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService {
+public class RuleServiceImpl implements RuleService {
 
-    private final EventRepository eventRepository;
+    private final RuleRepository ruleRepository;
 
-    private final MemberService memberService;
     private final FileService fileService;
+    private final MemberService memberService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerEvent(EventRegisterRequest eventRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(eventRegisterRequest.getAffiliationId())) {
+    public void registerRule(RuleRegisterRequest ruleRegisterRequest, List<MultipartFile> multipartFiles) {
+        if (!memberService.checkExistAffiliationById(ruleRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
+
+//                Member member = authUtil.getLoginMember();
+        // role에 따라 권한있는지 필터링 없으면 exception
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.EVENT.getType())
+                    .fileType(FileType.RULE.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
             files = fileService.saveFile(fileSaveDTO);
         }
-        Event event = eventRegisterRequest.toEventEntity(files);
+        Rule rule = ruleRegisterRequest.toRuleEntity(files);
 
         if (files != null) {
             files.forEach(file -> {
-                file.linkEvent(event);
+                file.linkRule(rule);
             });
         }
 
-        eventRepository.save(event);
+        ruleRepository.save(rule);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateEvent(Long eventId, EventUpdateRequest eventUpdateRequest, List<MultipartFile> multipartFiles) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+    public void updateRule(Long ruleId, RuleUpdateRequest ruleUpdateRequest, List<MultipartFile> multipartFiles) {
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
-                    .fileType(FileType.EVENT.getType())
+                    .fileType(FileType.RULE.getType())
                     .multipartFileList(multipartFiles)
-                    .files(event.getFiles())
+                    .files(rule.getFiles())
                     .build();
 
             files = fileService.updateFile(fileUpdateDTO);
         }
 
-        event.update(eventUpdateRequest.getTitle(),
-                eventUpdateRequest.getContent(),
-                eventUpdateRequest.getTarget(),
-                eventUpdateRequest.getStartDateTime(),
-                eventUpdateRequest.getStartDateTime(),
-                files);
+        rule.update(ruleUpdateRequest.getTitle(), files);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteEvent(Long eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+    public void deleteRule(Long ruleId) {
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
 
         FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
-                .fileType(FileType.EVENT.getType())
-                .files(event.getFiles())
+                .fileType(FileType.RULE.getType())
+                .files(rule.getFiles())
                 .build();
 
         fileService.deleteFile(fileDeleteDTO);
-        eventRepository.delete(event);
+        ruleRepository.delete(rule);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public EventResponse getEventById(Long eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+    public RuleResponse getRuleById(Long ruleId) {
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
 
-        List<String> urlList = event.getFiles().stream()
+        List<String> urlList = rule.getFiles().stream()
                 .map(File::getUrl)
                 .toList();
 
-        return EventResponse.fromEventResponse(event, urlList);
+        return RuleResponse.fromRuleResponse(rule, urlList);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Event> getEvents(Long affiliationId, Pageable pageable) {
-        return eventRepository.findByAffiliationId(affiliationId, pageable);
+    public Page<Rule> getRules(Long affiliationId, Pageable pageable) {
+        return ruleRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Event> searchEvent(Long affiliationId, String title, Pageable pageable) {
-        return eventRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
+    public Page<Rule> searchRules(Long affiliationId, String title, Pageable pageable) {
+        return ruleRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }

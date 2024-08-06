@@ -24,6 +24,12 @@ public enum ErrorCode {
     // FAQ
     NO_EXIST_FAQ(HttpStatus.NOT_FOUND, "FAQ-001", "존재하지 않는 FAQ 입니다."),
 
+    // EVENT
+    NO_EXIST_EVENT(HttpStatus.NOT_FOUND, "EVENT-001", "존재하지 않는 행사 입니다."),
+
+    // Rule
+    NO_EXIST_RULE(HttpStatus.NOT_FOUND, "RULE-001", "존재하지 않는 회칙 입니다."),
+
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다."),
 

@@ -18,13 +18,6 @@ public class ApiResponse<T> {
     private String resultMsg;
     private T data;
 
-//    @Builder
-//    protected ApiResponse(final ErrorCode code) {
-//        this.status = code.getHttpStatus();
-//        this.responseCode = code.getErrorCode();
-//        this.resultMsg = code.getMessage();
-//    }
-
     public static <T> ApiResponse<T> success(final SuccessCode successCode) {
         return ApiResponse.<T>builder()
                 .status(successCode.getHttpStatus())
@@ -52,8 +45,4 @@ public class ApiResponse<T> {
                 .resultMsg(errorCode.getMessage())
                 .build();
     }
-
-//    public static ApiResponse of(final ErrorCode code) {
-//        return new ApiResponse(code);
-//    }
 }

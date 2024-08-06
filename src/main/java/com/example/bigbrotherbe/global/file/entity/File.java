@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import jakarta.persistence.*;
 import lombok.*;
 import org.checkerframework.checker.units.qual.A;
@@ -40,6 +41,10 @@ public class File extends BaseTimeEntity {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rule_id")
+    private Rule rule;
+
 
     public void update(String url) {
         this.url = url;
@@ -59,5 +64,9 @@ public class File extends BaseTimeEntity {
 
     public void linkEvent(Event evnet) {
         this.event = evnet;
+    }
+
+    public void linkRule(Rule rule) {
+        this.rule = rule;
     }
 }
