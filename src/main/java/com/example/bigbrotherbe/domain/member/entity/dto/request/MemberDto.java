@@ -25,7 +25,7 @@ public class MemberDto {
             .username(member.getUsername())
             .email(member.getEmail())
             .is_active(member.getIs_active())
-            .create_at(member.getCreate_at().toString())
-            .update_at(member.getUpdate_at().toString()).build();
+            .create_at(member.getCreateAt().toString())
+            .update_at(member.getUpdateAt().toString()).build();
     }
 }

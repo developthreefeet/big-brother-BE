@@ -22,6 +22,7 @@ public class InitialDataLoader {
             if (memberRepository.findByUsername("admin").isEmpty()) {
                 // Create initial admin user
                 Member admin = new Member();
+                admin.setUsername("admin");
                 admin.setEmail("admin");
                 admin.setPassword(passwordEncoder.encode("admin_password"));
                 memberRepository.save(admin);

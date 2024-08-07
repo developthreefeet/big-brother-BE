@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.entity;
 
+import com.example.bigbrotherbe.domain.BaseTimeEntity;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -9,12 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +25,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,10 +44,10 @@ public class Member implements UserDetails {
     @Column(name = "member_id", updatable = false, unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false, name = "member_name")
+    @Column(nullable = false, name = "name")
     private String username;
 
-    @Column(nullable = false,name = "member_password")
+    @Column(nullable = false, name = "password")
     private String password;
 
     @Column
@@ -51,11 +56,11 @@ public class Member implements UserDetails {
     @Column
     private String is_active;
 
-    @Column
-    private LocalDateTime create_at;
+    @CreatedDate
+    private LocalDateTime createAt;
 
-    @Column
-    private LocalDateTime update_at;
+    @LastModifiedDate
+    private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AffiliationMember> affiliations = new ArrayList<>();
@@ -66,8 +71,8 @@ public class Member implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.affiliations.stream()
-            .map(affiliationMember -> new SimpleGrantedAuthority(affiliationMember.getRole()))
-            .collect(Collectors.toList());
+                .map(affiliationMember -> new SimpleGrantedAuthority(affiliationMember.getRole()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -94,8 +99,6 @@ public class Member implements UserDetails {
         this.password = password;
         this.email = email;
         this.is_active = is_active;
-        this.create_at = create_at;
-        this.update_at = update_at;
     }
 
 
