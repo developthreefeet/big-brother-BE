@@ -6,12 +6,14 @@ import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@Slf4j
 public class InitialDataLoader {
 
     @Bean
@@ -22,8 +24,9 @@ public class InitialDataLoader {
             if (memberRepository.findByUsername("admin").isEmpty()) {
                 // Create initial admin user
                 Member admin = new Member();
-                admin.setEmail("admin");
                 admin.setPassword(passwordEncoder.encode("admin_password"));
+                admin.setEmail("developthreefeet@gmail.com");
+                admin.setUsername("admin");
                 memberRepository.save(admin);
                 Affiliation affiliation = affiliationRepository.findByAffiliationName("총학")
                         .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
