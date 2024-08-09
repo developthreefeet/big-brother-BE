@@ -37,7 +37,7 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       run: |
-        docker build -t ${DOCKER_USERNAME}/big-brother-demo:latest .
+        docker build -t "$DOCKER_USERNAME"/big-brother-demo:latest .
 
    # 4. DockerHub 로그인
     - name: docker login
