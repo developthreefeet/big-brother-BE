@@ -175,6 +175,11 @@ public class MemberServiceImpl implements MemberService{
         return MemberResponse.form(member.getId(),member.getUsername(), member.getEmail(), member.getCreate_at(),null,member.getPassword());
     }
 
+    @Override
+    @Transactional
+    public void makeAffiliation() {
+    affiliationRepository.save(Affiliation.builder().affiliation_id(1).affiliationName("총학").build());
+    }
 
 
     private Member findByUserName(String username) {
