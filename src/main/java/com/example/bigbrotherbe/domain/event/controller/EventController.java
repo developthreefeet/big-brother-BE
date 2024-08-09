@@ -5,10 +5,6 @@ import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
 import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.service.EventService;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,14 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.constant.Constant.getContent.PAGE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.global.constant.Constant.getContent.SIZE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
 @RestController

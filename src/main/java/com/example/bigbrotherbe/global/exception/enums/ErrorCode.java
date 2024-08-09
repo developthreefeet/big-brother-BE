@@ -35,8 +35,15 @@ public enum ErrorCode {
 
     // FILE
     FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001", "파일 업로드에 실패하였습니다."),
-    FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002", "파일 삭제에 실패하였습니다.");
+    FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002", "파일 삭제에 실패하였습니다."),
 
+    // CAMPUS_NOTICE
+    NO_EXIST_URL_ID(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-001", "유효하지 않은 URL ID 입니다."),
+    NO_EXIST_CAMPUS_NOTICE(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-002", "존재하지 않는 학교 공지사항 입니다."),
+    FAIL_TO_JSON_PARSING(HttpStatus.BAD_REQUEST, "CAMPUS_NOTICE-003", "공지사항 페이지의 JSON 파싱에 실패하였습니다."),
+    LAMBDA_FUNCTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "CAMPUS_NOTICE-004", "AWS Lambda 함수에서 오류가 발생했습니다."),
+
+    ;
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;

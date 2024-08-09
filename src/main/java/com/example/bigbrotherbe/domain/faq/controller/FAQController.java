@@ -54,8 +54,8 @@ public class FAQController {
 
     @GetMapping("all/{affiliationId}")
     public ResponseEntity<Page<FAQ>> getFAQList(@PathVariable("affiliationId") Long affiliationId,
-                                                @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
-                                                @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
+                                                @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
+                                                @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
                                                 @RequestParam(name = "search", required = false) String search){
         Page<FAQ> faqPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
