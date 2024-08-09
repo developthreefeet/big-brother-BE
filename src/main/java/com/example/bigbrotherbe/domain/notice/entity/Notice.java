@@ -21,13 +21,10 @@ public class Notice extends BaseTimeEntity {
     @Column(name = "notice_id", updatable = false, unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false, name = "notice_title")
+    @Column(nullable = false, name = "title")
     private String title;
 
-//    @Column(nullable = false, name = "notice_type")
-//    private String type;
-
-    @Column(nullable = false, name = "notice_content", columnDefinition = "TEXT") // 긴 문자열
+    @Column(nullable = false, name = "content", columnDefinition = "TEXT") // 긴 문자열
     private String content;
 
     @Column
