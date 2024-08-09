@@ -27,7 +27,7 @@ public class CampusNoticeController {
 
     private final CampusNoticeService campusNoticeService;
 
-    @Scheduled(cron = "0 12 13 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void invokeLambda() {
         for (CampusNoticeType noticeType : CampusNoticeType.values()){
             String payload = "{\"queryStringParameters\": {" +

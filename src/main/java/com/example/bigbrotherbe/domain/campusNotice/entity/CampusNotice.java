@@ -2,7 +2,6 @@ package com.example.bigbrotherbe.domain.campusNotice.entity;
 
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.lambda.LambdaTimeDeserializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
@@ -37,14 +36,11 @@ public class CampusNotice {
     @JoinColumn(name = "campus_notice_id")
     private List<File> files;
 
-//    @Column(nullable = false, name = "create_at")
     @JsonProperty("create_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss")
     @JsonDeserialize(using = LambdaTimeDeserializer.class)
     private LocalDateTime createAt;
 
     @JsonProperty("update_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss")
     @JsonDeserialize(using = LambdaTimeDeserializer.class)
     private LocalDateTime updateAt;
 }
