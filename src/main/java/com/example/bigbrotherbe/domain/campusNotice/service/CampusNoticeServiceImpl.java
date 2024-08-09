@@ -28,17 +28,16 @@ import java.util.List;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
-public class CampusNoticeServiceImpl implements CampusNoticeService{
+public class CampusNoticeServiceImpl implements CampusNoticeService {
 
     private final CampusNoticeRepository campusNoticeRepository;
     private final AWSLambda awsLambda;
     private final ObjectMapper objectMapper;
 
-    public CampusNoticeServiceImpl(
-            @Value("${cloud.aws.credentials.access-key}") String accessKeyId,
-            @Value("${cloud.aws.credentials.secret-key}") String secretKey,
-            @Value("${cloud.aws.region.static}") String region,
-            CampusNoticeRepository campusNoticeRepository) {
+    public CampusNoticeServiceImpl(@Value("${cloud.aws.credentials.access-key}") String accessKeyId,
+                                   @Value("${cloud.aws.credentials.secret-key}") String secretKey,
+                                   @Value("${cloud.aws.region.static}") String region,
+                                   CampusNoticeRepository campusNoticeRepository) {
 
         this.campusNoticeRepository = campusNoticeRepository;
 
@@ -66,13 +65,13 @@ public class CampusNoticeServiceImpl implements CampusNoticeService{
             String body = root.get("body").asText();
 
             List<CampusNotice> campusNotices = Arrays.asList(objectMapper.readValue(body, CampusNotice[].class));
-            for (CampusNotice c : campusNotices){
+            for (CampusNotice c : campusNotices) {
                 c.setType(noticeType);
             }
             this.campusNoticeRepository.saveAll(campusNotices);
         } catch (JsonProcessingException e) {
             throw new BusinessException(FAIL_TO_JSON_PARSING);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new BusinessException(LAMBDA_FUNCTION_ERROR);
         }
     }
