@@ -61,7 +61,7 @@ jobs:
       - name: docker stop container
         # 모든 컨테이너를 중지시킴.
         run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
-      # 3. 최신 이미지를 컨테이너화하여 실행시킨다.
+      # 3. 최신 이미지를 컨테이너화하여 실행시킨다..
       - name: docker run new container
         run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 --env-file /home/ubuntu/env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
 
