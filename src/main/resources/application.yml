@@ -33,7 +33,7 @@ spring:
 
 #   상윤 로컬 데이터베이스 설정
 #  datasource:
-#    url: jdbc:mysql://localhost:3306/big_brother?serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/bigbrother
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    username: root
 #    password: 1234
@@ -90,6 +90,14 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+ssh:
+  remote-host: ${SSH_REMOTE_HOST}
+  ssh-port: 22
+  user-name: ${SSH_USER_NAME}
+  private-key-path: ${SSH_PRIVATE_KEY_PATH}
+
+
 
 google:
   cloud:
