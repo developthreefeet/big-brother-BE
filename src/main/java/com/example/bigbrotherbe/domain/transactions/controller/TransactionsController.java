@@ -14,7 +14,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/transactions")
+@RequestMapping("/api/big-brother/transactions/{affiliationId}")
 public class TransactionsController {
 
     private final TransactionsServiceImpl transactionsService;
