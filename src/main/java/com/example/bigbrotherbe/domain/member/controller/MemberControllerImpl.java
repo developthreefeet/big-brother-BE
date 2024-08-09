@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
+import com.example.bigbrotherbe.global.response.ApiResponse;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import java.util.Map;
@@ -26,8 +27,13 @@ public class MemberControllerImpl implements MemberController{
 
     private final MemberService memberService;
 
-    public ResponseEntity<MemberResponse> signUp(SignUpDto signUpDto) {
-        return ResponseEntity.ok(memberService.userSignUp(signUpDto));
+
+    public  ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
+        MemberResponse memberResponse = memberService.userSignUp(signUpDto);
+
+        // ApiResponse 생성
+        ApiResponse<MemberResponse> response = ApiResponse.ok(memberResponse);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -45,8 +51,8 @@ public class MemberControllerImpl implements MemberController{
 
     @PostMapping("/test")
     public String test() {
-//        return "suess";
-        return SecurityConfig.getCurrentUserName();
+        memberService.makeAffiliation();
+        return "완성";
     }
 
     // member 상세 조회
@@ -70,8 +76,6 @@ public class MemberControllerImpl implements MemberController{
     public String adminTest() {
         return SecurityConfig.getCurrentUserName();
     }
-
-
 
     // 이메일 중복 확인
     @GetMapping("/sign-up/emails/verification")
