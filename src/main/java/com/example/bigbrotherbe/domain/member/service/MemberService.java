@@ -22,4 +22,6 @@ public interface MemberService {
     boolean checkExistAffiliationById(Long affiliationId);
 
     MemberResponse changePasswrd(String memberId, MemberRequest memberRequest);
+
+    void makeAffiliation();
 }
