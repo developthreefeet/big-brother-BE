@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RequestMapping("/api/big-brother/members")
-@CrossOrigin(origins = "http://localhost:8080")
 @Tag(name = "멤버", description = "회원가입,로그인 API")
 public interface MemberController {
 
@@ -29,5 +28,5 @@ public interface MemberController {
             content = {@Content(schema = @Schema(implementation = MemberResponse.class))}),
         @ApiResponse(responseCode = "404", description = "?")
     })
-    ResponseEntity<MemberResponse> signUp(@RequestBody @Valid SignUpDto signUpDto);
+    ResponseEntity<com.example.bigbrotherbe.global.response.ApiResponse<MemberResponse>> signUp(@RequestBody @Valid SignUpDto signUpDto);
 }
