@@ -37,6 +37,10 @@ public enum ErrorCode {
     FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001", "파일 업로드에 실패하였습니다."),
     FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002", "파일 삭제에 실패하였습니다."),
 
+    // TRANSACTIONS
+    FAIL_TO_PARSE_TO_LONG(HttpStatus.BAD_REQUEST, "TRANSACTIONS-001", "long 타입 파싱에 실패했습니다."),
+
+
     // CAMPUS_NOTICE
     NO_EXIST_URL_ID(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-001", "유효하지 않은 URL ID 입니다."),
     NO_EXIST_CAMPUS_NOTICE(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-002", "존재하지 않는 학교 공지사항 입니다."),

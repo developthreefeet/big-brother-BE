@@ -22,6 +22,8 @@ public class OcrUtil {
 
     private static final String ACCOUNT_NUMBER_REGEX = "계좌번호\\s+([\\d-]+)";
 
+
+
     public String extractTextFromPDF(MultipartFile multipartFile) {
         try (InputStream inputStream = multipartFile.getInputStream();
              PDDocument document = PDDocument.load(inputStream)) {
