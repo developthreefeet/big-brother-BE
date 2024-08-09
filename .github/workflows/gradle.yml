@@ -8,10 +8,8 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "ci-cd" ]
 permissions:
   contents: read
   
@@ -36,7 +34,7 @@ jobs:
   
     # 3. Docker 이미지 빌드
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo. 
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo.
 
    # 4. DockerHub 로그인
     - name: docker login
@@ -47,4 +45,26 @@ jobs:
 
   # 5. Docker Hub 이미지 푸시
     - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
+
+  ## 푸시한 임지를 ec2에서 풀받아서 실행시키는 과정
+  run-docker-image-on-ec2:
+    needs: build-docker-image
+    runs-on: self-hosted
+
+    steps:
+      # 1. 최신 이미지를 풀받는다.,
+      - name: docker pull
+        run: sudo docker pull ${{secrets.DOCERHUB_USERNAME}}/big-brother-demo
+
+      # 2. 기존의 컨테이너를 중지시킵니다.
+      - name: docker stop container
+        # 모든 컨테이너를 중지시킴.
+        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+      # 3. 최신 이미지를 컨테이너화하여 실행시킨다.
+      - name: docker run new container
+        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 --env-file ./env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
+
+      # 4. 미사용 이미지를 정리합니다.
+      - name: delete old docker image
+        run: sudo docker system prune -f
