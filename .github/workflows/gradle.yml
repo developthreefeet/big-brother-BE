@@ -8,15 +8,13 @@
 name: Java CI with Gradle
 
 on:
-  pull_request:
-    types: [ closed ]
-    branches: [ main ]
+  push:
+    branches: [ ci-cd ]
 permissions:
   contents: read
   
 jobs:
   build-docker-image:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
