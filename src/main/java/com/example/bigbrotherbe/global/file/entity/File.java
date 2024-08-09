@@ -62,8 +62,8 @@ public class File extends BaseTimeEntity {
         this.notice = notice;
     }
 
-    public void linkEvent(Event evnet) {
-        this.event = evnet;
+    public void linkEvent(Event event) {
+        this.event = event;
     }
 
     public void linkRule(Rule rule) {

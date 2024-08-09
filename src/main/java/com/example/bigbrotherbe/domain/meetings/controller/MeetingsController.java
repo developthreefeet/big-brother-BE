@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.constant.Constant.getContent.PAGE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.global.constant.Constant.getContent.SIZE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
 @RestController

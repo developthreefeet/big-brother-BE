@@ -54,8 +54,8 @@ public class NoticeController {
 
     @GetMapping("all/{affiliationId}")
     public ResponseEntity<Page<Notice>> getNoticeList(@PathVariable("affiliationId") Long affiliationId,
-                                                @RequestParam(name = "page", defaultValue = Constant.getContent.PAGE_DEFAULT_VALUE) int page,
-                                                @RequestParam(name = "size", defaultValue = Constant.getContent.SIZE_DEFAULT_VALUE) int size,
+                                                @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
+                                                @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
                                                 @RequestParam(name = "search", required = false) String search){
         Page<Notice> noticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
