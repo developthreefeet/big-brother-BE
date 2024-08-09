@@ -1,6 +1,5 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
-import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
@@ -17,8 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_TO_PARSE_TO_LONG;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 
 @Service
@@ -30,7 +28,6 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     private final OcrService ocrService;
 
-    private static final String DATE_TIME_REGEX = "yyyy-MM-dd HH:mm:ss";
 
     public void register(MultipartFile multipartFile, Long affiliationId) {
         if (!memberService.checkExistAffiliationById(affiliationId)) {
@@ -38,15 +35,13 @@ public class TransactionsServiceImpl implements TransactionsService {
         }
 
         if (multipartFile == null || multipartFile.isEmpty()) {
-            System.out.println("파일이 안들어와요요용");
-            // 파일 없을 때 예외 처리
-//            throw new BusinessException("파일이 없슴둥");
+            throw new BusinessException(EMPTY_FILE);
         }
+
         OcrDTO ocrDTO = ocrService.extractText(multipartFile);
 
         List<String[]> parseTransactions = ocrDTO.getParseTransactions();
         String parseAccountNumber = ocrDTO.getParseAccountNumber();
-
 
         parseTransactions.forEach(parseTransaction -> {
             Transactions transactions = Transactions.builder()
@@ -64,6 +59,7 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     private LocalDateTime parseDateTime(String dateTimeString) {
+        String DATE_TIME_REGEX = "yyyy-MM-dd HH:mm:ss";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_REGEX);
         return LocalDateTime.parse(dateTimeString, formatter);
     }
@@ -74,7 +70,7 @@ public class TransactionsServiceImpl implements TransactionsService {
             Number number = format.parse(longString);
             return number.longValue();
         } catch (ParseException e) {
-            throw new BusinessException(FAIL_TO_PARSE_TO_LONG);
+            throw new BusinessException(FAIL_TO_LONG_PARSING);
         }
     }
 

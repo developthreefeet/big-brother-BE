@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.transactions.controller;
 
+import com.example.bigbrotherbe.domain.transactions.service.TransactionsService;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsServiceImpl;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
@@ -17,7 +18,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 @RequestMapping("/api/big-brother/transactions/{affiliationId}")
 public class TransactionsController {
 
-    private final TransactionsServiceImpl transactionsService;
+    private final TransactionsService transactionsService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> registerTransaction(@PathVariable("affiliationId") Long affiliationId,
