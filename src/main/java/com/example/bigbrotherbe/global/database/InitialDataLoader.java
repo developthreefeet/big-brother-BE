@@ -36,7 +36,7 @@ public class InitialDataLoader {
                 admin.setEmail("developthreefeet@gmail.com");
                 admin.setUsername("admin");
                 memberRepository.save(admin);
-                Affiliation affiliation = affiliationRepository.findByAffiliationName("총학")
+                Affiliation affiliation = affiliationRepository.findByAffiliationName("융소")
                         .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
 
                 // AffiliationMember 엔티티 생성
