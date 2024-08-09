@@ -29,7 +29,7 @@ public class CampusNoticeController {
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void invokeLambda() {
-        for (CampusNoticeType noticeType : CampusNoticeType.values()){
+        for (CampusNoticeType noticeType : CampusNoticeType.values()) {
             String payload = "{\"queryStringParameters\": {" +
                     "\"url\": \"" + noticeType.getUrl() + "\"," +
                     "\"base_url\": \"" + Constant.Lambda.BASE_URL + "\"" +
@@ -46,9 +46,9 @@ public class CampusNoticeController {
 
     @GetMapping("all/{campusNoticeTypeId}")
     public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@PathVariable("campusNoticeTypeId") Long campusNoticeTypeId,
-                                                                       @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
-                                                                       @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
-                                                                       @RequestParam(name = "search", required = false) String search) {
+                                                                               @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
+                                                                               @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
+                                                                               @RequestParam(name = "search", required = false) String search) {
         Page<CampusNotice> campusNoticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         CampusNoticeType campusNoticeType = CampusNoticeType.getTypeById(campusNoticeTypeId);

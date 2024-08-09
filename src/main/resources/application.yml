@@ -90,3 +90,9 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+google:
+  cloud:
+    vision:
+      credentials:
+        file: ${GOOGLE_APPLICATION_CREDENTIALS}
