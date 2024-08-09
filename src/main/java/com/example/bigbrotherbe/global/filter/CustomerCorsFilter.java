@@ -22,7 +22,7 @@ public class CustomerCorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        response.setHeader("Access-Control-Allow-Origin", "https://api.mju-bigbrother.xyz:3000, https://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "http://api.mju-bigbrother.xyz:3000, http://localhost:8080");
 
         // CORS 허용한 Origin
         response.setHeader("Access-Control-Allow-Credentials", "true");
