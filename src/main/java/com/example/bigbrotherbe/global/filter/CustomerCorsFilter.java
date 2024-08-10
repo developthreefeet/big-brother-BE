@@ -19,11 +19,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomerCorsFilter implements Filter {
     private final List<String> allowedOrigins = Arrays.asList(
-        "http://api.mju-bigbrother.xyz:3000",
-        "https://api.mju-bigbrother.xyz",
-        "http://localhost:8080",
-        "http://api.mju-bigbrother.xyz",
-        "http://api.mju-bigbrother.xyz:8080"
+        "https://api.mju-bigbrother.xyz","프론트 ip 넣는 곳"
     );
 
     @Override
