@@ -2,6 +2,8 @@ package com.example.bigbrotherbe.global.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
+import java.util.List;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,11 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info().title("My API")
                         .version("1.0")
-                        .description("My API Description"));
+                        .description("My API Description"))
+            .servers(List.of(
+                new Server().url("https://api.mju-bigbrother.xyz")  // HTTPS로 설정
+                    .description("Production server")
+            ));
     }
 
     @Bean
