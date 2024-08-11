@@ -47,4 +47,8 @@ public class Transactions {
 
     // 거래일자, 구분, 거래금액, 거래 후 잔액, 거래내용 , 계좌번호
     // date, type, amount, balance, Description , accountNumber
+
+    public void update(String note) {
+        this.note = note;
+    }
 }

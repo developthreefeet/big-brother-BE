@@ -1,6 +1,8 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
+import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -62,6 +64,14 @@ public class TransactionsServiceImpl implements TransactionsService {
 
             transactionsRepository.save(transactions);
         });
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest) {
+        Transactions transactions = transactionsRepository.findById(transactionsId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        transactions.update(transactionsUpdateRequest.getNote());
     }
 
     private LocalDateTime parseDateTime(String dateTimeString) {

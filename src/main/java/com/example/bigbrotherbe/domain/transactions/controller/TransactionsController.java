@@ -1,5 +1,7 @@
 package com.example.bigbrotherbe.domain.transactions.controller;
 
+import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
+import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsService;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsServiceImpl;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.util.List;
 
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
@@ -26,4 +30,12 @@ public class TransactionsController {
         transactionsService.register(multipartFile, affiliationId);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
+
+    @PutMapping("/{transactionsId}")
+    public ResponseEntity<ApiResponse<Void>> updateTransactions(@PathVariable("transactionsId") Long transactionsId,
+                                                                @RequestBody TransactionsUpdateRequest transactionsUpdateRequest) {
+        transactionsService.update(transactionsId, transactionsUpdateRequest);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
 }
