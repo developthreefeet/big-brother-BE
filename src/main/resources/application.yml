@@ -6,6 +6,9 @@ spring:
     debug: true
 
   jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
     time-zone: Asia/Seoul
 
   # 환경 변수를 사용하는 데이터베이스 설정 (주석 해제 필요시)
@@ -58,7 +61,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
