@@ -1,6 +1,8 @@
 package com.example.bigbrotherbe.global.filter;
 
 
+import static com.example.bigbrotherbe.global.constant.Constant.Url.DOMAIN_URL;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomerCorsFilter implements Filter {
     private final List<String> allowedOrigins = Arrays.asList(
-        "https://api.mju-bigbrother.xyz","프론트 ip 넣는 곳"
+        DOMAIN_URL,"프론트 ip 넣는 곳"
     );
 
     @Override

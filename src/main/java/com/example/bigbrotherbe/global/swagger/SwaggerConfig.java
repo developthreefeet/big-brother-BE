@@ -1,5 +1,7 @@
 package com.example.bigbrotherbe.global.swagger;
 
+import static com.example.bigbrotherbe.global.constant.Constant.Url.DOMAIN_URL;
+
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
@@ -18,7 +20,7 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("My API Description"))
             .servers(List.of(
-                new Server().url("https://api.mju-bigbrother.xyz")  // HTTPS로 설정
+                new Server().url(DOMAIN_URL)  // HTTPS로 설정
                     .description("Production server")
             ));
     }
