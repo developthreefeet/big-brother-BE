@@ -8,6 +8,7 @@ import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.NumberFormat;
@@ -24,12 +25,17 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class TransactionsServiceImpl implements TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
-    private final MemberService memberService;
 
+    private final MemberService memberService;
     private final OcrService ocrService;
 
-
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void register(MultipartFile multipartFile, Long affiliationId) {
+        if (!memberService.checkExistAffiliationById(affiliationId)) {
+            throw new BusinessException(NO_EXIST_AFFILIATION);
+        }
+
         if (!memberService.checkExistAffiliationById(affiliationId)) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }

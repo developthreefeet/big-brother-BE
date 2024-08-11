@@ -8,7 +8,7 @@ import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
 
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
-import com.example.bigbrotherbe.global.ocr.service.OcrService;
+import com.example.bigbrotherbe.global.ocr.service.OcrServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,14 +32,14 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 public class MeetingsController {
 
     private final MeetingsService meetingsService;
-    private final OcrService ocrService;
+    private final OcrServiceImpl ocrServiceImpl;
 
 
     @PostMapping("/test")
     public ResponseEntity<ApiResponse<OcrDTO>> testOcr(@RequestPart(value = "file") MultipartFile multipartFile) throws IOException {
 
 
-        OcrDTO ocrDTO = ocrService.extractText(multipartFile);
+        OcrDTO ocrDTO = ocrServiceImpl.extractText(multipartFile);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, ocrDTO));
     }
 

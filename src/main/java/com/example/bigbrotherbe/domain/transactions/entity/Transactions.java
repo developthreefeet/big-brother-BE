@@ -1,9 +1,13 @@
 package com.example.bigbrotherbe.domain.transactions.entity;
 
+import com.example.bigbrotherbe.global.file.entity.File;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +38,9 @@ public class Transactions {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "affiliation_id")
     private Long affiliationId;
