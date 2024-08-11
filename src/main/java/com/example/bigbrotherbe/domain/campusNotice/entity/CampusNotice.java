@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.campusNotice.entity;
 
 import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.lambda.LambdaTimeDeserializer;
+import com.example.bigbrotherbe.domain.campusNotice.util.LambdaTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;

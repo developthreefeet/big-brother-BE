@@ -4,7 +4,6 @@ import com.example.bigbrotherbe.domain.campusNotice.dto.CampusNoticeResponse;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.service.CampusNoticeService;
-import com.example.bigbrotherbe.global.constant.Constant;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
@@ -27,17 +25,6 @@ public class CampusNoticeController {
 
     private final CampusNoticeService campusNoticeService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void invokeLambda() {
-        for (CampusNoticeType noticeType : CampusNoticeType.values()) {
-            String payload = "{\"queryStringParameters\": {" +
-                    "\"url\": \"" + noticeType.getUrl() + "\"," +
-                    "\"base_url\": \"" + Constant.Lambda.BASE_URL + "\"" +
-                    "}}";
-            campusNoticeService.invokeLambda(Constant.Lambda.FUNCTION_NAME, payload, noticeType);
-        }
-    }
-
     @GetMapping("/{campusNoticeId}")
     public ResponseEntity<ApiResponse<CampusNoticeResponse>> getCampusNoticeById(@PathVariable("campusNoticeId") Long campusNoticeId) {
         CampusNoticeResponse campusNoticeResponse = campusNoticeService.getCampusNoticeById(campusNoticeId);
@@ -46,9 +33,9 @@ public class CampusNoticeController {
 
     @GetMapping("all/{campusNoticeTypeId}")
     public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@PathVariable("campusNoticeTypeId") Long campusNoticeTypeId,
-                                                                               @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
-                                                                               @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
-                                                                               @RequestParam(name = "search", required = false) String search) {
+                                                                       @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
+                                                                       @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
+                                                                       @RequestParam(name = "search", required = false) String search) {
         Page<CampusNotice> campusNoticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         CampusNoticeType campusNoticeType = CampusNoticeType.getTypeById(campusNoticeTypeId);

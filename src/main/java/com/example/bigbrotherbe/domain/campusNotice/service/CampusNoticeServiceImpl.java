@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,29 +29,12 @@ import java.util.List;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
-public class CampusNoticeServiceImpl implements CampusNoticeService {
+@RequiredArgsConstructor
+public class CampusNoticeServiceImpl implements CampusNoticeService{
 
     private final CampusNoticeRepository campusNoticeRepository;
     private final AWSLambda awsLambda;
     private final ObjectMapper objectMapper;
-
-    public CampusNoticeServiceImpl(@Value("${cloud.aws.credentials.access-key}") String accessKeyId,
-                                   @Value("${cloud.aws.credentials.secret-key}") String secretKey,
-                                   @Value("${cloud.aws.region.static}") String region,
-                                   CampusNoticeRepository campusNoticeRepository) {
-
-        this.campusNoticeRepository = campusNoticeRepository;
-
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.registerModule(new JavaTimeModule());
-
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKeyId, secretKey);
-
-        this.awsLambda = AWSLambdaClientBuilder.standard()
-                .withRegion(Regions.fromName(region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .build();
-    }
 
     public void invokeLambda(String functionName, String payload, CampusNoticeType noticeType) {
         InvokeRequest invokeRequest = new InvokeRequest()
@@ -65,13 +49,13 @@ public class CampusNoticeServiceImpl implements CampusNoticeService {
             String body = root.get("body").asText();
 
             List<CampusNotice> campusNotices = Arrays.asList(objectMapper.readValue(body, CampusNotice[].class));
-            for (CampusNotice c : campusNotices) {
+            for (CampusNotice c : campusNotices){
                 c.setType(noticeType);
             }
             this.campusNoticeRepository.saveAll(campusNotices);
         } catch (JsonProcessingException e) {
             throw new BusinessException(FAIL_TO_JSON_PARSING);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e){
             throw new BusinessException(LAMBDA_FUNCTION_ERROR);
         }
     }
