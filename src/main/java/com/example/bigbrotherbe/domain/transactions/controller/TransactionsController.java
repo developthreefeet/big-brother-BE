@@ -1,7 +1,9 @@
 package com.example.bigbrotherbe.domain.transactions.controller;
 
+import com.amazonaws.Response;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
+import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsService;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsServiceImpl;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
@@ -19,7 +21,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/transactions/{affiliationId}")
+@RequestMapping("/api/big-brother/transactions")
 public class TransactionsController {
 
     private final TransactionsService transactionsService;
@@ -38,4 +40,11 @@ public class TransactionsController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<TransactionsResponse>>> getTransactions(@RequestParam("affiliationId") Long affiliationId,
+                                                                                   @RequestParam("year") int year,
+                                                                                   @RequestParam("month") int month) {
+        List<TransactionsResponse> transactionsList = transactionsService.getTransactionsWithMonth(year, month, affiliationId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, transactionsList));
+    }
 }

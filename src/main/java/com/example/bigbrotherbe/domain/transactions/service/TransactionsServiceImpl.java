@@ -3,6 +3,7 @@ package com.example.bigbrotherbe.domain.transactions.service;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
+import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
@@ -73,6 +75,16 @@ public class TransactionsServiceImpl implements TransactionsService {
 
         transactions.update(transactionsUpdateRequest.getNote());
     }
+
+    public List<TransactionsResponse> getTransactionsWithMonth(int year, int month, Long affiliationId) {
+        String yearMonth = String.format("%d-%02d", year, month);
+        List<Transactions> transactions = transactionsRepository.findAllByYearMonthAndAffiliationId(yearMonth, affiliationId);
+
+        return transactions.stream()
+                .map(TransactionsResponse::fromTransactionsResponse)
+                .collect(Collectors.toList());
+    }
+
 
     private LocalDateTime parseDateTime(String dateTimeString) {
         String DATE_TIME_REGEX = "yyyy-MM-dd HH:mm:ss";
