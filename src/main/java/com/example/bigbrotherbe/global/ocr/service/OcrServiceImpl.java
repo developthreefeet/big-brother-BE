@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OcrService implements OcrService {
+public class OcrServiceImpl implements OcrService {
 
     private final OcrUtil ocrUtil;
 
