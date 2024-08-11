@@ -6,13 +6,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum FileType {
-    NOTICE(1, "NOTICE"),
-    FAQ(2, "FAQ"),
-    MEETINGS(3, "MEETINGS"),
-    EVENT(4, "EVENT"),
-    RULE(5, "RULE"),
-    AFFILIATION(6, "AFFILIATION"),
-    CAMPUS_NOTICE(7, "CAMPUS_NOTICE");
+    NOTICE(1, "notice"),
+    FAQ(2, "faq"),
+    MEETINGS(3, "meetings"),
+    EVENT(4, "event"),
+    RULE(5, "rule"),
+    AFFILIATION(6, "affiliation"),
+    CAMPUS_NOTICE(7, "campusNotice");
 
     private final int val;
     private final String type;
