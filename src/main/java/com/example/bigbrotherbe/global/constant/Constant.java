@@ -13,4 +13,8 @@ public class Constant {
         public static final String FUNCTION_NAME = "campusNoticeCrawler";
         public static final String BASE_URL = "https://www.mju.ac.kr";
     }
+
+    public static class Url{
+        public static final String DOMAIN_URL = "https://api.mju-bigbrother.xyz";
+    }
 }
