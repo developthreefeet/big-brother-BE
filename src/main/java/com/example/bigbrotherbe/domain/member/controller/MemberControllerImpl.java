@@ -1,11 +1,16 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
+import com.example.bigbrotherbe.domain.member.entity.dto.request.ChangePasswordRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
+import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
@@ -29,9 +34,10 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 public class MemberControllerImpl implements MemberController {
 
     private final MemberService memberService;
+    private final AuthUtil authUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
-
-    public ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
+    public ResponseEntity<ApiResponse<MemberResponse>> signUp( SignUpDto signUpDto) {
         MemberResponse memberResponse = memberService.userSignUp(signUpDto);
 
         // ApiResponse 생성
@@ -53,15 +59,17 @@ public class MemberControllerImpl implements MemberController {
     }
 
     @PostMapping("/test")
-    public String test() {
-        memberService.makeAffiliation();
-        return "완성";
+    public ResponseEntity<ApiResponse<AffiliationMap>> test() {
+//        memberService.makeAffiliation();
+
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.getMemberAffiliationRoleList()));
+
     }
 
     // member 상세 조회
     @GetMapping
-    public ResponseEntity<MemberResponse> inquireMemberInfo(@RequestParam(name = "member_email") String memberEmail) {
-        return ResponseEntity.ok(memberService.inquireMemberInfo(memberEmail));
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> inquireMemberInfo() {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.inquireMemberInfo()));
     }
 
     @PostMapping("/admins")
@@ -100,7 +108,8 @@ public class MemberControllerImpl implements MemberController {
     }
 
     @PatchMapping()
-    public ResponseEntity<MemberResponse> changePassword(@RequestParam(name = "id") String memberId, @RequestBody MemberRequest memberRequest) {
-        return ResponseEntity.ok(memberService.changePasswrd(memberId, memberRequest));
+    public ResponseEntity<ApiResponse<Void>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        memberService.changePasswrd(changePasswordRequest.password());
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 }
