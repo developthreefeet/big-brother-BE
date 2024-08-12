@@ -4,10 +4,11 @@ import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
+import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
-import com.example.bigbrotherbe.global.response.ApiResponse;
 import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
@@ -20,20 +21,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class MemberControllerImpl implements MemberController{
+public class MemberControllerImpl implements MemberController {
 
     private final MemberService memberService;
 
 
-    public  ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
+    public ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
         MemberResponse memberResponse = memberService.userSignUp(signUpDto);
 
         // ApiResponse 생성
-        ApiResponse<MemberResponse> response = ApiResponse.ok(memberResponse);
-        return ResponseEntity.ok(response);
+//        ApiResponse<MemberResponse> response = ApiResponse.ok(memberResponse);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberResponse));
     }
 
 
@@ -97,7 +100,7 @@ public class MemberControllerImpl implements MemberController{
     }
 
     @PatchMapping()
-    public ResponseEntity<MemberResponse> changePassword(@RequestParam(name = "id") String memberId,@RequestBody MemberRequest memberRequest){
-        return ResponseEntity.ok(memberService.changePasswrd(memberId,memberRequest));
+    public ResponseEntity<MemberResponse> changePassword(@RequestParam(name = "id") String memberId, @RequestBody MemberRequest memberRequest) {
+        return ResponseEntity.ok(memberService.changePasswrd(memberId, memberRequest));
     }
 }

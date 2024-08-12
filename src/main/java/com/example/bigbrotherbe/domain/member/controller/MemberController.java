@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-
 @RequestMapping("/api/big-brother/members")
 @Tag(name = "멤버", description = "회원가입,로그인 API")
 public interface MemberController {
@@ -24,9 +23,9 @@ public interface MemberController {
     @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/sign-up")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200",description = "Success",
-            content = {@Content(schema = @Schema(implementation = MemberResponse.class))}),
-        @ApiResponse(responseCode = "404", description = "?")
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(schema = @Schema(implementation = MemberResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "?")
     })
-    ResponseEntity<com.example.bigbrotherbe.global.response.ApiResponse<MemberResponse>> signUp(@RequestBody @Valid SignUpDto signUpDto);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto);
 }

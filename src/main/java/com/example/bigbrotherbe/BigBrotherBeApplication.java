@@ -9,9 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 @SpringBootApplication
 public class BigBrotherBeApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BigBrotherBeApplication.class, args);
     }
-
 }
