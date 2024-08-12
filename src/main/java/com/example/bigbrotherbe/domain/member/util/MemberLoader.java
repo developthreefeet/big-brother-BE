@@ -24,10 +24,6 @@ public class MemberLoader {
         );
     }
 
-    public Member getMemberByEmail(String email) {
-        return memberRepository.findByEmail(email)
-            .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_EMAIL));
-    }
     public Member findByUserName(String username) {
         return memberRepository.findByUsername(username)
             .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
@@ -41,7 +37,8 @@ public class MemberLoader {
         return memberRepository.findByEmail(memberEmail).orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_EMAIL));
 
     }
-
-
+    public Optional<Member> findByMemberEmailForCheck(String memberEmail) {
+        return memberRepository.findByEmail(memberEmail);
+    }
 
 }
