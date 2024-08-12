@@ -35,33 +35,33 @@ public class NoticeController {
 
     @PutMapping("/{noticeId}")
     public ResponseEntity<Void> modifyNotice(@PathVariable("noticeId") Long noticeId, @RequestBody NoticeModifyRequest noticeModifyRequest,
-                                             @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles){
+                                             @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
         noticeService.modify(noticeId, noticeModifyRequest, multipartFiles);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{noticeId}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable("noticeId") Long noticeId){
+    public ResponseEntity<Void> deleteNotice(@PathVariable("noticeId") Long noticeId) {
         noticeService.delete(noticeId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{noticeId}")
-    public ResponseEntity<NoticeResponse> getNoticeById(@PathVariable("noticeId") Long noticeId){
+    public ResponseEntity<NoticeResponse> getNoticeById(@PathVariable("noticeId") Long noticeId) {
         NoticeResponse noticeResponse = noticeService.getNoticeById(noticeId);
         return ResponseEntity.ok().body(noticeResponse);
     }
 
-    @GetMapping("all/{affiliationId}")
-    public ResponseEntity<Page<Notice>> getNoticeList(@PathVariable("affiliationId") Long affiliationId,
-                                                @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
-                                                @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
-                                                @RequestParam(name = "search", required = false) String search){
+    @GetMapping()
+    public ResponseEntity<Page<Notice>> getNoticeList(@RequestParam(name = "affiliationId") Long affiliationId,
+                                                      @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
+                                                      @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
+                                                      @RequestParam(name = "search", required = false) String search) {
         Page<Notice> noticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        if(search != null && !search.isEmpty()){
+        if (search != null && !search.isEmpty()) {
             noticePage = noticeService.searchNotice(affiliationId, search, pageable);
-        }else {
+        } else {
             noticePage = noticeService.getNotice(affiliationId, pageable);
         }
         return ResponseEntity.ok().body(noticePage);

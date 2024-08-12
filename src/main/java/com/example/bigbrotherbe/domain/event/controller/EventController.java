@@ -55,8 +55,8 @@ public class EventController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, eventResponse));
     }
 
-    @GetMapping("all/{affiliationId}")
-    public ResponseEntity<ApiResponse<Page<Event>>> getMeetingsList(@PathVariable("affiliationId") Long affiliationId,
+    @GetMapping()
+    public ResponseEntity<ApiResponse<Page<Event>>> getMeetingsList(@RequestParam(name = "affiliationId") Long affiliationId,
                                                                     @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                     @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                     @RequestParam(name = "search", required = false) String search) {
