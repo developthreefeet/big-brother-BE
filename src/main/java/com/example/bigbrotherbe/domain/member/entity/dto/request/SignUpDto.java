@@ -47,8 +47,8 @@ public class SignUpDto {
     @Schema(description = "사용자 이메일", example = "testtest@mju.ac.kr")
     private String email;
     private String is_active;
-    private String create_at;
-    private String update_at;
+    private String createAt;
+    private String updateAt;
     private String role;
     private String affiliation;
 
@@ -61,8 +61,8 @@ public class SignUpDto {
             .password(password)
             .email(signUpDto.getEmail())
             .is_active("true")
-            .create_at(LocalDateTime.now())
-            .update_at(LocalDateTime.now())
+            .createAt(LocalDateTime.now())
+            .updateAt(LocalDateTime.now())
             .build();
     }
 
