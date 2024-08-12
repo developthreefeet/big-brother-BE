@@ -90,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public JwtToken userSignIN(String email, String password) {
         // 1. 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교
-        Member member = memberLoader.getMemberByEmail(email);
+        Member member = memberLoader.findByMemberEmail(email);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
             log.info("Password mismatch");
@@ -155,8 +155,8 @@ public class MemberServiceImpl implements MemberService {
     // 이메일 중복 체크
     @Override
     public EmailVerificationResult verificateEmail(String email) {
-        Member member = memberLoader.findByMemberEmail(email);
-        if (!Objects.isNull(member)) {
+
+        if (memberLoader.findByMemberEmailForCheck(email).isPresent()) {
             throw new BusinessException(ErrorCode.EXIST_EMAIL);
         }
         return EmailVerificationResult.builder().authResult(true).build();
