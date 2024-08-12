@@ -157,7 +157,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /*
-    [MEETINGS]
+    거의 모든 도메인 validation으로 사용
      */
     @Override
     @Transactional(readOnly = true)

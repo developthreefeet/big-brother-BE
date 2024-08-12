@@ -33,9 +33,9 @@ public class CampusNoticeController {
 
     @GetMapping("all/{campusNoticeTypeId}")
     public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@PathVariable("campusNoticeTypeId") Long campusNoticeTypeId,
-                                                                       @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
-                                                                       @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
-                                                                       @RequestParam(name = "search", required = false) String search) {
+                                                                               @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
+                                                                               @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
+                                                                               @RequestParam(name = "search", required = false) String search) {
         Page<CampusNotice> campusNoticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         CampusNoticeType campusNoticeType = CampusNoticeType.getTypeById(campusNoticeTypeId);

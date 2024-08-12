@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class CampusNoticeServiceImpl implements CampusNoticeService{
+public class CampusNoticeServiceImpl implements CampusNoticeService {
 
     private final CampusNoticeRepository campusNoticeRepository;
     private final AWSLambda awsLambda;
@@ -49,13 +50,13 @@ public class CampusNoticeServiceImpl implements CampusNoticeService{
             String body = root.get("body").asText();
 
             List<CampusNotice> campusNotices = Arrays.asList(objectMapper.readValue(body, CampusNotice[].class));
-            for (CampusNotice c : campusNotices){
+            for (CampusNotice c : campusNotices) {
                 c.setType(noticeType);
             }
             this.campusNoticeRepository.saveAll(campusNotices);
         } catch (JsonProcessingException e) {
             throw new BusinessException(FAIL_TO_JSON_PARSING);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new BusinessException(LAMBDA_FUNCTION_ERROR);
         }
     }

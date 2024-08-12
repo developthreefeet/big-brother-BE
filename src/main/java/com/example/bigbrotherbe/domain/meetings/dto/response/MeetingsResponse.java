@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,6 +18,8 @@ public class MeetingsResponse {
     private boolean isPublic;
     private Long affiliationId;
     private List<String> urlList;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
     public static MeetingsResponse fromMeetingsResponse(Meetings meetings, List<String> urlList) {
         return MeetingsResponse.builder()
@@ -26,6 +29,8 @@ public class MeetingsResponse {
                 .isPublic(meetings.isPublic())
                 .affiliationId(meetings.getAffiliationId())
                 .urlList(urlList)
+                .createAt(meetings.getCreateAt())
+                .updateAt(meetings.getUpdateAt())
                 .build();
     }
 }

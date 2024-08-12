@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class TransactionsResponse {
     private Long transactionId;
     private String accountNumber;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date;
     private String type;
     private long amount;
