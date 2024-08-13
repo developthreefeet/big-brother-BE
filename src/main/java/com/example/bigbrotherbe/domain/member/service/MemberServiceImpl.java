@@ -138,13 +138,13 @@ public class MemberServiceImpl implements MemberService {
         String authCode = this.createCode();
         mailService.sendEmail(toEmail, title, authCode);
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
-        mailService.saveEmailAuthCode(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+        mailService.saveEmailAuthCode(toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
     }
 
 
     public EmailVerificationResult verifiedCode(String email, String authCode) {
         memberChecker.checkDuplicatedEmail(email);
-        String redisAuthCode = mailService.getAuthCode(AUTH_CODE_PREFIX + email);
+        String redisAuthCode = mailService.getAuthCode(email);
         boolean authResult = redisAuthCode.equals(authCode);
 
         return EmailVerificationResult.of(authResult);
