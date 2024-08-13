@@ -1,17 +1,14 @@
 package com.example.bigbrotherbe.global.jwt;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
-import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 
 import java.util.List;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

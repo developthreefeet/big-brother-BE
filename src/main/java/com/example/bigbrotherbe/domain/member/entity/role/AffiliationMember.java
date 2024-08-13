@@ -3,6 +3,7 @@ package com.example.bigbrotherbe.domain.member.entity.role;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +38,7 @@ public class AffiliationMember {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "affiliation_id")
     private Affiliation affiliation;
 
@@ -45,8 +46,8 @@ public class AffiliationMember {
     private String role;
 
 
-    @Override
-    public String toString(){
-        return member.getEmail() + " " + affiliation.getAffiliationName() + " " + role;
-    }
+//    @Override
+//    public String toString(){
+//        return member.getEmail() + " " + affiliation.getAffiliationName() + " " + role;
+//    }
 }
