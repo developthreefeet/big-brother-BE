@@ -21,11 +21,11 @@ public class InitialDataLoader {
                                       AffiliationMemberRepository affiliationMemberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (affiliationRepository.findByAffiliationName("융소").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(1).affiliationName("융소").build());
+                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("융소").build());
             }
 
             if (affiliationRepository.findByAffiliationName("디콘디").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(2).affiliationName("디콘디").build());
+                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).affiliationName("디콘디").build());
 
             }
             // Check if an admin user already exists
