@@ -68,6 +68,7 @@ public class MailService {
         return emailVerification.getVerificationCode();
     }
 
+    @Transactional
     public void checkPresentEmail(String toEmail) {
         mailRepository.findByEmailAddress(toEmail)
             .ifPresent(mail -> mailRepository.deleteByEmailAddress(toEmail));
