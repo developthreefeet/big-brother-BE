@@ -144,7 +144,9 @@ public class MemberServiceImpl implements MemberService {
         memberChecker.checkDuplicatedEmail(email);
         String redisAuthCode = mailService.getAuthCode(email);
         boolean authResult = redisAuthCode.equals(authCode);
-
+        if(!authResult){
+            throw new BusinessException(ErrorCode.MISMATCH_VERIFIED_CODE);
+        }
         return EmailVerificationResult.of(authResult);
     }
 
@@ -184,7 +186,6 @@ public class MemberServiceImpl implements MemberService {
     public AffiliationListDto getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
         List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
-
         return affiliationListToEntity(member.getUsername(), affiliationMemberList);
     }
 
@@ -193,6 +194,7 @@ public class MemberServiceImpl implements MemberService {
         for (AffiliationMember affiliationMember : affiliationMemberList) {
             Affiliation affiliation = affiliationMember.getAffiliation();
             affiliationListDto.addAffiliation(affiliation.getCouncilType(),affiliation.getAffiliationName(), affiliationMember.getRole());
+            System.out.println(affiliationListDto.getAffiliationTypeList().toString());
         }
         return affiliationListDto;
     }
