@@ -20,12 +20,12 @@ public class InitialDataLoader {
     public CommandLineRunner loadData(MemberRepository memberRepository, AffiliationRepository affiliationRepository,
                                       AffiliationMemberRepository affiliationMemberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (affiliationRepository.findByAffiliationName("융소").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("융소").build());
+            if (affiliationRepository.findByAffiliationName("응용소프트웨어전공").isEmpty()) {
+                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("응용소프트웨어전공").councilType("단과대").build());
             }
 
-            if (affiliationRepository.findByAffiliationName("디콘디").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).affiliationName("디콘디").build());
+            if (affiliationRepository.findByAffiliationName("디지털콘텐츠디자인학과").isEmpty()) {
+                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).affiliationName("디지털콘텐츠디자인학과").councilType("학과").build());
 
             }
             // Check if an admin user already exists

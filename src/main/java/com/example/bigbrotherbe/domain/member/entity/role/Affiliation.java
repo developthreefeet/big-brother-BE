@@ -19,6 +19,9 @@ public class Affiliation {
     private Long affiliation_id;
 
     @Column
+    private String councilType;
+
+    @Column
     private String studentCouncil;
 
     @Column

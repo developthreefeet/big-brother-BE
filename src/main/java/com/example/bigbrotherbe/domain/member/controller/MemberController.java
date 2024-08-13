@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
@@ -43,7 +43,7 @@ public interface MemberController {
 
     @PostMapping("/test")
     @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleLost를 가져오는 값")
-    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<AffiliationMap>> test();
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<AffiliationListDto>> test();
 
     @GetMapping
     @Operation(summary = "유저 상세 정보 조회")

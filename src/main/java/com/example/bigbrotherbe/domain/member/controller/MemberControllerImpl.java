@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
@@ -33,8 +33,6 @@ public class MemberControllerImpl implements MemberController {
     public ResponseEntity<ApiResponse<MemberResponse>> signUp( SignUpDto signUpDto) {
         MemberResponse memberResponse = memberService.userSignUp(signUpDto);
 
-        // ApiResponse 생성
-//        ApiResponse<MemberResponse> response = ApiResponse.ok(memberResponse);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberResponse));
     }
 
@@ -50,7 +48,7 @@ public class MemberControllerImpl implements MemberController {
     }
 
 
-    public ResponseEntity<ApiResponse<AffiliationMap>> test() {
+    public ResponseEntity<ApiResponse<AffiliationListDto>> test() {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.getMemberAffiliationRoleList()));
 
     }

@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 
         savedMember = memberLoader.getMember(savedMember.getId());
 
-        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt());
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), affiliation.getCouncilType(),affiliation.getAffiliationName());
     }
 
     @Transactional
@@ -122,7 +122,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberName(member.getUsername())
                 .createAt(member.getCreateAt())
                 .updateAt(member.getUpdateAt())
-                .affiliationMap(getMemberAffiliationRoleList())
+                .affiliationListDto(getMemberAffiliationRoleList())
                 .build();
     }
 
@@ -181,18 +181,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public AffiliationMap getMemberAffiliationRoleList() {
+    public AffiliationListDto getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
         List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
-        return transforAffiliationRole(member.getUsername(), affiliationMemberList);
+
+        return affiliationListToEntity(member.getUsername(), affiliationMemberList);
     }
 
-    private AffiliationMap transforAffiliationRole(String userName, List<AffiliationMember> affiliationMemberList) {
-        AffiliationMap affiliationMap = new AffiliationMap(userName);
+    private AffiliationListDto affiliationListToEntity(String userName, List<AffiliationMember> affiliationMemberList) {
+        AffiliationListDto affiliationListDto = new AffiliationListDto(userName);
         for (AffiliationMember affiliationMember : affiliationMemberList) {
-            affiliationMap.addPosition(affiliationMember.getAffiliation().getAffiliationName(), affiliationMember.getRole());
+            Affiliation affiliation = affiliationMember.getAffiliation();
+            affiliationListDto.addAffiliation(affiliation.getCouncilType(),affiliation.getAffiliationName(), affiliationMember.getRole());
         }
-        return affiliationMap;
+        return affiliationListDto;
     }
 
 
