@@ -4,26 +4,30 @@ import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX
 
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
+import com.example.bigbrotherbe.domain.member.util.MemberChecker;
+import com.example.bigbrotherbe.domain.member.util.MemberLoader;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.email.MailService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Random;
 
 import lombok.RequiredArgsConstructor;
@@ -42,14 +46,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository;
     private final AffiliationRepository affiliationRepository;
     private final AffiliationMemberRepository affiliationMemberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-
+    private final AuthUtil authUtil;
+    private final MemberLoader memberLoader;
+    private final MemberChecker memberChecker;
     //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
 
@@ -57,12 +62,12 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public MemberResponse userSignUp(SignUpDto signUpDto) {
-        if (memberRepository.existsByUsername(signUpDto.getEmail())) {
-            throw new BusinessException(ErrorCode.EXIST_EMAIL);
-        }
-        // Password 암호화
+        memberChecker.checkExistUserEmail(signUpDto.getEmail());
+
+        // Password 암호화후 저장
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
-        Member savedMember = memberRepository.save(signUpDto.toEntity(signUpDto, encodedPassword));
+        Member savedMember = memberLoader.saveMember(signUpDto.toEntity(signUpDto, encodedPassword));
+
 
         // Affiliation 조회
         Affiliation affiliation = affiliationRepository.findByAffiliationName(signUpDto.getAffiliation())
@@ -76,20 +81,16 @@ public class MemberServiceImpl implements MemberService {
                 .build();
         affiliationMemberRepository.save(affiliationMember);
 
-        savedMember = memberRepository.findById(savedMember.getId()).orElseThrow(
-                () -> new BusinessException(ErrorCode.FAIL_LOAD_MEMBER)
-        );
+        savedMember = memberLoader.getMember(savedMember.getId());
 
-        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), getMemberRole(savedMember), null);
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt());
     }
 
     @Transactional
     @Override
     public JwtToken userSignIN(String email, String password) {
         // 1. 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_EMAIL));
-        log.info("Found member: {}", member);
+        Member member = memberLoader.findByMemberEmail(email);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
             log.info("Password mismatch");
@@ -118,10 +119,16 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberResponse inquireMemberInfo(String memberEmail) {
-        Member member = findByMemberEmail(memberEmail);
-        return MemberResponse.builder().email(member.getEmail()).memberName(member.getUsername()).create_at(member.getCreateAt()).update_at(member.getUpdateAt()).roles(getMemberRole(member)
-        ).build();
+    public MemberInfoResponse inquireMemberInfo() {
+        Member member = authUtil.getLoginMember();
+        return MemberInfoResponse
+            .builder()
+            .email(member.getEmail())
+            .memberName(member.getUsername())
+            .createAt(member.getCreateAt())
+            .updateAt(member.getUpdateAt())
+            .affiliationMap(getMemberAffiliationRoleList())
+            .build();
     }
 
 
@@ -138,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     public EmailVerificationResult verifiedCode(String email, String authCode) {
-        this.checkDuplicatedEmail(email);
+        memberChecker.checkDuplicatedEmail(email);
         String redisAuthCode = mailService.getAuthCode(AUTH_CODE_PREFIX + email);
         boolean authResult = redisAuthCode.equals(authCode);
 
@@ -148,16 +155,15 @@ public class MemberServiceImpl implements MemberService {
     // 이메일 중복 체크
     @Override
     public EmailVerificationResult verificateEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent()) {
-            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
+
+        if (memberLoader.findByMemberEmailForCheck(email).isPresent()) {
             throw new BusinessException(ErrorCode.EXIST_EMAIL);
         }
         return EmailVerificationResult.builder().authResult(true).build();
     }
 
     /*
-    [MEETINGS]
+    거의 모든 도메인 validation으로 사용
      */
     @Override
     @Transactional(readOnly = true)
@@ -167,10 +173,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberResponse changePasswrd(String memberId, MemberRequest memberRequest) {
-        Member member = findByMemberId(memberId);
-        member.changePassword(memberRequest.getMemberPass());
-        return MemberResponse.form(member.getId(), member.getUsername(), member.getEmail(), member.getCreateAt(), null, member.getPassword());
+    public void changePasswrd(String password) {
+        Member member = authUtil.getLoginMember();
+        member.changePassword( passwordEncoder.encode(password));
     }
 
     @Override
@@ -179,27 +184,21 @@ public class MemberServiceImpl implements MemberService {
     affiliationRepository.save(Affiliation.builder().affiliation_id(1).affiliationName("총학").build());
     }
 
-    private Member findByUserName(String username) {
-        return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 이름입니다."));
+    @Override
+    public AffiliationMap getMemberAffiliationRoleList() {
+        Member member = authUtil.getLoginMember();
+        List<AffiliationMember> affiliationMemberList= affiliationMemberRepository.findAllByMemberId(member.getId());
+        return  transforAffiliationRole(member.getUsername(),affiliationMemberList);
     }
 
-    private Member findByMemberId(String memberId) {
-        return memberRepository.findById(Long.valueOf(memberId)).orElseThrow(() -> new IllegalArgumentException("잘못된 사용자 아이디입니다."));
-    }
-
-    private Member findByMemberEmail(String memberEmail) {
-        return memberRepository.findByEmail(memberEmail).orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_EMAIL));
-
-    }
-
-    private void checkDuplicatedEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent()) {
-            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
-            throw new BusinessException(ErrorCode.EXIST_EMAIL);
+    private AffiliationMap transforAffiliationRole(String userName,List<AffiliationMember> affiliationMemberList) {
+        AffiliationMap affiliationMap = new AffiliationMap(userName);
+        for(AffiliationMember affiliationMember : affiliationMemberList){
+            affiliationMap.addPosition(affiliationMember.getAffiliation().getAffiliationName(),affiliationMember.getRole());
         }
+        return affiliationMap;
     }
+
 
     private String createCode() {
         int lenth = 6;
@@ -214,11 +213,5 @@ public class MemberServiceImpl implements MemberService {
             log.debug("MemberService.createCode() exception occur");
             throw new BusinessException(ErrorCode.NO_SUCH_ALGORITHM);
         }
-    }
-
-
-    public List<String> getMemberRole(Member member) {
-        return member.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).toList();
     }
 }

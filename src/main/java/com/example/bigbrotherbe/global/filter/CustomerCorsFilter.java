@@ -1,6 +1,8 @@
 package com.example.bigbrotherbe.global.filter;
 
 
+import static com.example.bigbrotherbe.global.constant.Constant.Url.DOMAIN_URL;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,6 +11,8 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,14 +20,19 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomerCorsFilter implements Filter {
+    private final List<String> allowedOrigins = Arrays.asList(
+        DOMAIN_URL,"프론트 ip 넣는 곳"
+    );
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        response.setHeader("Access-Control-Allow-Origin", "http://api.mju-bigbrother.xyz:3000, http://localhost:3000");
-
+        String origin = request.getHeader("Origin");
+        if (allowedOrigins.contains(origin)) {
+            response.setHeader("Access-Control-Allow-Origin", origin);
+        }
         // CORS 허용한 Origin
         response.setHeader("Access-Control-Allow-Credentials", "true");
         // 자격이 포함된 요청 받기

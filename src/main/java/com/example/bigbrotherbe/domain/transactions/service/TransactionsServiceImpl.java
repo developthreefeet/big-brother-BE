@@ -1,6 +1,9 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
+import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
+import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
+import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -8,6 +11,7 @@ import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.NumberFormat;
@@ -15,6 +19,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
@@ -24,12 +29,17 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class TransactionsServiceImpl implements TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
-    private final MemberService memberService;
 
+    private final MemberService memberService;
     private final OcrService ocrService;
 
-
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void register(MultipartFile multipartFile, Long affiliationId) {
+        if (!memberService.checkExistAffiliationById(affiliationId)) {
+            throw new BusinessException(NO_EXIST_AFFILIATION);
+        }
+
         if (!memberService.checkExistAffiliationById(affiliationId)) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
@@ -57,6 +67,24 @@ public class TransactionsServiceImpl implements TransactionsService {
             transactionsRepository.save(transactions);
         });
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest) {
+        Transactions transactions = transactionsRepository.findById(transactionsId)
+                .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        transactions.update(transactionsUpdateRequest.getNote());
+    }
+
+    public List<TransactionsResponse> getTransactionsWithMonth(int year, int month, Long affiliationId) {
+        String yearMonth = String.format("%d-%02d", year, month);
+        List<Transactions> transactions = transactionsRepository.findAllByYearMonthAndAffiliationId(yearMonth, affiliationId);
+
+        return transactions.stream()
+                .map(TransactionsResponse::fromTransactionsResponse)
+                .collect(Collectors.toList());
+    }
+
 
     private LocalDateTime parseDateTime(String dateTimeString) {
         String DATE_TIME_REGEX = "yyyy-MM-dd HH:mm:ss";

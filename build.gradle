@@ -46,6 +46,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // 이메일
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -69,16 +70,18 @@ dependencies {
     // Pageable
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 
-    // lamda
+    // Lambda
     implementation 'com.amazonaws:aws-java-sdk-lambda:1.12.50'
     implementation 'com.amazonaws:aws-java-sdk-core:1.12.50'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
-
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
 
     // OCR
     implementation 'org.apache.pdfbox:pdfbox:2.0.27'
     implementation 'net.sourceforge.tess4j:tess4j:4.5.5'
+
+    // jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {

@@ -9,7 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ ci-cd ]
+    branches:
+      - main
+
 permissions:
   contents: read
   
@@ -61,9 +63,9 @@ jobs:
       - name: docker stop container
         # 모든 컨테이너를 중지시킴.
         run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
-      # 3. 최신 이미지를 컨테이너화하여 실행시킨다.
+      # 3. 최신 이미지를 컨테이너화하여 실행시킨다..
       - name: docker run new container
-        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 --env-file /home/ubuntu/env1.list/env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
+        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 --env-file /home/ubuntu/env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
 
       # 4. 미사용 이미지를 정리합니다.
       - name: delete old docker image

@@ -2,16 +2,18 @@ package com.example.bigbrotherbe.domain.member.service;
 
 import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 
 public interface MemberService {
-    public JwtToken userSignIN(String username, String password);
+    JwtToken userSignIN(String username, String password);
 
-    public MemberResponse userSignUp(SignUpDto signUpDto);
+    MemberResponse userSignUp(SignUpDto signUpDto);
 
-    public MemberResponse inquireMemberInfo(String memberName);
+    MemberInfoResponse inquireMemberInfo();
 
     void sendCodeToEmail(String email);
 
@@ -21,7 +23,9 @@ public interface MemberService {
 
     boolean checkExistAffiliationById(Long affiliationId);
 
-    MemberResponse changePasswrd(String memberId, MemberRequest memberRequest);
+    void changePasswrd(String password);
 
     void makeAffiliation();
+
+    AffiliationMap getMemberAffiliationRoleList();
 }

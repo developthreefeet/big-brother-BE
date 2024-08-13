@@ -40,6 +40,7 @@ public enum ErrorCode {
     // TRANSACTIONS
     FAIL_TO_LONG_PARSING(HttpStatus.BAD_REQUEST, "TRANSACTIONS-001", "long 타입 파싱에 실패했습니다."),
     EMPTY_FILE(HttpStatus.BAD_REQUEST, "TRANSACTIONS-002", "파일이 없습니다."),
+    NO_EXIST_TRANSACTIONS(HttpStatus.NOT_FOUND, "TRANSACTIONS-003", "존재하지 않는 계좌내역 정보입니다."),
 
     // CAMPUS_NOTICE
     NO_EXIST_URL_ID(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-001", "유효하지 않은 URL ID 입니다."),
