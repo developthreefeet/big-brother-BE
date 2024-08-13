@@ -133,6 +133,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void sendCodeToEmail(String toEmail) {
+        mailService.checkPresentEmail(toEmail);
         String title = "명지대 big brother 이메일 인증 번호";
         String authCode = this.createCode();
         mailService.sendEmail(toEmail, title, authCode);
