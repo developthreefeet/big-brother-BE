@@ -1,6 +1,5 @@
 package com.example.bigbrotherbe.domain.member.service;
 
-import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX;
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
@@ -55,8 +54,7 @@ public class MemberServiceImpl implements MemberService {
     //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
 
-
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MemberResponse userSignUp(SignUpDto signUpDto) {
         memberChecker.checkExistUserEmail(signUpDto.getEmail());

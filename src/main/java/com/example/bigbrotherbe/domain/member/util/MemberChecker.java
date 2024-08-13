@@ -15,7 +15,7 @@ public class MemberChecker {
     private final MemberRepository memberRepository;
 
     public void checkExistUserEmail(String email) {
-        if (memberRepository.existsByUsername(email)) {
+        if (memberRepository.findByEmail(email).isPresent()) {
             throw new BusinessException(ErrorCode.EXIST_EMAIL);
         }
     }
