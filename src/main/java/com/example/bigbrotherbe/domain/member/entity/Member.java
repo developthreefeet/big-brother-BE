@@ -91,7 +91,7 @@ public class Member implements UserDetails {
     }
 
     @Builder
-    public Member(String username, String password, String email, String is_active, LocalDateTime create_at, LocalDateTime update_at) {
+    public Member(String username, String password, String email, String is_active, LocalDateTime createAt, LocalDateTime updateAt) {
         if (!isValidEmail(email)) {
             throw new IllegalArgumentException("잘못된 이메일 형식입니다.");
         }
@@ -99,6 +99,8 @@ public class Member implements UserDetails {
         this.password = password;
         this.email = email;
         this.is_active = is_active;
+        this.createAt = createAt;
+        this.updateAt = createAt;
     }
 
 
