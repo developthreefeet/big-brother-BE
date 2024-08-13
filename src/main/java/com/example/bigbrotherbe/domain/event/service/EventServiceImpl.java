@@ -5,10 +5,6 @@ import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
 import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
@@ -17,6 +13,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,11 +34,17 @@ public class EventServiceImpl implements EventService {
     private final MemberService memberService;
     private final FileService fileService;
 
+    private final AuthUtil authUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerEvent(EventRegisterRequest eventRegisterRequest, List<MultipartFile> multipartFiles) {
         if (!memberService.checkExistAffiliationById(eventRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
+        }
+
+        if (authUtil.checkCouncilRole(eventRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
         List<File> files = null;
@@ -51,7 +54,7 @@ public class EventServiceImpl implements EventService {
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         Event event = eventRegisterRequest.toEventEntity(files);
 
@@ -69,6 +72,10 @@ public class EventServiceImpl implements EventService {
     public void updateEvent(Long eventId, EventUpdateRequest eventUpdateRequest, List<MultipartFile> multipartFiles) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+
+        if (authUtil.checkCouncilRole(event.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -94,6 +101,10 @@ public class EventServiceImpl implements EventService {
     public void deleteEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+
+        if (authUtil.checkCouncilRole(event.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
                 .fileType(FileType.EVENT.getType())

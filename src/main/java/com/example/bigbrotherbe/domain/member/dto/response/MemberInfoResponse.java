@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.member.entity.dto.response;
+package com.example.bigbrotherbe.domain.member.dto.response;
 
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import java.time.LocalDateTime;

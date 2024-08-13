@@ -1,9 +1,5 @@
 package com.example.bigbrotherbe.domain.rule.service;
 
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
@@ -17,6 +13,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +34,8 @@ public class RuleServiceImpl implements RuleService {
     private final FileService fileService;
     private final MemberService memberService;
 
+    private final AuthUtil authUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerRule(RuleRegisterRequest ruleRegisterRequest, List<MultipartFile> multipartFiles) {
@@ -44,8 +43,9 @@ public class RuleServiceImpl implements RuleService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-//                Member member = authUtil.getLoginMember();
-        // role에 따라 권한있는지 필터링 없으면 exception
+        if (authUtil.checkPresidentRole(ruleRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_PRESIDENT_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -54,7 +54,7 @@ public class RuleServiceImpl implements RuleService {
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         Rule rule = ruleRegisterRequest.toRuleEntity(files);
 

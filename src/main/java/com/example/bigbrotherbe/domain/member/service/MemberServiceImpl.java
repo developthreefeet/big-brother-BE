@@ -2,10 +2,9 @@ package com.example.bigbrotherbe.domain.member.service;
 
 import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX;
 
-import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
-import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
@@ -27,7 +26,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,13 +119,13 @@ public class MemberServiceImpl implements MemberService {
     public MemberInfoResponse inquireMemberInfo() {
         Member member = authUtil.getLoginMember();
         return MemberInfoResponse
-            .builder()
-            .email(member.getEmail())
-            .memberName(member.getUsername())
-            .createAt(member.getCreateAt())
-            .updateAt(member.getUpdateAt())
-            .affiliationMap(getMemberAffiliationRoleList())
-            .build();
+                .builder()
+                .email(member.getEmail())
+                .memberName(member.getUsername())
+                .createAt(member.getCreateAt())
+                .updateAt(member.getUpdateAt())
+                .affiliationMap(getMemberAffiliationRoleList())
+                .build();
     }
 
 
@@ -175,26 +172,26 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void changePasswrd(String password) {
         Member member = authUtil.getLoginMember();
-        member.changePassword( passwordEncoder.encode(password));
+        member.changePassword(passwordEncoder.encode(password));
     }
 
     @Override
     @Transactional
     public void makeAffiliation() {
-    affiliationRepository.save(Affiliation.builder().affiliation_id(1).affiliationName("총학").build());
+        affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("총학").build());
     }
 
     @Override
     public AffiliationMap getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
-        List<AffiliationMember> affiliationMemberList= affiliationMemberRepository.findAllByMemberId(member.getId());
-        return  transforAffiliationRole(member.getUsername(),affiliationMemberList);
+        List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
+        return transforAffiliationRole(member.getUsername(), affiliationMemberList);
     }
 
-    private AffiliationMap transforAffiliationRole(String userName,List<AffiliationMember> affiliationMemberList) {
+    private AffiliationMap transforAffiliationRole(String userName, List<AffiliationMember> affiliationMemberList) {
         AffiliationMap affiliationMap = new AffiliationMap(userName);
-        for(AffiliationMember affiliationMember : affiliationMemberList){
-            affiliationMap.addPosition(affiliationMember.getAffiliation().getAffiliationName(),affiliationMember.getRole());
+        for (AffiliationMember affiliationMember : affiliationMemberList) {
+            affiliationMap.addPosition(affiliationMember.getAffiliation().getAffiliationName(), affiliationMember.getRole());
         }
         return affiliationMap;
     }

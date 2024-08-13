@@ -23,7 +23,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<File> saveFile(FileSaveDTO fileSaveDTO) {
+    public List<File> saveFiles(FileSaveDTO fileSaveDTO) {
         List<File> files = new ArrayList<>();
 
         String fileType = fileSaveDTO.getFileType();
@@ -38,6 +38,17 @@ public class FileServiceImpl implements FileService {
         return files;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public File saveFile(FileSaveDTO fileSaveDTO) {
+        String fileType = fileSaveDTO.getFileType();
+        MultipartFile file = fileSaveDTO.getMultipartFile();
+
+        String url = s3Util.uploadFile(file, fileType);
+        return fileRepository.save(fileSaveDTO.toFileEntity(url));
+    }
+
+    @Override
     @Transactional
     public List<File> updateFile(FileUpdateDTO fileUpdateDTO) {
         List<File> updatedFiles = new ArrayList<>();
@@ -63,6 +74,11 @@ public class FileServiceImpl implements FileService {
 
     public void deleteFile(FileDeleteDTO deleteDTO) {
         List<File> files = deleteDTO.getFiles();
+
+        if (files == null || files.isEmpty()) {
+            return;
+        }
+
         String fileType = deleteDTO.getFileType();
         files.forEach(file -> {
             String fileName = file.getUrl().split("/")[3];

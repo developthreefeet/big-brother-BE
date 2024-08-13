@@ -27,7 +27,7 @@ public class TransactionsController {
     private final TransactionsService transactionsService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> registerTransaction(@PathVariable("affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<Void>> registerTransaction(@RequestParam("affiliationId") Long affiliationId,
                                                                  @RequestPart(value = "file") MultipartFile multipartFile) {
         transactionsService.register(multipartFile, affiliationId);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));

@@ -13,6 +13,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_FAQ;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class FAQServiceImpl implements FAQService{
+public class FAQServiceImpl implements FAQService {
     private final FAQRepository faqRepository;
 
     private final FileService fileService;
     private final MemberService memberService;
+
+    private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)   // 트랜잭션 시작 및 커밋 -> 모든 예외상황 발생시 롤백
@@ -40,8 +42,9 @@ public class FAQServiceImpl implements FAQService{
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-        //        Member member = authUtil.getLoginMember();
-        // role에 따라 권한있는지 필터링 없으면 exception
+        if (authUtil.checkCouncilRole(faqRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -50,7 +53,7 @@ public class FAQServiceImpl implements FAQService{
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         FAQ faq = faqRegisterRequest.toFAQEntity(files);
 
@@ -68,6 +71,10 @@ public class FAQServiceImpl implements FAQService{
     public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+
+        if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -89,6 +96,9 @@ public class FAQServiceImpl implements FAQService{
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
 
+        if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         faqRepository.delete(faq);
     }
@@ -98,6 +108,7 @@ public class FAQServiceImpl implements FAQService{
     public FAQResponse getFAQById(Long faqId) {
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
+
 
         List<String> urlList = faq.getFiles().stream()
                 .map(File::getUrl)

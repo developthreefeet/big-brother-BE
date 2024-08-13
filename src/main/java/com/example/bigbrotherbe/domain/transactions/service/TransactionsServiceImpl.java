@@ -1,12 +1,16 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +36,9 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     private final MemberService memberService;
     private final OcrService ocrService;
+    private final FileService fileService;
+
+    private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -40,12 +47,12 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-        if (!memberService.checkExistAffiliationById(affiliationId)) {
-            throw new BusinessException(NO_EXIST_AFFILIATION);
-        }
-
         if (multipartFile == null || multipartFile.isEmpty()) {
             throw new BusinessException(EMPTY_FILE);
+        }
+
+        if (authUtil.checkCouncilRole(affiliationId)) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
         OcrDTO ocrDTO = ocrService.extractText(multipartFile);
@@ -66,12 +73,33 @@ public class TransactionsServiceImpl implements TransactionsService {
 
             transactionsRepository.save(transactions);
         });
+
+        // pdf 저장
+        FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
+                .fileType(FileType.TRANSACTIONS.getType())
+                .multipartFile(multipartFile)
+                .build();
+
+        File file = fileService.saveFile(fileSaveDTO);
+
+        Transactions transactions = Transactions.builder()
+                .affiliationId(affiliationId)
+                .accountNumber(parseAccountNumber)
+                .file(file)
+                .note("PDF 파일 저장")
+                .build();
+
+        transactionsRepository.save(transactions);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest) {
         Transactions transactions = transactionsRepository.findById(transactionsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        if (authUtil.checkCouncilRole(transactions.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         transactions.update(transactionsUpdateRequest.getNote());
     }

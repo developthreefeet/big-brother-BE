@@ -1,10 +1,10 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
-import com.example.bigbrotherbe.domain.member.entity.dto.request.ChangePasswordRequest;
-import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
-import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

@@ -8,11 +8,13 @@ import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,8 @@ public class NoticeServiceImpl implements NoticeService {
     private final FileService fileService;
     private final MemberService memberService;
 
+    private final AuthUtil authUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)   // 트랜잭션 시작 및 커밋 -> 모든 예외상황 발생시 롤백
     public void register(NoticeRegisterRequest noticeRegisterRequest, List<MultipartFile> multipartFiles) {
@@ -40,8 +44,9 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-        //        Member member = authUtil.getLoginMember();
-        // role에 따라 권한있는지 필터링 없으면 exception
+        if (authUtil.checkCouncilRole(noticeRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -50,11 +55,11 @@ public class NoticeServiceImpl implements NoticeService {
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         Notice notice = noticeRegisterRequest.toNoticeEntity(files);
 
-        if (files != null){
+        if (files != null) {
             files.forEach(file -> {
                 file.linkNotice(notice);
             });
@@ -68,6 +73,10 @@ public class NoticeServiceImpl implements NoticeService {
     public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+
+        if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -88,12 +97,17 @@ public class NoticeServiceImpl implements NoticeService {
     public void delete(Long noticeId) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
-//        Member member = authUtil.getLoginMember();
-//
-//        if (participantService.findParticipantInfo(member, notice.getMeeting()).getRole() != Role.HOST) {
-//            throw new BusinessException(NOT_HOST_OF_MEETING);
-//        }
 
+        if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
+
+        FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
+                .fileType(FileType.NOTICE.getType())
+                .files(notice.getFiles())
+                .build();
+
+        fileService.deleteFile(fileDeleteDTO);
         noticeRepository.delete(notice);
     }
 

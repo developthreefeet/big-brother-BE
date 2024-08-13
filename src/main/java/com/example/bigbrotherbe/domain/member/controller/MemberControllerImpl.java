@@ -1,10 +1,10 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
-import com.example.bigbrotherbe.domain.member.entity.dto.request.ChangePasswordRequest;
-import com.example.bigbrotherbe.domain.member.entity.dto.request.MemberRequest;
-import com.example.bigbrotherbe.domain.member.entity.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberInfoResponse;
-import com.example.bigbrotherbe.domain.member.entity.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -12,19 +12,11 @@ import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
-import com.example.bigbrotherbe.global.security.SecurityConfig;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
-
-import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
