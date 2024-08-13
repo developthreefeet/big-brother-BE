@@ -13,7 +13,8 @@
 //
 //@Slf4j
 //@Component
-//@Validated @Setter
+//@Validated
+//@Setter
 //public class SshTunnelingInitializer {
 //
 //    @Value("${ssh.remote-host}")
@@ -30,6 +31,7 @@
 //    private int databasePort = 3306;
 //
 //    private Session session;
+//
 //    @PreDestroy
 //    public void destroy() {
 //        if (session.isConnected())

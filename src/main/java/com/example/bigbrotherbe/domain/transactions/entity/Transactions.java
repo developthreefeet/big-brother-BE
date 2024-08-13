@@ -47,8 +47,9 @@ public class Transactions extends BaseTimeEntity {
     @Column(name = "affiliation_id")
     private Long affiliationId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "file_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private File file;
     // 거래일자, 구분, 거래금액, 거래 후 잔액, 거래내용 , 계좌번호
     // date, type, amount, balance, Description , accountNumber
