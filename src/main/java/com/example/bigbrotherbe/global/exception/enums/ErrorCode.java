@@ -19,6 +19,9 @@ public enum ErrorCode {
     NOT_COUNCIL_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-008", "해당 학생회 멤버가 아닙니다."),
     NOT_PRESIDENT_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-009", "해당 학생회 회장이 아닙니다."),
 
+    // TOKEN
+
+
     // MEETINGS
     NO_EXIST_MEETINGS(HttpStatus.NOT_FOUND, "MEETINGS-001", "존재하지 않는 회의록 입니다."),
 

@@ -1,12 +1,11 @@
 package com.example.bigbrotherbe.domain.member.service;
 
-import static com.example.bigbrotherbe.global.email.EmailConfig.AUTH_CODE_PREFIX;
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
@@ -55,8 +54,7 @@ public class MemberServiceImpl implements MemberService {
     //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
 
-
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MemberResponse userSignUp(SignUpDto signUpDto) {
         memberChecker.checkExistUserEmail(signUpDto.getEmail());
@@ -80,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 
         savedMember = memberLoader.getMember(savedMember.getId());
 
-        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt());
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), affiliation.getCouncilType(),affiliation.getAffiliationName());
     }
 
     @Transactional
@@ -124,7 +122,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberName(member.getUsername())
                 .createAt(member.getCreateAt())
                 .updateAt(member.getUpdateAt())
-                .affiliationMap(getMemberAffiliationRoleList())
+                .affiliationListDto(getMemberAffiliationRoleList())
                 .build();
     }
 
@@ -133,17 +131,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void sendCodeToEmail(String toEmail) {
+        mailService.checkPresentEmail(toEmail);
         String title = "명지대 big brother 이메일 인증 번호";
         String authCode = this.createCode();
         mailService.sendEmail(toEmail, title, authCode);
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
-        mailService.saveEmailAuthCode(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+        mailService.saveEmailAuthCode(toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
     }
 
 
     public EmailVerificationResult verifiedCode(String email, String authCode) {
         memberChecker.checkDuplicatedEmail(email);
-        String redisAuthCode = mailService.getAuthCode(AUTH_CODE_PREFIX + email);
+        String redisAuthCode = mailService.getAuthCode(email);
         boolean authResult = redisAuthCode.equals(authCode);
 
         return EmailVerificationResult.of(authResult);
@@ -182,18 +181,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public AffiliationMap getMemberAffiliationRoleList() {
+    public AffiliationListDto getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
         List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
-        return transforAffiliationRole(member.getUsername(), affiliationMemberList);
+
+        return affiliationListToEntity(member.getUsername(), affiliationMemberList);
     }
 
-    private AffiliationMap transforAffiliationRole(String userName, List<AffiliationMember> affiliationMemberList) {
-        AffiliationMap affiliationMap = new AffiliationMap(userName);
+    private AffiliationListDto affiliationListToEntity(String userName, List<AffiliationMember> affiliationMemberList) {
+        AffiliationListDto affiliationListDto = new AffiliationListDto(userName);
         for (AffiliationMember affiliationMember : affiliationMemberList) {
-            affiliationMap.addPosition(affiliationMember.getAffiliation().getAffiliationName(), affiliationMember.getRole());
+            Affiliation affiliation = affiliationMember.getAffiliation();
+            affiliationListDto.addAffiliation(affiliation.getCouncilType(),affiliation.getAffiliationName(), affiliationMember.getRole());
         }
-        return affiliationMap;
+        return affiliationListDto;
     }
 
 

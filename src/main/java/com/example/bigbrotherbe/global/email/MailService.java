@@ -67,4 +67,10 @@ public class MailService {
            ( ()-> new IllegalArgumentException("이메일 인증 시간이 만료되었습니다."));
         return emailVerification.getVerificationCode();
     }
+
+    @Transactional
+    public void checkPresentEmail(String toEmail) {
+        mailRepository.findByEmailAddress(toEmail)
+            .ifPresent(mail -> mailRepository.deleteByEmailAddress(toEmail));
+    }
 }

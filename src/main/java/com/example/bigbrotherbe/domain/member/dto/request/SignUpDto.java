@@ -31,7 +31,7 @@ public class SignUpDto {
         regexp = "^[a-zA-Z가-힣]+$",
         message = "이름에는 영어, 한글만 올 수 있습니다."
     )
-    @Schema(description = "사용자 이름", example = "테스터훈")
+    @Schema(description = "사용자 이름", example = "테스터")
     private String username;
 
     @NotNull
@@ -44,21 +44,18 @@ public class SignUpDto {
 
     @Email(message = "이메일 형식에 맞지 않습니다.")
     @NotBlank(message = "사용자 이메일을 입력해주세요.")
-    @Schema(description = "사용자 이메일", example = "testtest@mju.ac.kr")
+    @Schema(description = "사용자 이메일", example = "test123@mju.ac.kr")
     private String email;
-    private String is_active;
-    private String createAt;
-    private String updateAt;
-    private String role;
+    private String councilType;
     private String affiliation;
 
-    public Member toEntity(SignUpDto signUpDto, String password) {
+    public Member toEntity(SignUpDto signUpDto, String encodePassword) {
         if(!isVaildEmail(signUpDto.getEmail())){
             throw new BusinessException(ErrorCode.INVALID_EMAIL_FORMAT);
         }
         return Member.builder()
             .username(signUpDto.getUsername())
-            .password(password)
+            .password(encodePassword)
             .email(signUpDto.getEmail())
             .is_active("true")
             .createAt(LocalDateTime.now())

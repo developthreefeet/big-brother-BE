@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.entity.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -51,4 +52,17 @@ public enum AffiliationCode {
     private final int val;
     private final String councilType;
     private final String councilName;
+    @JsonValue
+    public String  getCouncilName(){
+        return councilName;
+    }
+    public static AffiliationCode fromcouncilName(String councilName) {
+        for (AffiliationCode affiliationCodeIns : AffiliationCode.values()) {
+            if (affiliationCodeIns.councilName.equals(councilName)) {
+                return affiliationCodeIns;
+            }
+        }
+        throw new IllegalArgumentException("없는 단체 명입니다." + councilName);
+    }
+
 }

@@ -3,7 +3,7 @@ package com.example.bigbrotherbe.domain.member.service;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMap;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 
@@ -26,5 +26,5 @@ public interface MemberService {
 
     void makeAffiliation();
 
-    AffiliationMap getMemberAffiliationRoleList();
+    AffiliationListDto getMemberAffiliationRoleList();
 }
