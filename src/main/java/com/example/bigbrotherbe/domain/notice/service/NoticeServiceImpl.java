@@ -50,7 +50,7 @@ public class NoticeServiceImpl implements NoticeService {
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         Notice notice = noticeRegisterRequest.toNoticeEntity(files);
 

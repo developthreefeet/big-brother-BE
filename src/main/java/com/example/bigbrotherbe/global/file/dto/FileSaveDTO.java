@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 public class FileSaveDTO {
     private List<MultipartFile> multipartFileList;
+    private MultipartFile multipartFile;
     private String fileType;
 
     public File toFileEntity(String url) {

@@ -1,9 +1,5 @@
 package com.example.bigbrotherbe.domain.rule.service;
 
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
@@ -54,7 +50,7 @@ public class RuleServiceImpl implements RuleService {
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         Rule rule = ruleRegisterRequest.toRuleEntity(files);
 

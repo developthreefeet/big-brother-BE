@@ -50,7 +50,7 @@ public class FAQServiceImpl implements FAQService{
                     .multipartFileList(multipartFiles)
                     .build();
 
-            files = fileService.saveFile(fileSaveDTO);
+            files = fileService.saveFiles(fileSaveDTO);
         }
         FAQ faq = faqRegisterRequest.toFAQEntity(files);
 

@@ -11,9 +11,11 @@ import java.util.List;
 public interface FileService {
     boolean checkExistRequestFile(List<MultipartFile> multipartFiles);
 
-    List<File> saveFile(FileSaveDTO fileSaveDTO);
+    List<File> saveFiles(FileSaveDTO fileSaveDTO);
 
     List<File> updateFile(FileUpdateDTO fileUpdateDTO);
 
     void deleteFile(FileDeleteDTO deleteDTO);
+
+    File saveFile(FileSaveDTO fileSaveDTO);
 }

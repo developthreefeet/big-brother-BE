@@ -12,7 +12,8 @@ public enum FileType {
     EVENT(4, "event"),
     RULE(5, "rule"),
     AFFILIATION(6, "affiliation"),
-    CAMPUS_NOTICE(7, "campusNotice");
+    CAMPUS_NOTICE(7, "campusNotice"),
+    TRANSACTIONS(8, "transactions");
 
     private final int val;
     private final String type;
