@@ -41,4 +41,5 @@ public class LambdaConfig {
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper;
     }
+
 }
