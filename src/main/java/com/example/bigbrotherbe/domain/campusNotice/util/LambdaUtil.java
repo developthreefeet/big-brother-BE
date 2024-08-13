@@ -13,7 +13,7 @@ public class LambdaUtil {
 
     private final CampusNoticeService campusNoticeService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = Constant.Cron.ONE_DAY_INTERVAL)
     public void invokeLambda() {
         for (CampusNoticeType noticeType : CampusNoticeType.values()){
             String payload = "{\"queryStringParameters\": {" +

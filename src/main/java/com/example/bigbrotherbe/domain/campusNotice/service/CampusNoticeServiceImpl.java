@@ -1,10 +1,6 @@
 package com.example.bigbrotherbe.domain.campusNotice.service;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.AWSLambda;
-import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
 import com.amazonaws.services.lambda.model.InvokeRequest;
 import com.amazonaws.services.lambda.model.InvokeResult;
 import com.example.bigbrotherbe.domain.campusNotice.dto.CampusNoticeResponse;
@@ -16,10 +12,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,7 +37,7 @@ public class CampusNoticeServiceImpl implements CampusNoticeService {
 
         InvokeResult invokeResult = awsLambda.invoke(invokeRequest);
         String jsonResponse = new String(invokeResult.getPayload().array());
-        System.out.println(jsonResponse);
+//        System.out.println(jsonResponse);
         try {
             JsonNode root = objectMapper.readTree(jsonResponse);
             String body = root.get("body").asText();
