@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class Affiliation {
     @Id
-    private long affiliation_id;
+    private Long affiliation_id;
 
     @Column
     private String studentCouncil;

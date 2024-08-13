@@ -74,6 +74,11 @@ public class FileServiceImpl implements FileService {
 
     public void deleteFile(FileDeleteDTO deleteDTO) {
         List<File> files = deleteDTO.getFiles();
+
+        if (files == null || files.isEmpty()) {
+            return;
+        }
+
         String fileType = deleteDTO.getFileType();
         files.forEach(file -> {
             String fileName = file.getUrl().split("/")[3];

@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.member.entity;
+package com.example.bigbrotherbe.domain.member.entity.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

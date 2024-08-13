@@ -23,8 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_MEETINGS;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +44,9 @@ public class MeetingsServiceImpl implements MeetingsService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-//                Member member = authUtil.getLoginMember();
-        // role에 따라 권한있는지 필터링 없으면 exception
+        if (authUtil.checkCouncilRole(meetingsRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -73,6 +73,10 @@ public class MeetingsServiceImpl implements MeetingsService {
     public void updateMeetings(Long meetingsId, MeetingsUpdateRequest meetingsUpdateRequest, List<MultipartFile> multipartFiles) {
         Meetings meetings = meetingsRepository.findById(meetingsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        if (authUtil.checkCouncilRole(meetings.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {

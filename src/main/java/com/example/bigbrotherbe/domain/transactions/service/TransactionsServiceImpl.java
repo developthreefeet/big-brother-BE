@@ -10,6 +10,7 @@ import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,8 @@ public class TransactionsServiceImpl implements TransactionsService {
     private final OcrService ocrService;
     private final FileService fileService;
 
+    private final AuthUtil authUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(MultipartFile multipartFile, Long affiliationId) {
@@ -46,6 +49,10 @@ public class TransactionsServiceImpl implements TransactionsService {
 
         if (multipartFile == null || multipartFile.isEmpty()) {
             throw new BusinessException(EMPTY_FILE);
+        }
+
+        if (authUtil.checkCouncilRole(affiliationId)) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
         OcrDTO ocrDTO = ocrService.extractText(multipartFile);
@@ -89,6 +96,10 @@ public class TransactionsServiceImpl implements TransactionsService {
     public void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest) {
         Transactions transactions = transactionsRepository.findById(transactionsId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_MEETINGS));
+
+        if (authUtil.checkCouncilRole(transactions.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         transactions.update(transactionsUpdateRequest.getNote());
     }

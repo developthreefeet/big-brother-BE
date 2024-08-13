@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+
     // MEMBER
     UNABLE_TO_SEND_EMAIL(HttpStatus.BAD_REQUEST, "MEMBER-001", "이메일을 보낼 수 없습니다."),
     EXIST_EMAIL(HttpStatus.BAD_REQUEST, "MEMBER-002", "이미 존재하는 이메일입니다."),
@@ -14,6 +15,9 @@ public enum ErrorCode {
     FAIL_LOAD_MEMBER(HttpStatus.EXPECTATION_FAILED, "MEMBER-004", "멤버를 불러오는 데 실패했습니다."),
     NO_EXIST_EMAIL(HttpStatus.NOT_FOUND, "MEMBER-005", "존재하지 않는 이메일입니다."),
     INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "MEMBER-006", "올바르지 않은 이메일 형식입니다."),
+    NO_EXIST_MEMBER(HttpStatus.NOT_FOUND, "MEMBER-007", "존재하지 않는 유저입니다."),
+    NOT_COUNCIL_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-008", "해당 학생회 멤버가 아닙니다."),
+    NOT_PRESIDENT_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-009", "해당 학생회 회장이 아닙니다."),
 
     // MEETINGS
     NO_EXIST_MEETINGS(HttpStatus.NOT_FOUND, "MEETINGS-001", "존재하지 않는 회의록 입니다."),

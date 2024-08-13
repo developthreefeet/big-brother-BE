@@ -13,6 +13,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,11 +34,17 @@ public class EventServiceImpl implements EventService {
     private final MemberService memberService;
     private final FileService fileService;
 
+    private final AuthUtil authUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerEvent(EventRegisterRequest eventRegisterRequest, List<MultipartFile> multipartFiles) {
         if (!memberService.checkExistAffiliationById(eventRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
+        }
+
+        if (authUtil.checkCouncilRole(eventRegisterRequest.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
         List<File> files = null;
@@ -66,6 +73,10 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
 
+        if (authUtil.checkCouncilRole(event.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
+
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
@@ -90,6 +101,10 @@ public class EventServiceImpl implements EventService {
     public void deleteEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
+
+        if (authUtil.checkCouncilRole(event.getAffiliationId())) {
+            throw new BusinessException(NOT_COUNCIL_MEMBER);
+        }
 
         FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
                 .fileType(FileType.EVENT.getType())
