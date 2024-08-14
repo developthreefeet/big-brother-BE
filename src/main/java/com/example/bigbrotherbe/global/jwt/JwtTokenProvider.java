@@ -97,7 +97,17 @@ public class JwtTokenProvider {
         }  catch (SecurityException | MalformedJwtException e) {
             log.info("잘못된 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
-            throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
+            Claims claims = e.getClaims();
+            // 토큰 타입 확인 (예: "type" 클레임에 저장된 값을 확인)
+            String tokenType = claims.get("type", String.class);
+
+            if (ACCESS_TOKEN.equals(tokenType)) {
+                throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
+            } else if (REFRESH_TOKEN.equals(tokenType)) {
+                throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
+            } else {
+                log.info("알 수 없는 토큰 타입입니다.");
+            }
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않은 토큰입니다.", e);
         } catch (IllegalArgumentException e) {
