@@ -129,5 +129,4 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new BusinessException(FAIL_TO_LONG_PARSING);
         }
     }
-
 }
