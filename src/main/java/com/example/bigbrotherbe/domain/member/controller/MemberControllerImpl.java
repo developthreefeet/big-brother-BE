@@ -96,18 +96,18 @@ public class MemberControllerImpl implements MemberController {
 
     @Override
     public ResponseEntity<ApiResponse<MemberInfoResponse>> changeMemberInfo(
-        MemberInfoChangeRequest memberInfoChangeRequest) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.changeMemberInfo(memberInfoChangeRequest.userName())));
+            MemberInfoChangeRequest memberInfoChangeRequest) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.changeMemberInfo(memberInfoChangeRequest.userName())));
     }
 
     @Override
     public ResponseEntity<ApiResponse<List<MemberInfoResponse>>> inquireAllUserInfo() {
 
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.inquireAllMemberInfo()));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.inquireAllMemberInfo()));
     }
 
     @Override
     public ResponseEntity<ApiResponse<MemberInfoResponse>> findUserByEmail(String email) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.getUserByEmail(email)));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.getUserByEmail(email)));
     }
 }

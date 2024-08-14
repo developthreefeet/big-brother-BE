@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
 import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
@@ -130,13 +131,17 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Event> getEvents(Long affiliationId, Pageable pageable) {
+    public Page<Event> getEvents(String affiliation, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return eventRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Event> searchEvent(Long affiliationId, String title, Pageable pageable) {
+    public Page<Event> searchEvent(String affiliation, String title, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return eventRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }

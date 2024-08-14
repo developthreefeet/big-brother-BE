@@ -56,16 +56,16 @@ public class EventAdminController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<Event>>> getMeetingsList(@RequestParam(name = "affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<Page<Event>>> getMeetingsList(@RequestParam(name = "affiliation") String affiliation,
                                                                     @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                     @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                     @RequestParam(name = "search", required = false) String search) {
         Page<Event> envetPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
-            envetPage = eventService.searchEvent(affiliationId, search, pageable);
+            envetPage = eventService.searchEvent(affiliation, search, pageable);
         } else {
-            envetPage = eventService.getEvents(affiliationId, pageable);
+            envetPage = eventService.getEvents(affiliation, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, envetPage));
     }

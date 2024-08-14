@@ -11,5 +11,5 @@ public interface TransactionsService {
 
     void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest);
 
-    List<TransactionsResponse> getTransactionsWithMonth(int year, int month, Long affiliationId);
+    List<TransactionsResponse> getTransactionsWithMonth(int year, int month, String affiliation);
 }

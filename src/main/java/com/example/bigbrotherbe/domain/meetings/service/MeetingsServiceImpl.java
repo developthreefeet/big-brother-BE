@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateReques
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
@@ -14,6 +15,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
@@ -122,13 +126,17 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Meetings> getMeetings(Long affiliationId, Pageable pageable) {
+    public Page<Meetings> getMeetings(String affiliation, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return meetingsRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Meetings> searchMeetings(Long affiliationId, String title, Pageable pageable) {
+    public Page<Meetings> searchMeetings(String affiliation, String title, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return meetingsRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 

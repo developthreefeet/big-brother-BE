@@ -5,6 +5,7 @@ import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
@@ -119,13 +120,17 @@ public class FAQServiceImpl implements FAQService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<FAQ> getFAQ(Long affiliationId, Pageable pageable) {
+    public Page<FAQ> getFAQ(String affiliation, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return faqRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<FAQ> searchFAQ(Long affiliationId, String title, Pageable pageable) {
+    public Page<FAQ> searchFAQ(String affiliation, String title, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return faqRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }

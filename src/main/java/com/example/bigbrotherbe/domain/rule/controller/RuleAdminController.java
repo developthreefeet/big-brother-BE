@@ -57,16 +57,16 @@ public class RuleAdminController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<Rule>>> getRuleList(@RequestParam(name = "affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<Page<Rule>>> getRuleList(@RequestParam(name = "affiliation") String affiliation,
                                                                @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                @RequestParam(name = "search", required = false) String search) {
         Page<Rule> rulePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
-            rulePage = ruleService.searchRules(affiliationId, search, pageable);
+            rulePage = ruleService.searchRules(affiliation, search, pageable);
         } else {
-            rulePage = ruleService.getRules(affiliationId, pageable);
+            rulePage = ruleService.getRules(affiliation, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, rulePage));
     }

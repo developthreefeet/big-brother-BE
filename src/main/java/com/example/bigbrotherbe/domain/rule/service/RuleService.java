@@ -19,7 +19,7 @@ public interface RuleService {
 
     RuleResponse getRuleById(Long ruleId);
 
-    Page<Rule> getRules(Long affiliationId, Pageable pageable);
+    Page<Rule> getRules(String affiliation, Pageable pageable);
 
-    Page<Rule> searchRules(Long affiliationId, String title, Pageable pageable);
+    Page<Rule> searchRules(String affiliation, String title, Pageable pageable);
 }

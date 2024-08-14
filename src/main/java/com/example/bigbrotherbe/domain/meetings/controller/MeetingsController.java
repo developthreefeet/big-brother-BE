@@ -34,16 +34,16 @@ public class MeetingsController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<Meetings>>> getMeetingsList(@RequestParam(name = "affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<Page<Meetings>>> getMeetingsList(@RequestParam(name = "affiliation") String affiliation,
                                                                        @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                        @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                        @RequestParam(name = "search", required = false) String search) {
         Page<Meetings> meetingsPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
-            meetingsPage = meetingsService.searchMeetings(affiliationId, search, pageable);
+            meetingsPage = meetingsService.searchMeetings(affiliation, search, pageable);
         } else {
-            meetingsPage = meetingsService.getMeetings(affiliationId, pageable);
+            meetingsPage = meetingsService.getMeetings(affiliation, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, meetingsPage));
     }

@@ -3,9 +3,12 @@ package com.example.bigbrotherbe.global.jwt;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
+import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ public class AuthUtil {
 
     private final MemberRepository memberRepository;
     private final AffiliationMemberRepository affiliationMemberRepository;
+    private final AffiliationRepository affiliationRepository;
 
     public Member getLoginMember() {
         try {
@@ -58,6 +62,16 @@ public class AuthUtil {
             }
         }
         return true;
+    }
+
+    public Long getAffiliationIdByMemberId(Long memberId, String affiliation) {
+        return affiliationMemberRepository.findAllByMemberId(memberId).stream()
+                .map(am -> affiliationRepository.findById(am.getId()))
+                .filter(optAffiliation -> optAffiliation.isPresent() &&
+                        affiliation.equals(optAffiliation.get().getCouncilType()))
+                .map(optAffiliation -> optAffiliation.get().getAffiliation_id())
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 member_id에 대한 단과대 정보를 찾을 수 없습니다."));
     }
 }
 

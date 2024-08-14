@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
@@ -104,8 +105,11 @@ public class TransactionsServiceImpl implements TransactionsService {
         transactions.update(transactionsUpdateRequest.getNote());
     }
 
-    public List<TransactionsResponse> getTransactionsWithMonth(int year, int month, Long affiliationId) {
+    public List<TransactionsResponse> getTransactionsWithMonth(int year, int month, String affiliation) {
         String yearMonth = String.format("%d-%02d", year, month);
+
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         List<Transactions> transactions = transactionsRepository.findAllByYearMonthAndAffiliationId(yearMonth, affiliationId);
 
         return transactions.stream()
