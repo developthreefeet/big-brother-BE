@@ -1,7 +1,5 @@
 package com.example.bigbrotherbe.domain.meetings.controller;
 
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
-import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.service.MeetingsService;
@@ -16,10 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-
-import java.util.List;
 
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;

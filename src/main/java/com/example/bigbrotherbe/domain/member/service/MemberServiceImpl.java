@@ -2,8 +2,10 @@ package com.example.bigbrotherbe.domain.member.service;
 
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
@@ -24,8 +26,10 @@ import com.example.bigbrotherbe.domain.member.entity.Member;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
 
         savedMember = memberLoader.getMember(savedMember.getId());
 
-        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), affiliation.getCouncilType(),affiliation.getAffiliationName());
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), affiliation.getCouncilType(), affiliation.getAffiliationName());
     }
 
     @Transactional
@@ -144,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
         memberChecker.checkDuplicatedEmail(email);
         String redisAuthCode = mailService.getAuthCode(email);
         boolean authResult = redisAuthCode.equals(authCode);
-        if(!authResult){
+        if (!authResult) {
             throw new BusinessException(ErrorCode.MISMATCH_VERIFIED_CODE);
         }
         return EmailVerificationResult.of(authResult);
@@ -182,6 +186,17 @@ public class MemberServiceImpl implements MemberService {
         affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("총학").build());
     }
 
+    public List<AffiliationCollegeResponse> getColleges() {
+        return Arrays.stream(AffiliationCode.values())
+                .filter(code -> code.getCouncilType().equals("단과대"))
+                .map(code -> AffiliationCollegeResponse.fromAffiliationCollegeResponse(code.getVal(), code.getCouncilName()))
+                .collect(Collectors.toList());
+    }
+
+    public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
+        return AffiliationCode.getDepartmentsByCollege(faculty);
+    }
+
     @Override
     public AffiliationListDto getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
@@ -189,12 +204,13 @@ public class MemberServiceImpl implements MemberService {
         return affiliationListToEntity(member.getUsername(), affiliationMemberList);
     }
 
+
     private AffiliationListDto affiliationListToEntity(String userName, List<AffiliationMember> affiliationMemberList) {
         AffiliationListDto affiliationListDto = new AffiliationListDto(userName);
+
         for (AffiliationMember affiliationMember : affiliationMemberList) {
             Affiliation affiliation = affiliationMember.getAffiliation();
-            affiliationListDto.addAffiliation(affiliation.getCouncilType(),affiliation.getAffiliationName(), affiliationMember.getRole());
-            System.out.println(affiliationListDto.getAffiliationTypeList().toString());
+            affiliationListDto.addAffiliation(affiliation.getCouncilType(), affiliation.getAffiliationName(), affiliationMember.getRole());
         }
         return affiliationListDto;
     }

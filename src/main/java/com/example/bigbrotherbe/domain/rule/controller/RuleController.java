@@ -1,7 +1,5 @@
 package com.example.bigbrotherbe.domain.rule.controller;
 
-import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
-import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
 import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.example.bigbrotherbe.domain.rule.service.RuleService;
@@ -13,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
