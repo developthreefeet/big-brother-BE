@@ -29,6 +29,7 @@ import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -257,6 +258,22 @@ public class MemberServiceImpl implements MemberService {
                 .updateAt(member.getUpdateAt())
                 .affiliationListDto(getMemberAffiliationRoleList())
                 .build();
+    }
+
+    @Override
+    public List<MemberInfoResponse> inquireAllMemberInfo() {
+        List<MemberInfoResponse> memberInfoResponseList = new ArrayList<>();
+        for(Member member: memberLoader.getAllMember()){
+            memberInfoResponseList.add(MemberInfoResponse
+                .builder()
+                .email(member.getEmail())
+                .memberName(member.getUsername())
+                .createAt(member.getCreateAt())
+                .updateAt(member.getUpdateAt())
+                .affiliationListDto(getMemberAffiliationRoleList())
+                .build());
+        }
+        return memberInfoResponseList;
     }
 
 
