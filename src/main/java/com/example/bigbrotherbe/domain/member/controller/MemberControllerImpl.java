@@ -6,7 +6,6 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -32,8 +31,6 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 public class MemberControllerImpl implements MemberController {
 
     private final MemberService memberService;
-    private final AuthUtil authUtil;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
         MemberResponse memberResponse = memberService.userSignUp(signUpDto);
@@ -85,5 +82,11 @@ public class MemberControllerImpl implements MemberController {
 
     public ResponseEntity<ApiResponse<TokenDto>> refreshToken(String refreshToken){
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.refreshToken(refreshToken)));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<Void>> memberDeleteSelf() {
+        memberService.deleteSelf();
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 }

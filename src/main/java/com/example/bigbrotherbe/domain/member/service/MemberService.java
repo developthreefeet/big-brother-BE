@@ -35,4 +35,6 @@ public interface MemberService {
     List<AffiliationCollegeResponse> getColleges();
 
     TokenDto refreshToken(String refreshToken);
+
+    void deleteSelf();
 }
