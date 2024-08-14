@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.member.service;
 
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
@@ -189,12 +189,19 @@ public class MemberServiceImpl implements MemberService {
         affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("총학").build());
     }
 
-    public List<AffiliationCollegeResponse> getColleges() {
+    @Override
+    public List<AffiliationResponse> getColleges() {
         return Arrays.stream(AffiliationCode.values())
                 .filter(code -> code.getCouncilType().equals("단과대"))
-                .map(code -> AffiliationCollegeResponse.fromAffiliationCollegeResponse(code.getVal(), code.getCouncilName()))
+                .map(code -> AffiliationResponse.fromAffiliationResponse(code.getVal(), code.getCouncilName()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<AffiliationResponse> getDepartments(String councilName) {
+        return AffiliationCode.getDepartmentsByCollegeName(councilName);
+    }
+
 
     @Override
     public TokenDto refreshToken(String refreshToken) {
@@ -225,9 +232,6 @@ public class MemberServiceImpl implements MemberService {
         memberDeleter.deleteMember(member);
     }
 
-    public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
-        return AffiliationCode.getDepartmentsByCollege(faculty);
-    }
 
     @Override
     public AffiliationListDto getMemberAffiliationRoleList() {
@@ -267,7 +271,7 @@ public class MemberServiceImpl implements MemberService {
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             return token.substring(7);
         }
-        throw new BusinessException(ErrorCode.ILIEGAL_HEADER_PATTERN);
+        throw new BusinessException(ErrorCode.ILLEGAL_HEADER_PATTERN);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.member.service;
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
@@ -32,7 +32,9 @@ public interface MemberService {
 
     AffiliationListDto getMemberAffiliationRoleList();
 
-    List<AffiliationCollegeResponse> getColleges();
+    List<AffiliationResponse> getColleges();
+
+    List<AffiliationResponse> getDepartments(String councilName);
 
     TokenDto refreshToken(String refreshToken);
 

@@ -3,16 +3,14 @@ package com.example.bigbrotherbe.domain.member.controller;
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
-import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
@@ -70,18 +68,22 @@ public class MemberControllerImpl implements MemberController {
     }
 
 
-
     public ResponseEntity<ApiResponse<Void>> changePassword(ChangePasswordRequest changePasswordRequest) {
         memberService.changePasswrd(changePasswordRequest.email(), changePasswordRequest.password());
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
-    public ResponseEntity<ApiResponse<List<AffiliationCollegeResponse>>> getCollegesList() {
-        List<AffiliationCollegeResponse> collegesList = memberService.getColleges();
+    public ResponseEntity<ApiResponse<List<AffiliationResponse>>> getCollegesList() {
+        List<AffiliationResponse> collegesList = memberService.getColleges();
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, collegesList));
     }
 
-    public ResponseEntity<ApiResponse<TokenDto>> refreshToken(String refreshToken){
+    public ResponseEntity<ApiResponse<List<AffiliationResponse>>> getDepartmentList(String councilName) {
+        List<AffiliationResponse> departmentsList = memberService.getDepartments(councilName);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, departmentsList));
+    }
+
+    public ResponseEntity<ApiResponse<TokenDto>> refreshToken(String refreshToken) {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.refreshToken(refreshToken)));
     }
 
