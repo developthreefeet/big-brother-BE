@@ -264,6 +264,7 @@ public class MemberServiceImpl implements MemberService {
     public List<MemberInfoResponse> inquireAllMemberInfo() {
         List<MemberInfoResponse> memberInfoResponseList = new ArrayList<>();
         for(Member member: memberLoader.getAllMember()){
+            if(distinguishUser(member.getAffiliations())){
             memberInfoResponseList.add(MemberInfoResponse
                 .builder()
                 .email(member.getEmail())
@@ -272,8 +273,18 @@ public class MemberServiceImpl implements MemberService {
                 .updateAt(member.getUpdateAt())
                 .affiliationListDto(getMemberAffiliationRoleList())
                 .build());
+            }
         }
         return memberInfoResponseList;
+    }
+
+    private boolean distinguishUser(List<AffiliationMember> affiliations) {
+        for(AffiliationMember affiliationMember : affiliations){
+            if(!"ROLE_USER".equals(affiliationMember.getRole())){
+                return false;
+            }
+        }
+        return true;
     }
 
 
