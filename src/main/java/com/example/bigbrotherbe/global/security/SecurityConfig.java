@@ -45,10 +45,10 @@ public class SecurityConfig {
                 // USER 권한이 있어야 요청할 수 있음
                 .requestMatchers(SERVER+"/members/test").hasAnyRole("ADMIN","USER")
                 .requestMatchers(SERVER+"/members").hasAnyRole("ADMIN","USER")
+                .requestMatchers(SERVER+"/members/information").hasAnyRole("ADMIN","USER")
                 // 유저 어드민 권한이 있어야 요청할 수 있음
                 .requestMatchers(SERVER+"/members/password").hasAnyRole("ADMIN","USER")
                 .requestMatchers(SERVER+"/members/manager").hasRole("ADMIN")
-                .requestMatchers(SERVER+"members/information").hasAnyRole("ADMIN","USER")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                 .anyRequest().permitAll()
             )
