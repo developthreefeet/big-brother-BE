@@ -70,8 +70,9 @@ public class MemberControllerImpl implements MemberController {
     }
 
 
+
     public ResponseEntity<ApiResponse<Void>> changePassword(ChangePasswordRequest changePasswordRequest) {
-        memberService.changePasswrd(changePasswordRequest.password());
+        memberService.changePasswrd(changePasswordRequest.email(), changePasswordRequest.password());
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 

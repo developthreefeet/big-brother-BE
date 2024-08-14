@@ -178,8 +178,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void changePasswrd(String password) {
-        Member member = authUtil.getLoginMember();
+    public void changePasswrd(String email,String password) {
+        Member member = memberLoader.findByMemberEmail(email);
         member.changePassword(passwordEncoder.encode(password));
     }
 

@@ -11,6 +11,7 @@ import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
+import com.example.bigbrotherbe.global.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 
-@RequestMapping("/api/v1/members")
+@RequestMapping(SecurityConfig.SERVER+"/members")
 @Tag(name = "멤버", description = "회원가입,로그인 API")
 public interface MemberController {
 
@@ -83,4 +84,8 @@ public interface MemberController {
     @DeleteMapping
     @Operation(summary = "유저 탈퇴")
 ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> memberDeleteSelf();
+
+//    @PatchMapping
+// ?   @Operation(summary = "유저 상세 정보 변경")
+//    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberInfoResponse>> changeMemberInfo(@RequestBody MemberInfoChangeRequest memberInfoChangeRequest);
 }
