@@ -279,6 +279,19 @@ public class MemberServiceImpl implements MemberService {
         return memberInfoResponseList;
     }
 
+    @Override
+    public MemberInfoResponse getUserByEmail(String email) {
+            Member member = memberLoader.findByMemberEmail(email);
+        return MemberInfoResponse
+            .builder()
+            .email(member.getEmail())
+            .memberName(member.getUsername())
+            .createAt(member.getCreateAt())
+            .updateAt(member.getUpdateAt())
+            .affiliationListDto(getMemberAffiliationRoleList())
+            .build();
+    }
+
     private boolean distinguishUser(List<AffiliationMember> affiliations) {
         for(AffiliationMember affiliationMember : affiliations){
             if(!"ROLE_USER".equals(affiliationMember.getRole())){
