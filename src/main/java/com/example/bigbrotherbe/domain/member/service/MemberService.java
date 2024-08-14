@@ -41,4 +41,6 @@ public interface MemberService {
     void deleteSelf();
 
     MemberInfoResponse changeMemberInfo(String userName);
+
+    List<MemberInfoResponse> inquireAllMemberInfo();
 }

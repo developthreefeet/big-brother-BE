@@ -4,6 +4,7 @@ import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,4 +42,7 @@ public class MemberLoader {
         return memberRepository.findByEmail(memberEmail);
     }
 
+    public List<Member> getAllMember() {
+        return memberRepository.findAll();
+    }
 }
