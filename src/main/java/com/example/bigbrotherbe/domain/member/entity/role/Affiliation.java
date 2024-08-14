@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Builder
@@ -25,7 +24,7 @@ public class Affiliation {
     private String studentCouncil;
 
     @Column
-    private String affiliationName;
+    private String name;
 
     @Column
     private String presidentName;
