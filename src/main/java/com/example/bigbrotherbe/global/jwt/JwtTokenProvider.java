@@ -3,6 +3,8 @@ package com.example.bigbrotherbe.global.jwt;
 import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.ACCESS_TOKEN;
 import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.REFRESH_TOKEN;
 
+import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,7 +33,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private final Key key;
-    private static final long ACCESS_TIME = 10 * 6L; // 1초
+    private static final long ACCESS_TIME = 10 * 60 * 1000L; // 1초
     private static final long REFRESH_TIME = 30 * 60 * 1000L; //30분
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -95,8 +97,7 @@ public class JwtTokenProvider {
         }  catch (SecurityException | MalformedJwtException e) {
             log.info("잘못된 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
-//            throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
-            log.info("만료된 토큰입니다.");
+            throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않은 토큰입니다.", e);
         } catch (IllegalArgumentException e) {
