@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.global.jwt;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import static com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode.STUDENT_COUNCIL;
 import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_PRESIDENT;
 import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_USER;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_LOAD_MEMBER;
@@ -65,6 +67,11 @@ public class AuthUtil {
     }
 
     public Long getAffiliationIdByMemberId(Long memberId, String affiliation) {
+
+        if (STUDENT_COUNCIL.getCouncilType().equals(affiliation)) {
+            return 1L;
+        }
+
         return affiliationMemberRepository.findAllByMemberId(memberId).stream()
                 .map(am -> affiliationRepository.findById(am.getId()))
                 .filter(optAffiliation -> optAffiliation.isPresent() &&
