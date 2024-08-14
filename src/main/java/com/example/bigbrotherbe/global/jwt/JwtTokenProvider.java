@@ -39,13 +39,13 @@ public class JwtTokenProvider {
     }
 
 
-// Member 정보를 가지고 Access Token, RefreshToken을 생성하는 메서드
-public JwtToken generateToken(Authentication authentication){
-    // 권한 가져오기
-    String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
-        Collectors.joining(","));
+    // Member 정보를 가지고 Access Token, RefreshToken을 생성하는 메서드
+    public JwtToken generateToken(Authentication authentication){
+        // 권한 가져오기
+        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
+            Collectors.joining(","));
 
-    TokenDto tokenDto = createAllToken(authentication.getName(),authorities);
+        TokenDto tokenDto = createAllToken(authentication.getName(),authorities);
 
         return JwtToken.builder()
             .grantType("Bearer")
@@ -107,7 +107,7 @@ public JwtToken generateToken(Authentication authentication){
 
     public boolean checkTokenType(String token){
         String tokenType = (String) parseClaims(token).get("type");
-       return ACCESS_TOKEN.equals(tokenType);
+        return ACCESS_TOKEN.equals(tokenType);
     }
 
 
@@ -125,8 +125,8 @@ public JwtToken generateToken(Authentication authentication){
     public String getMemberEmailFromToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                                        .setSigningKey(key)
-                                        .build().parseClaimsJws(token);
+                .setSigningKey(key)
+                .build().parseClaimsJws(token);
             return claims.getBody().getSubject();
         } catch (Exception e) {
             log.error("Failed to extract username from token", e);
