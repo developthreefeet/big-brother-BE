@@ -31,8 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private final Key key;
-    private static final long ACCESS_TIME = 2 * 60 * 100L; // 1분
-    private static final long REFRESH_TIME = 20 * 60 * 1000L; //20분
+    private static final long ACCESS_TIME = 10 * 60 * 100L; // 10분
+    private static final long REFRESH_TIME = 30 * 60 * 1000L; //30분
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
