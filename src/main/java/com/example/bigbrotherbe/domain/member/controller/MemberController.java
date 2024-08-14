@@ -6,7 +6,6 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -19,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,4 +78,9 @@ public interface MemberController {
     @GetMapping("/refresh")
     @Operation(summary = "refresh 토큰으로 토큰 재 생성 요청")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<TokenDto>> refreshToken(@RequestHeader("Authorization") String refreshToken);
+
+
+    @DeleteMapping
+    @Operation(summary = "유저 탈퇴")
+ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> memberDeleteSelf();
 }

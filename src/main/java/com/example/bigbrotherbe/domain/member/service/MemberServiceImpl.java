@@ -12,6 +12,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.util.MemberChecker;
+import com.example.bigbrotherbe.domain.member.util.MemberDeleter;
 import com.example.bigbrotherbe.domain.member.util.MemberLoader;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.email.MailService;
@@ -23,9 +24,7 @@ import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 
 
-import com.example.bigbrotherbe.global.jwt.RefreshToken;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
-import jakarta.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -61,6 +59,8 @@ public class MemberServiceImpl implements MemberService {
     private final AuthUtil authUtil;
     private final MemberLoader memberLoader;
     private final MemberChecker memberChecker;
+    private final MemberDeleter memberDeleter;
+
     //    @Value("${spring.mail.auth-code-expiration-millis}")
     private final long authCodeExpirationMillis = 1800000;
 
@@ -216,6 +216,13 @@ public class MemberServiceImpl implements MemberService {
                     .build();
             } else
                 throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
+    }
+
+    @Override
+    @Transactional()
+    public void deleteSelf() {
+        Member member = authUtil.getLoginMember();
+        memberDeleter.deleteMember(member);
     }
 
     public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
