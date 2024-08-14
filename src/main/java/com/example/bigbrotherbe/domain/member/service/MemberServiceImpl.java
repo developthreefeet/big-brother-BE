@@ -247,6 +247,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public MemberInfoResponse changeMemberInfo(String username) {
         Member member = authUtil.getLoginMember();
         member.changeName(username);
