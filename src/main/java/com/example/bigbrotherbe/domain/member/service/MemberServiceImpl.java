@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.member.service;
 
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
@@ -75,20 +75,32 @@ public class MemberServiceImpl implements MemberService {
 
 
         // Affiliation 조회
-        Affiliation affiliation = affiliationRepository.findByAffiliationName(signUpDto.getAffiliation())
+        log.info(signUpDto.getCollege() +" " + signUpDto.getAffiliation());
+        Affiliation  college = affiliationRepository.findByName(signUpDto.getCollege())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_AFFILIATION));
 
         // AffiliationMember 엔티티 생성
-        AffiliationMember affiliationMember = AffiliationMember.builder()
+        AffiliationMember memberCollage = AffiliationMember.builder()
                 .member(savedMember)
-                .affiliation(affiliation)
+                .affiliation(college)
                 .role("ROLE_USER")
                 .build();
-        affiliationMemberRepository.save(affiliationMember);
+        affiliationMemberRepository.save(memberCollage);
+
+        Affiliation affiliation = affiliationRepository.findByName(signUpDto.getAffiliation())
+            .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_AFFILIATION));
+
+        AffiliationMember memberAffiliation = AffiliationMember.builder()
+            .member(savedMember)
+            .affiliation(affiliation)
+            .role("ROLE_USER")
+            .build();
+
+        affiliationMemberRepository.save(memberAffiliation);
 
         savedMember = memberLoader.getMember(savedMember.getId());
 
-        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), affiliation.getCouncilType(), affiliation.getAffiliationName());
+        return MemberResponse.form(savedMember.getId(), savedMember.getUsername(), savedMember.getEmail(), savedMember.getCreateAt(), college.getName(), affiliation.getName());
     }
 
     @Transactional
@@ -186,7 +198,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void makeAffiliation() {
-        affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("총학").build());
+        affiliationRepository.save(Affiliation.builder().affiliation_id(1L).name("총학").build());
     }
 
     @Override
@@ -232,6 +244,23 @@ public class MemberServiceImpl implements MemberService {
         memberDeleter.deleteMember(member);
     }
 
+    @Override
+    public MemberInfoResponse changeMemberInfo(String username) {
+        Member member = authUtil.getLoginMember();
+        member.changeName(username);
+        return MemberInfoResponse
+            .builder()
+            .email(member.getEmail())
+            .memberName(member.getUsername())
+            .createAt(member.getCreateAt())
+            .updateAt(member.getUpdateAt())
+            .affiliationListDto(getMemberAffiliationRoleList())
+            .build();
+    }
+
+    public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
+        return AffiliationCode.getDepartmentsByCollege(faculty);
+    }
 
     @Override
     public AffiliationListDto getMemberAffiliationRoleList() {

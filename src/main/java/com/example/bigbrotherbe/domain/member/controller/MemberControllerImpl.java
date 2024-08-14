@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.MemberInfoChangeRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
@@ -91,5 +92,11 @@ public class MemberControllerImpl implements MemberController {
     public ResponseEntity<ApiResponse<Void>> memberDeleteSelf() {
         memberService.deleteSelf();
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> changeMemberInfo(
+        MemberInfoChangeRequest memberInfoChangeRequest) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.changeMemberInfo(memberInfoChangeRequest.userName())));
     }
 }

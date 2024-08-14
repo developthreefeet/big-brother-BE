@@ -39,4 +39,6 @@ public interface MemberService {
     TokenDto refreshToken(String refreshToken);
 
     void deleteSelf();
+
+    MemberInfoResponse changeMemberInfo(String userName);
 }

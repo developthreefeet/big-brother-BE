@@ -20,13 +20,15 @@ public class InitialDataLoader {
     public CommandLineRunner loadData(MemberRepository memberRepository, AffiliationRepository affiliationRepository,
                                       AffiliationMemberRepository affiliationMemberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (affiliationRepository.findByAffiliationName("응용소프트웨어전공").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).affiliationName("응용소프트웨어전공").councilType("단과대").build());
+            if (affiliationRepository.findByName("응용소프트웨어전공").isEmpty()) {
+                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).name("응용소프트웨어전공").councilType("학과").build());
             }
 
-            if (affiliationRepository.findByAffiliationName("디지털콘텐츠디자인학과").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).affiliationName("디지털콘텐츠디자인학과").councilType("학과").build());
-
+            if (affiliationRepository.findByName("디지털콘텐츠디자인학과").isEmpty()) {
+                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).name("디지털콘텐츠디자인학과").councilType("학과").build());
+            }
+            if (affiliationRepository.findByName("ICT융합대학").isEmpty()) {
+                affiliationRepository.save(Affiliation.builder().affiliation_id(3L).name("ICT융합대학").councilType("단과대").build());
             }
             // Check if an admin user already exists
             if (memberRepository.findByUsername("admin").isEmpty()) {
@@ -36,7 +38,7 @@ public class InitialDataLoader {
                 admin.setEmail("developthreefeet@gmail.com");
                 admin.setUsername("admin");
                 memberRepository.save(admin);
-                Affiliation affiliation = affiliationRepository.findByAffiliationName("응용소프트웨어전공")
+                Affiliation affiliation = affiliationRepository.findByName("응용소프트웨어전공")
                         .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
 
                 // AffiliationMember 엔티티 생성

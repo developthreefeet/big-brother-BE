@@ -116,4 +116,8 @@ public class Member implements UserDetails {
     private static boolean isValidEmail(String email) {
         return EMAIL_PATTERN.matcher(email).matches();
     }
+
+    public void changeName(String username) {
+        this.username = username;
+    }
 }

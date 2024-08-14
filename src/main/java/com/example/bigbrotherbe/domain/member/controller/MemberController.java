@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.MemberInfoChangeRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
@@ -68,7 +69,7 @@ public interface MemberController {
     @Operation(summary = "이메일 인증 코드 검증")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<EmailVerificationResult>> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code);
 
-    @PatchMapping()
+    @PatchMapping("/password")
     @Operation(summary = "비밀번호 변경")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
 
@@ -89,7 +90,7 @@ public interface MemberController {
     @Operation(summary = "유저 탈퇴")
 ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> memberDeleteSelf();
 
-//    @PatchMapping
-// ?   @Operation(summary = "유저 상세 정보 변경")
-//    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberInfoResponse>> changeMemberInfo(@RequestBody MemberInfoChangeRequest memberInfoChangeRequest);
+    @PatchMapping("/information")
+    @Operation(summary = "유저 상세 정보 변경")
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberInfoResponse>> changeMemberInfo(@RequestBody MemberInfoChangeRequest memberInfoChangeRequest);
 }
