@@ -15,18 +15,18 @@ public class MemberResponse {
     private final String memberName;
     private final String email;
     private final LocalDateTime create_at;
-    private final String councilType;
-    private final String affiliationName;
+    private final String college;
+    private final String affiliation;
 
-    public static MemberResponse form(Long id, String username, String email, LocalDateTime createAt, String councilType, String affiliationName) {
+    public static MemberResponse form(Long id, String username, String email, LocalDateTime createAt, String college, String affiliation) {
         return MemberResponse
             .builder()
             .id(id)
             .memberName(username)
             .email(email)
             .create_at(createAt)
-            .councilType(councilType)
-            .affiliationName(affiliationName)
+            .college(college)
+            .affiliation(affiliation)
             .build();
     }
 }
