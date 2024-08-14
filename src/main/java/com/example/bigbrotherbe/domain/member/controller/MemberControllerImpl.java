@@ -99,4 +99,10 @@ public class MemberControllerImpl implements MemberController {
         MemberInfoChangeRequest memberInfoChangeRequest) {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.changeMemberInfo(memberInfoChangeRequest.userName())));
     }
+
+    @Override
+    public ResponseEntity<ApiResponse<List<MemberInfoResponse>>> inquireAllUserInfo() {
+
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.inquireAllMemberInfo()));
+    }
 }
