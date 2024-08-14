@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(SERVER+"/members/sign-in").permitAll()
                 .requestMatchers(SERVER+"/members/sign-up/**").permitAll()
                 .requestMatchers(SERVER+"/members/refresh").permitAll()
-
+                .requestMatchers("/swagger-ui/**").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
                 .requestMatchers(SERVER+"/members/test").hasAnyRole("ADMIN","USER")
                 .requestMatchers(SERVER+"/members").hasAnyRole("ADMIN","USER")
