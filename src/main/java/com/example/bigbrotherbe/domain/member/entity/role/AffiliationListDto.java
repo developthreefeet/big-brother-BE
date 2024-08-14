@@ -14,7 +14,6 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-
 public class AffiliationListDto {
     private final List<AffiliationType> affiliationTypeList = new ArrayList<>();
     private final String memberName;

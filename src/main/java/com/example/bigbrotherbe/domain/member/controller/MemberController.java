@@ -39,7 +39,7 @@ public interface MemberController {
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
-    JwtToken signIn(@RequestBody MemberRequest memberRequest);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<JwtToken>>signIn(@RequestBody MemberRequest memberRequest);
 
     @PostMapping("/test")
     @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleLost를 가져오는 값")
@@ -51,15 +51,15 @@ public interface MemberController {
 
     @GetMapping("/sign-up/emails/verification")
     @Operation(summary = "이메일 중복확인")
-    ResponseEntity<EmailVerificationResult> verificateEmail(@RequestParam(name = "member-email") String email);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<EmailVerificationResult>> verificateEmail(@RequestParam(name = "member-email") String email);
 
     @PostMapping("/sign-up/emails/request-code")
     @Operation(summary = "이메일 인증 코드 요청")
-    ResponseEntity<EmailVerificationResult> sendMessage(@RequestBody EmailRequest emailRequest);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<EmailVerificationResult>> sendMessage(@RequestBody EmailRequest emailRequest);
 
     @GetMapping("/sign-up/emails/verifications")
     @Operation(summary = "이메일 인증 코드 검증")
-    ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<EmailVerificationResult>> verificationEmail(@RequestParam(name = "email") String email, @RequestParam(name = "code") String code);
 
     @PatchMapping()
     @Operation(summary = "비밀번호 변경")

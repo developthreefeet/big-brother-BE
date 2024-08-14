@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.rule.controller;
 
+
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
 import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
@@ -23,11 +24,31 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/rule")
-public class RuleController {
+@RequestMapping("/api/v1/admin/rule")
+public class RuleAdminController {
 
     private final RuleService ruleService;
 
+    @PostMapping
+    public ResponseEntity<ApiResponse<Void>> registerRule(@RequestPart(value = "ruleRegisterRequest") RuleRegisterRequest ruleRegisterRequest,
+                                                          @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        ruleService.registerRule(ruleRegisterRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @PutMapping("/{ruleId}")
+    public ResponseEntity<ApiResponse<Void>> updateRule(@PathVariable("ruleId") Long ruleId,
+                                                        @RequestPart(value = "ruleUpdateRequest") RuleUpdateRequest ruleUpdateRequest,
+                                                        @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        ruleService.updateRule(ruleId, ruleUpdateRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{ruleId}")
+    public ResponseEntity<ApiResponse<Void>> deleteRule(@PathVariable("ruleId") Long ruleId) {
+        ruleService.deleteRule(ruleId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
 
     @GetMapping("/{ruleId}")
     public ResponseEntity<ApiResponse<RuleResponse>> getRuleById(@PathVariable("ruleId") Long ruleId) {
