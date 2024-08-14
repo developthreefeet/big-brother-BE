@@ -26,7 +26,7 @@ public interface MemberService {
 
     boolean checkExistAffiliationById(Long affiliationId);
 
-    void changePasswrd(String password);
+    void changePasswrd(String email,String password);
 
     void makeAffiliation();
 

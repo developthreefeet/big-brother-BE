@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -40,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(SERVER+"/members/sign-in").permitAll()
                 .requestMatchers(SERVER+"/members/sign-up/**").permitAll()
                 .requestMatchers(SERVER+"/members/refresh").permitAll()
+                .requestMatchers(HttpMethod.PATCH,SERVER+"/members").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
                 .requestMatchers(SERVER+"/members/test").hasRole("USER")
                 .requestMatchers(SERVER+"/members/manager").hasRole("ADMIN")
