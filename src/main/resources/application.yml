@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: ${VARIABLE_NAME}
+    active: ${ACTIVE_NAME}
   main:
     debug: true
 
