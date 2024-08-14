@@ -27,7 +27,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/meetings")
+@RequestMapping("/api/v1/meetings")
 public class MeetingsController {
 
     private final MeetingsService meetingsService;

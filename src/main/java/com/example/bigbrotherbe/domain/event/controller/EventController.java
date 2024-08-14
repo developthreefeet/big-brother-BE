@@ -23,7 +23,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/event")
+@RequestMapping("/api/v1/event")
 public class EventController {
 
     private final EventService eventService;

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/big-brother/faq")
+@RequestMapping("/api/v1/faq")
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
 public class FAQController {

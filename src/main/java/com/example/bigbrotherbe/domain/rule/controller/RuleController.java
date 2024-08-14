@@ -23,7 +23,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/big-brother/rule")
+@RequestMapping("/api/v1/rule")
 public class RuleController {
 
     private final RuleService ruleService;
