@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.member.service;
 
 
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
@@ -25,6 +25,7 @@ import com.example.bigbrotherbe.domain.member.entity.Member;
 
 
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -75,8 +76,8 @@ public class MemberServiceImpl implements MemberService {
 
 
         // Affiliation 조회
-        log.info(signUpDto.getCollege() +" " + signUpDto.getAffiliation());
-        Affiliation  college = affiliationRepository.findByName(signUpDto.getCollege())
+        log.info(signUpDto.getCollege() + " " + signUpDto.getAffiliation());
+        Affiliation college = affiliationRepository.findByName(signUpDto.getCollege())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_AFFILIATION));
 
         // AffiliationMember 엔티티 생성
@@ -88,13 +89,13 @@ public class MemberServiceImpl implements MemberService {
         affiliationMemberRepository.save(memberCollage);
 
         Affiliation affiliation = affiliationRepository.findByName(signUpDto.getAffiliation())
-            .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_AFFILIATION));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_AFFILIATION));
 
         AffiliationMember memberAffiliation = AffiliationMember.builder()
-            .member(savedMember)
-            .affiliation(affiliation)
-            .role("ROLE_USER")
-            .build();
+                .member(savedMember)
+                .affiliation(affiliation)
+                .role("ROLE_USER")
+                .build();
 
         affiliationMemberRepository.save(memberAffiliation);
 
@@ -190,7 +191,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void changePasswrd(String email,String password) {
+    public void changePasswrd(String email, String password) {
         Member member = memberLoader.findByMemberEmail(email);
         member.changePassword(passwordEncoder.encode(password));
     }
@@ -221,20 +222,20 @@ public class MemberServiceImpl implements MemberService {
         String resolveToken = resolveToken(refreshToken);
 
         if (jwtTokenProvider.validateToken(resolveToken)) {
-                // 리프레시 토큰이 유효한 경우 새로운 엑세스 토큰 발급
-                String newAccessToken = jwtTokenProvider.createTokenByRefreshToken(resolveToken);
+            // 리프레시 토큰이 유효한 경우 새로운 엑세스 토큰 발급
+            String newAccessToken = jwtTokenProvider.createTokenByRefreshToken(resolveToken);
 
-                // 새 엑세스 토큰으로 인증 설정
-                Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 새 엑세스 토큰으로 인증 설정
+            Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                return TokenDto
+            return TokenDto
                     .builder()
                     .accessToken(newAccessToken)
                     .refreshToken(resolveToken)
                     .build();
-            } else
-                throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
+        } else
+            throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
     }
 
     @Override
@@ -249,18 +250,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = authUtil.getLoginMember();
         member.changeName(username);
         return MemberInfoResponse
-            .builder()
-            .email(member.getEmail())
-            .memberName(member.getUsername())
-            .createAt(member.getCreateAt())
-            .updateAt(member.getUpdateAt())
-            .affiliationListDto(getMemberAffiliationRoleList())
-            .build();
+                .builder()
+                .email(member.getEmail())
+                .memberName(member.getUsername())
+                .createAt(member.getCreateAt())
+                .updateAt(member.getUpdateAt())
+                .affiliationListDto(getMemberAffiliationRoleList())
+                .build();
     }
 
-    public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
-        return AffiliationCode.getDepartmentsByCollege(faculty);
-    }
 
     @Override
     public AffiliationListDto getMemberAffiliationRoleList() {
@@ -275,7 +273,7 @@ public class MemberServiceImpl implements MemberService {
 
         for (AffiliationMember affiliationMember : affiliationMemberList) {
             Affiliation affiliation = affiliationMember.getAffiliation();
-            affiliationListDto.addAffiliation(affiliation.getCouncilType(), affiliation.getAffiliationName(), affiliationMember.getRole());
+            affiliationListDto.addAffiliation(affiliation.getCouncilType(), affiliation.getName(), affiliationMember.getRole());
         }
         return affiliationListDto;
     }
