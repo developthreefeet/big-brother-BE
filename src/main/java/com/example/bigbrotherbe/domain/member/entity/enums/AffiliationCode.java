@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.INVALID_AFFILIATION;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
 
 @Getter
 @AllArgsConstructor
@@ -101,7 +102,7 @@ public enum AffiliationCode {
             case ICT:
                 return 29; // ICT융합대 마지막 학과 val
             default:
-                throw new IllegalArgumentException("해당 단과대는 존재하지 않습니다.");
+                throw new BusinessException(NO_EXIST_AFFILIATION);
         }
     }
 
