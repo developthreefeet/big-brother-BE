@@ -3,8 +3,10 @@ package com.example.bigbrotherbe.domain.member.controller;
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
+import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
@@ -23,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 
-@RequestMapping("/api/big-brother/members")
+
+@RequestMapping("/api/v1/members")
 @Tag(name = "멤버", description = "회원가입,로그인 API")
 public interface MemberController {
 
@@ -39,7 +43,7 @@ public interface MemberController {
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
-    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<JwtToken>>signIn(@RequestBody MemberRequest memberRequest);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<JwtToken>> signIn(@RequestBody MemberRequest memberRequest);
 
     @PostMapping("/test")
     @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleLost를 가져오는 값")
@@ -64,4 +68,8 @@ public interface MemberController {
     @PatchMapping()
     @Operation(summary = "비밀번호 변경")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
+
+    @GetMapping("/colleges")
+    @Operation(summary = "단과대학 리스트 조회")
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<AffiliationCollegeResponse>>> getCollegesList();
 }
