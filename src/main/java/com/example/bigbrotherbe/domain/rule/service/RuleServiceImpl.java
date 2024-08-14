@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.rule.service;
 
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
@@ -117,13 +118,17 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Rule> getRules(Long affiliationId, Pageable pageable) {
+    public Page<Rule> getRules(String affiliation, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return ruleRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Rule> searchRules(Long affiliationId, String title, Pageable pageable) {
+    public Page<Rule> searchRules(String affiliation, String title, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return ruleRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }

@@ -19,7 +19,7 @@ public interface FAQService {
 
     FAQResponse getFAQById(Long faqId);
 
-    Page<FAQ> getFAQ(Long affiliationId, Pageable pageable);
+    Page<FAQ> getFAQ(String affiliation, Pageable pageable);
 
-    Page<FAQ> searchFAQ(Long affiliationId, String title, Pageable pageable);
+    Page<FAQ> searchFAQ(String affiliation, String title, Pageable pageable);
 }

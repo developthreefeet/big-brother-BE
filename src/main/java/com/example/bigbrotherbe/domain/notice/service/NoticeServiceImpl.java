@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.notice.service;
 
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
@@ -124,12 +125,16 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Page<Notice> getNotice(Long affiliationId, Pageable pageable) {
+    public Page<Notice> getNotice(String affiliation, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return noticeRepository.findByAffiliationId(affiliationId, pageable);
     }
 
     @Override
-    public Page<Notice> searchNotice(Long affiliationId, String title, Pageable pageable) {
+    public Page<Notice> searchNotice(String affiliation, String title, Pageable pageable) {
+        Member member = authUtil.getLoginMember();
+        Long affiliationId = authUtil.getAffiliationIdByMemberId(member.getId(), affiliation);
         return noticeRepository.findByAffiliationIdAndTitleContaining(affiliationId, title, pageable);
     }
 }

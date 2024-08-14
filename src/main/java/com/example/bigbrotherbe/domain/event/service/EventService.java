@@ -21,7 +21,7 @@ public interface EventService {
 
     EventResponse getEventById(Long eventId);
 
-    Page<Event> getEvents(Long affiliationId, Pageable pageable);
+    Page<Event> getEvents(String affiliation, Pageable pageable);
 
-    Page<Event> searchEvent(Long affiliationId, String title, Pageable pageable);
+    Page<Event> searchEvent(String affiliation, String title, Pageable pageable);
 }

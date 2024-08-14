@@ -57,16 +57,16 @@ public class FAQAdminController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<FAQ>>> getFAQList(@RequestParam(name = "affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<Page<FAQ>>> getFAQList(@RequestParam(name = "affiliation") String affiliation,
                                                              @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
                                                              @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
                                                              @RequestParam(name = "search", required = false) String search) {
         Page<FAQ> faqPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
-            faqPage = faqService.searchFAQ(affiliationId, search, pageable);
+            faqPage = faqService.searchFAQ(affiliation, search, pageable);
         } else {
-            faqPage = faqService.getFAQ(affiliationId, pageable);
+            faqPage = faqService.getFAQ(affiliation, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, faqPage));
     }

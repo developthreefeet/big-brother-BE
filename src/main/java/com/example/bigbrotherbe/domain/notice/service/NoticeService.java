@@ -19,7 +19,7 @@ public interface NoticeService {
 
     NoticeResponse getNoticeById(Long noticeId);
 
-    Page<Notice> getNotice(Long affiliationId, Pageable pageable);
+    Page<Notice> getNotice(String affiliation, Pageable pageable);
 
-    Page<Notice> searchNotice(Long affiliationId, String title, Pageable pageable);
+    Page<Notice> searchNotice(String affiliation, String title, Pageable pageable);
 }

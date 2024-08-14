@@ -20,10 +20,10 @@ public class TransactionsController {
     private final TransactionsService transactionsService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TransactionsResponse>>> getTransactions(@RequestParam("affiliationId") Long affiliationId,
+    public ResponseEntity<ApiResponse<List<TransactionsResponse>>> getTransactions(@RequestParam("affiliation") String affiliation,
                                                                                    @RequestParam("year") int year,
                                                                                    @RequestParam("month") int month) {
-        List<TransactionsResponse> transactionsList = transactionsService.getTransactionsWithMonth(year, month, affiliationId);
+        List<TransactionsResponse> transactionsList = transactionsService.getTransactionsWithMonth(year, month, affiliation);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, transactionsList));
     }
 }

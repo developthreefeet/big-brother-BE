@@ -57,16 +57,16 @@ public class NoticeAdminController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<Notice>>> getNoticeList(@RequestParam(name = "affiliationId") Long affiliationId,
-                                                      @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
-                                                      @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
-                                                      @RequestParam(name = "search", required = false) String search) {
+    public ResponseEntity<ApiResponse<Page<Notice>>> getNoticeList(@RequestParam(name = "affiliation") String affiliation,
+                                                                   @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
+                                                                   @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
+                                                                   @RequestParam(name = "search", required = false) String search) {
         Page<Notice> noticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
-            noticePage = noticeService.searchNotice(affiliationId, search, pageable);
+            noticePage = noticeService.searchNotice(affiliation, search, pageable);
         } else {
-            noticePage = noticeService.getNotice(affiliationId, pageable);
+            noticePage = noticeService.getNotice(affiliation, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, noticePage));
     }
