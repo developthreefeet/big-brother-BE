@@ -1,7 +1,12 @@
 package com.example.bigbrotherbe.global.jwt;
 
+import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.ACCESS_TOKEN;
+import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.REFRESH_TOKEN;
+
+import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private final Key key;
-
+    private static final long ACCESS_TIME = 2 * 60 * 100L; // 1분
+    private static final long REFRESH_TIME = 20 * 60 * 1000L; //20분
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -39,27 +44,28 @@ public JwtToken generateToken(Authentication authentication){
     // 권한 가져오기
     String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
         Collectors.joining(","));
-    long now = new Date().getTime();
 
-    Date accessTokenExpiresIn = new Date(now+86400000);
-    // accessToken 생성
-    String accessToken = Jwts.builder().setSubject(authentication.getName())
-        .claim("auth",authorities)
-        .setExpiration(accessTokenExpiresIn)
-        .signWith(key, SignatureAlgorithm.HS256)
-        .compact();
-    // refreshToken 생성
-    String refreshToken = Jwts.builder()
-        .setExpiration(new Date(now + 86400000))
-        .signWith(key, SignatureAlgorithm.HS256)
-        .compact();
+    TokenDto tokenDto = createAllToken(authentication.getName(),authorities);
 
         return JwtToken.builder()
             .grantType("Bearer")
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
+            .accessToken(tokenDto.getAccessToken())
+            .refreshToken(tokenDto.getRefreshToken())
             .build();
     }
+
+    private String createToken(String email,String authorities,String type) {
+        long now = new Date().getTime();
+        long expiration = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+        return Jwts.builder()
+            .setSubject(email)
+            .claim("auth", authorities)
+            .claim("type", type)
+            .setExpiration(new Date(now + expiration))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+    }
+
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
         log.info("Parsed claims: {}", claims);
@@ -78,16 +84,19 @@ public JwtToken generateToken(Authentication authentication){
     }
 
     public boolean validateToken(String token){
+
         try{
-            Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token);
+                .parseClaimsJws(token)
+                .getBody();
             return true;
         }  catch (SecurityException | MalformedJwtException e) {
             log.info("잘못된 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
-            log.info("만료된 토큰입니다.", e);
+//            throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
+            log.info("만료된 토큰입니다.");
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않은 토큰입니다.", e);
         } catch (IllegalArgumentException e) {
@@ -95,6 +104,13 @@ public JwtToken generateToken(Authentication authentication){
         }
         return false;
     }
+
+    public boolean checkTokenType(String token){
+        String tokenType = (String) parseClaims(token).get("type");
+       return ACCESS_TOKEN.equals(tokenType);
+    }
+
+
     private Claims parseClaims(String accessToken){
         try{
             return Jwts.parserBuilder()
@@ -105,5 +121,40 @@ public JwtToken generateToken(Authentication authentication){
         } catch (ExpiredJwtException e){
             return e.getClaims();
         }
+    }
+    public String getMemberEmailFromToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                                        .setSigningKey(key)
+                                        .build().parseClaimsJws(token);
+            return claims.getBody().getSubject();
+        } catch (Exception e) {
+            log.error("Failed to extract username from token", e);
+            return null;
+        }
+    }
+
+    public String createTokenByRefreshToken(String refreshToken) {
+        Claims claims = getAllClaimsFromToken(refreshToken);
+        Date now = new Date();
+        Date expiraion = new Date(now.getTime() + ACCESS_TIME);
+        return Jwts.builder()
+            .setSubject(claims.getSubject())
+            .claim("auth",claims.get("auth"))
+            .setExpiration(expiraion)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+    }
+
+    public TokenDto createAllToken(String email, String role) {
+        return new TokenDto(createToken(email, role, ACCESS_TOKEN), createToken(email, role, REFRESH_TOKEN));
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
     }
 }

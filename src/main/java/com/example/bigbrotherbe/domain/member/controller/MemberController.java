@@ -11,6 +11,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
+import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -72,4 +74,8 @@ public interface MemberController {
     @GetMapping("/colleges")
     @Operation(summary = "단과대학 리스트 조회")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<AffiliationCollegeResponse>>> getCollegesList();
+
+    @GetMapping("/refresh")
+    @Operation(summary = "refresh 토큰으로 토큰 재 생성 요청")
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<TokenDto>> refreshToken(@RequestHeader("Authorization") String refreshToken);
 }

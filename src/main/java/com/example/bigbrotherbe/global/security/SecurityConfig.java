@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-
+    public static final String SERVER = "/api/v1";
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -37,11 +37,12 @@ public class SecurityConfig {
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 // 해당 API에 대해서는 모든 요청을 허가
-                .requestMatchers("/api/big-brother/members/sign-in").permitAll()
-                .requestMatchers("/api/big-brother/members/sign-up/**").permitAll()
+                .requestMatchers(SERVER+"/members/sign-in").permitAll()
+                .requestMatchers(SERVER+"/members/sign-up/**").permitAll()
+                .requestMatchers(SERVER+"/members/refresh").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers("/api/big-brother/members/test").hasRole("USER")
-                .requestMatchers("/api/big-brother/members/manager").hasRole("ADMIN")
+                .requestMatchers(SERVER+"/members/test").hasRole("USER")
+                .requestMatchers(SERVER+"/members/manager").hasRole("ADMIN")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                 .anyRequest().permitAll()
             )

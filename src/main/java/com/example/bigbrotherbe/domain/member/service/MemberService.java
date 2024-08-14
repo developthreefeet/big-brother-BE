@@ -8,6 +8,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
 
+import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import java.util.List;
 
 public interface MemberService {
@@ -32,4 +33,6 @@ public interface MemberService {
     AffiliationListDto getMemberAffiliationRoleList();
 
     List<AffiliationCollegeResponse> getColleges();
+
+    TokenDto refreshToken(String refreshToken);
 }
