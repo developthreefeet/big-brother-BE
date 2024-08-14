@@ -41,8 +41,7 @@ public interface MemberController {
     @PostMapping("/sign-up")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
-                    content = {@Content(schema = @Schema(implementation = MemberResponse.class))}),
-            @ApiResponse(responseCode = "404", description = "?")
+                    content = {@Content(schema = @Schema(implementation = MemberResponse.class))})
     })
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberResponse>> signUp(@RequestBody SignUpDto signUpDto);
 
