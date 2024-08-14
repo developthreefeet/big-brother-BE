@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component;
 import static com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode.STUDENT_COUNCIL;
 import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_PRESIDENT;
 import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_USER;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_LOAD_MEMBER;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_MEMBER;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Component
 @RequiredArgsConstructor
@@ -78,7 +77,7 @@ public class AuthUtil {
                         affiliation.equals(optAffiliation.get().getCouncilType()))
                 .map(optAffiliation -> optAffiliation.get().getAffiliation_id())
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 member_id에 대한 단과대 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(NO_FOUND_AFFILIATION));
     }
 }
 
