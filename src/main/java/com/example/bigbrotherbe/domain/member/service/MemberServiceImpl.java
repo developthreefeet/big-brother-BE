@@ -23,6 +23,9 @@ import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 
 
+import com.example.bigbrotherbe.global.jwt.RefreshToken;
+import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -33,12 +36,15 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -92,14 +98,12 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberLoader.findByMemberEmail(email);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            log.info("Password mismatch");
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+            throw new BusinessException(ErrorCode.MISMATCH_PASSWORD);
         }
 
         // 2. 인증 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password);
-        log.info("Created authentication token");
 
         // 2. 실제 검증. authenticate() 메서드를 통해 요청된 Member에 대한 검증 진행
         Authentication authentication;
@@ -110,7 +114,6 @@ public class MemberServiceImpl implements MemberService {
             throw e;
         }
 
-        log.info("Authenticated: {}", authentication);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         return jwtTokenProvider.generateToken(authentication);
@@ -193,6 +196,28 @@ public class MemberServiceImpl implements MemberService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public TokenDto refreshToken(String refreshToken) {
+        System.out.println(refreshToken);
+        String resolveToken = resolveToken(refreshToken);
+
+        if (jwtTokenProvider.validateToken(resolveToken)) {
+                // 리프레시 토큰이 유효한 경우 새로운 엑세스 토큰 발급
+                String newAccessToken = jwtTokenProvider.createTokenByRefreshToken(resolveToken);
+
+                // 새 엑세스 토큰으로 인증 설정
+                Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                return TokenDto
+                    .builder()
+                    .accessToken(newAccessToken)
+                    .refreshToken(resolveToken)
+                    .build();
+            } else
+                throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
+    }
+
     public List<AffiliationCode> getDepartmentsByFaculty(AffiliationCode faculty) {
         return AffiliationCode.getDepartmentsByCollege(faculty);
     }
@@ -230,4 +255,12 @@ public class MemberServiceImpl implements MemberService {
             throw new BusinessException(ErrorCode.NO_SUCH_ALGORITHM);
         }
     }
+
+    private String resolveToken(String token) {
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        throw new BusinessException(ErrorCode.ILIEGAL_HEADER_PATTERN);
+    }
+
 }

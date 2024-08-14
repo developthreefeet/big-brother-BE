@@ -16,6 +16,7 @@ import com.example.bigbrotherbe.global.jwt.JwtToken;
 import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
+import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -43,11 +44,7 @@ public class MemberControllerImpl implements MemberController {
     public ResponseEntity<ApiResponse<JwtToken>> signIn(MemberRequest memberRequest) {
         String memberEmail = memberRequest.getMemberEmail();
         String password = memberRequest.getMemberPass();
-        // 컨트롤러가 없어도 굴러가게 만들어야 하는 데 그러면 Request 객체를 그대로 넘겨주나?
         JwtToken jwtToken = memberService.userSignIN(memberEmail, password);
-        log.info("request memberEmail = {}, password = {}", memberEmail, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
-                jwtToken.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, jwtToken));
     }
 
@@ -84,5 +81,9 @@ public class MemberControllerImpl implements MemberController {
     public ResponseEntity<ApiResponse<List<AffiliationCollegeResponse>>> getCollegesList() {
         List<AffiliationCollegeResponse> collegesList = memberService.getColleges();
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, collegesList));
+    }
+
+    public ResponseEntity<ApiResponse<TokenDto>> refreshToken(String refreshToken){
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.refreshToken(refreshToken)));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.member.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 public enum CouncilType {
     GENERAL_STUDENTS_ASSOCIATION("총학"),
@@ -13,7 +14,7 @@ public enum CouncilType {
 
     @JsonValue
     public String getCouncilType() {
-        return councilType;
+        return this.councilType;
     }
 
     public static CouncilType fromcouncilType(String councilType) {

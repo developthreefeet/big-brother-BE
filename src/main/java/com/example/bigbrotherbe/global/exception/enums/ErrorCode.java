@@ -16,11 +16,13 @@ public enum ErrorCode {
     NO_EXIST_EMAIL(HttpStatus.NOT_FOUND, "MEMBER-005", "존재하지 않는 이메일입니다."),
     INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "MEMBER-006", "올바르지 않은 이메일 형식입니다."),
     NO_EXIST_MEMBER(HttpStatus.NOT_FOUND, "MEMBER-007", "존재하지 않는 유저입니다."),
+    MISMATCH_PASSWORD(HttpStatus.NOT_FOUND,"MEMBER-008", "비밀번호가 올바르지 않습니다."),
     NOT_COUNCIL_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-008", "해당 학생회 멤버가 아닙니다."),
     NOT_PRESIDENT_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-009", "해당 학생회 회장이 아닙니다."),
 
     // TOKEN
-
+    ACCESS_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_001", "만료된 access 토큰입니다."),
+    REFRESH_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_002", "만료된 refresh 토큰입니다."),
 
     // MEETINGS
     NO_EXIST_MEETINGS(HttpStatus.NOT_FOUND, "MEETINGS-001", "존재하지 않는 회의록 입니다."),
@@ -56,7 +58,10 @@ public enum ErrorCode {
     LAMBDA_FUNCTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "CAMPUS_NOTICE-004", "AWS Lambda 함수에서 오류가 발생했습니다."),
 
     // VERIFICATION
-    MISMATCH_VERIFIED_CODE(HttpStatus.NOT_FOUND, "VERIFICATION-001", "이메일 인증 코드가 일치하지 않습니다.");
+    MISMATCH_VERIFIED_CODE(HttpStatus.NOT_FOUND, "VERIFICATION-001", "이메일 인증 코드가 일치하지 않습니다."),
+
+    // PATTERN
+    ILIEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다.");
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;
