@@ -31,8 +31,8 @@ public class CampusNoticeController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, campusNoticeResponse));
     }
 
-    @GetMapping("all/{campusNoticeTypeId}")
-    public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@PathVariable("campusNoticeTypeId") Long campusNoticeTypeId,
+    @GetMapping()
+    public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@RequestParam("campusNoticeTypeId") Long campusNoticeTypeId,
                                                                                @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                                @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                                @RequestParam(name = "search", required = false) String search) {
