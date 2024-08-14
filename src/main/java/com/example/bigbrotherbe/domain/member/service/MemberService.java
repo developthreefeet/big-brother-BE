@@ -43,4 +43,6 @@ public interface MemberService {
     MemberInfoResponse changeMemberInfo(String userName);
 
     List<MemberInfoResponse> inquireAllMemberInfo();
+
+    MemberInfoResponse getUserByEmail(String email);
 }

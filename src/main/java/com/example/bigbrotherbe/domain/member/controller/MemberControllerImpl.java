@@ -105,4 +105,9 @@ public class MemberControllerImpl implements MemberController {
 
         return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.inquireAllMemberInfo()));
     }
+
+    @Override
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> findUserByEmail(String email) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.getUserByEmail(email)));
+    }
 }
