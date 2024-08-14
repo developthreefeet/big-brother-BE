@@ -1,9 +1,9 @@
 package com.example.bigbrotherbe.domain.notice.controller;
 
-import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
-import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
+import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.notice.service.NoticeService;
 import com.example.bigbrotherbe.global.constant.Constant;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
@@ -21,13 +21,34 @@ import java.util.List;
 
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
-@Slf4j                                          // 로깅 기능 추가
-@RestController                                 // RESTful 웹서비스 컨트롤러
-@RequestMapping("/api/v1/notice")            // URL을 컨트롤러 클래스 또는 메서드와 매핑
-@CrossOrigin(origins = "http://localhost:8080")   // 다른 도메인에서의 요청을 허용
-@RequiredArgsConstructor                        // final 또는 @NonNull 어노테이션이 붙은 필드의 생성자를 자동으로 생성
-public class NoticeController {
+@Slf4j
+@RestController
+@RequestMapping("/api/v1/admin/notice")
+@CrossOrigin(origins = "http://localhost:8080")
+@RequiredArgsConstructor
+public class NoticeAdminController {
     private final NoticeService noticeService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Void>> registerNotice(@RequestPart(value = "noticeRegisterRequest") NoticeRegisterRequest noticeRegisterRequest,
+                                                            @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        noticeService.register(noticeRegisterRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @PutMapping("/{noticeId}")
+    public ResponseEntity<ApiResponse<Void>> modifyNotice(@PathVariable("noticeId") Long noticeId,
+                                                          @RequestPart(value = "noticeModifyRequest") NoticeModifyRequest noticeModifyRequest,
+                                                          @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        noticeService.modify(noticeId, noticeModifyRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{noticeId}")
+    public ResponseEntity<ApiResponse<Void>> deleteNotice(@PathVariable("noticeId") Long noticeId) {
+        noticeService.delete(noticeId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
 
     @GetMapping("/{noticeId}")
     public ResponseEntity<ApiResponse<NoticeResponse>> getNoticeById(@PathVariable("noticeId") Long noticeId) {

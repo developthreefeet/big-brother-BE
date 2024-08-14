@@ -18,11 +18,10 @@ import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
-@RequestMapping("/api/v1/campusnotice")
+@RequestMapping("/api/v1/admin/campusnotice")
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
-public class CampusNoticeController {
-
+public class CampusNoticeAdminContoller {
     private final CampusNoticeService campusNoticeService;
 
     @GetMapping("/{campusNoticeId}")

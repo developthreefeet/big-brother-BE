@@ -23,11 +23,32 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/faq")
+@RequestMapping("/api/v1/admin/faq")
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
-public class FAQController {
+public class FAQAdminController {
     private final FAQService faqService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Void>> registerFAQ(@RequestPart(value = "faqRegisterRequest") FAQRegisterRequest faqRegisterRequest,
+                                                         @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        faqService.register(faqRegisterRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @PutMapping("/{faqId}")
+    public ResponseEntity<ApiResponse<Void>> modifyFAQ(@PathVariable("faqId") Long faqId,
+                                                       @RequestPart(value = "faqModifyRequest") FAQModifyRequest faqModifyRequest,
+                                                       @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        faqService.modify(faqId, faqModifyRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{faqId}")
+    public ResponseEntity<ApiResponse<Void>> deleteFAQ(@PathVariable("faqId") Long faqId) {
+        faqService.delete(faqId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
 
     @GetMapping("/{faqId}")
     public ResponseEntity<ApiResponse<FAQResponse>> getFAQById(@PathVariable("faqId") Long faqId) {
@@ -37,9 +58,9 @@ public class FAQController {
 
     @GetMapping()
     public ResponseEntity<ApiResponse<Page<FAQ>>> getFAQList(@RequestParam(name = "affiliationId") Long affiliationId,
-                                                @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
-                                                @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
-                                                @RequestParam(name = "search", required = false) String search) {
+                                                             @RequestParam(name = "page", defaultValue = Constant.GetContent.PAGE_DEFAULT_VALUE) int page,
+                                                             @RequestParam(name = "size", defaultValue = Constant.GetContent.SIZE_DEFAULT_VALUE) int size,
+                                                             @RequestParam(name = "search", required = false) String search) {
         Page<FAQ> faqPage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         if (search != null && !search.isEmpty()) {
