@@ -41,12 +41,16 @@ public class SecurityConfig {
                 .requestMatchers(SERVER+"/members/sign-in").permitAll()
                 .requestMatchers(SERVER+"/members/sign-up/**").permitAll()
                 .requestMatchers(SERVER+"/members/refresh").permitAll()
-                .requestMatchers(HttpMethod.PATCH,SERVER+"/members").permitAll()
+
                 // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers(SERVER+"/members/test").hasRole("USER")
+                .requestMatchers(SERVER+"/members/test").hasAnyRole("ADMIN","USER")
+                .requestMatchers(SERVER+"/members").hasAnyRole("ADMIN","USER")
+                // 유저 어드민 권한이 있어야 요청할 수 있음
+                .requestMatchers(SERVER+"/members/password").hasAnyRole("ADMIN","USER")
                 .requestMatchers(SERVER+"/members/manager").hasRole("ADMIN")
+                .requestMatchers(SERVER+"members/information").hasAnyRole("ADMIN","USER")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
             // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
+import com.example.bigbrotherbe.domain.member.dto.request.MemberInfoChangeRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
@@ -10,9 +11,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
 import com.example.bigbrotherbe.global.email.EmailRequest;
 import com.example.bigbrotherbe.global.email.EmailVerificationResult;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
 import com.example.bigbrotherbe.global.jwt.JwtToken;
-import com.example.bigbrotherbe.global.jwt.JwtTokenProvider;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
@@ -89,5 +88,11 @@ public class MemberControllerImpl implements MemberController {
     public ResponseEntity<ApiResponse<Void>> memberDeleteSelf() {
         memberService.deleteSelf();
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<MemberInfoResponse>> changeMemberInfo(
+        MemberInfoChangeRequest memberInfoChangeRequest) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.changeMemberInfo(memberInfoChangeRequest.userName())));
     }
 }

@@ -44,9 +44,12 @@ public class SignUpDto {
 
     @Email(message = "이메일 형식에 맞지 않습니다.")
     @NotBlank(message = "사용자 이메일을 입력해주세요.")
-    @Schema(description = "사용자 이메일", example = "test123@mju.ac.kr")
+    @Schema(description = "사용자 이메일", example = "gkstkddbs99@mju.ac.kr")
     private String email;
-    private String councilType;
+
+    @Schema(description = "단과대", example = "ICT융합대학")
+    private String college;
+    @Schema(description = "학과, 전공", example = "응용소프트웨어전공")
     private String affiliation;
 
     public Member toEntity(SignUpDto signUpDto, String encodePassword) {
