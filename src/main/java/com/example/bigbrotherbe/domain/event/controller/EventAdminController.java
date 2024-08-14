@@ -23,10 +23,31 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/event")
-public class EventController {
+@RequestMapping("/api/v1/admin/event")
+public class EventAdminController {
 
     private final EventService eventService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Void>> registerEvent(@RequestPart(value = "eventRegisterRequest") EventRegisterRequest eventRegisterRequest,
+                                                           @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        eventService.registerEvent(eventRegisterRequest, multipartFiles);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{eventId}")
+    public ResponseEntity<ApiResponse<Void>> updateEvent(@PathVariable("eventId") Long eventId,
+                                                         @RequestPart(value = "eventUpdateRequest") EventUpdateRequest eventUpdateRequest,
+                                                         @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+        eventService.updateEvent(eventId, eventUpdateRequest, multipartFiles);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable("eventId") Long eventId) {
+        eventService.deleteEvent(eventId);
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
+    }
 
     @GetMapping("/{eventId}")
     public ResponseEntity<ApiResponse<EventResponse>> getEventById(@PathVariable("eventId") Long eventId) {
@@ -48,5 +69,4 @@ public class EventController {
         }
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, envetPage));
     }
-
 }

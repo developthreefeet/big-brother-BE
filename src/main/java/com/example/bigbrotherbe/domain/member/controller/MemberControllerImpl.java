@@ -36,7 +36,7 @@ public class MemberControllerImpl implements MemberController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberResponse));
     }
 
-    public JwtToken signIn(MemberRequest memberRequest) {
+    public ResponseEntity<ApiResponse<JwtToken>> signIn(MemberRequest memberRequest) {
         String memberEmail = memberRequest.getMemberEmail();
         String password = memberRequest.getMemberPass();
         // 컨트롤러가 없어도 굴러가게 만들어야 하는 데 그러면 Request 객체를 그대로 넘겨주나?
@@ -44,7 +44,7 @@ public class MemberControllerImpl implements MemberController {
         log.info("request memberEmail = {}, password = {}", memberEmail, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(),
                 jwtToken.getRefreshToken());
-        return jwtToken;
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, jwtToken)) ;
     }
 
 
@@ -57,18 +57,18 @@ public class MemberControllerImpl implements MemberController {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.inquireMemberInfo()));
     }
 
-    public ResponseEntity<EmailVerificationResult> verificateEmail(String email) {
-        return ResponseEntity.ok(memberService.verificateEmail(email));
+    public ResponseEntity<ApiResponse<EmailVerificationResult>> verificateEmail(String email) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.verificateEmail(email))) ;
     }
 
-    public ResponseEntity<EmailVerificationResult> sendMessage(EmailRequest emailRequest) {
+    public ResponseEntity<ApiResponse<EmailVerificationResult>> sendMessage(EmailRequest emailRequest) {
         memberService.sendCodeToEmail(emailRequest.getEmail());
-        return ResponseEntity.ok(EmailVerificationResult.builder().authResult(true).build());
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,EmailVerificationResult.builder().authResult(true).build()));
     }
 
 
-    public ResponseEntity<EmailVerificationResult> verificationEmail(String email, String code) {
-        return ResponseEntity.ok(memberService.verifiedCode(email, code));
+    public ResponseEntity<ApiResponse<EmailVerificationResult>> verificationEmail(String email, String code) {
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS,memberService.verifiedCode(email, code)));
     }
 
 
