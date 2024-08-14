@@ -20,6 +20,7 @@ public enum ErrorCode {
     NOT_COUNCIL_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-008", "해당 학생회 멤버가 아닙니다."),
     NOT_PRESIDENT_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-009", "해당 학생회 회장이 아닙니다."),
 
+
     // TOKEN
     ACCESS_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_001", "만료된 access 토큰입니다."),
     REFRESH_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_002", "만료된 refresh 토큰입니다."),
@@ -41,6 +42,7 @@ public enum ErrorCode {
 
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다."),
+    INVALID_AFFILIATION(HttpStatus.BAD_REQUEST, "AFFILIATION-002", "해당 학생회는 단과대가 아닙니다."),
 
     // FILE
     FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001", "파일 업로드에 실패하였습니다."),
@@ -61,7 +63,8 @@ public enum ErrorCode {
     MISMATCH_VERIFIED_CODE(HttpStatus.NOT_FOUND, "VERIFICATION-001", "이메일 인증 코드가 일치하지 않습니다."),
 
     // PATTERN
-    ILIEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다.");
+    ILLEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다.");
+
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;

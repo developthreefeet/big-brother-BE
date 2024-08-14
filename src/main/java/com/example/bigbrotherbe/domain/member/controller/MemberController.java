@@ -4,7 +4,7 @@ import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberInfoChangeRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
-import com.example.bigbrotherbe.domain.member.dto.response.AffiliationCollegeResponse;
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
@@ -75,7 +75,11 @@ public interface MemberController {
 
     @GetMapping("/colleges")
     @Operation(summary = "단과대학 리스트 조회")
-    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<AffiliationCollegeResponse>>> getCollegesList();
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<AffiliationResponse>>> getCollegesList();
+
+    @GetMapping("/departments")
+    @Operation(summary = "해당 학과 리스트 조회")
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<AffiliationResponse>>> getDepartmentList(@RequestParam(name = "councilName") String councilName);
 
     @GetMapping("/refresh")
     @Operation(summary = "refresh 토큰으로 토큰 재 생성 요청")

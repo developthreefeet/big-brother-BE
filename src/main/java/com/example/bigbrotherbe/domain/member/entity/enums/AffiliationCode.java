@@ -1,5 +1,7 @@
 package com.example.bigbrotherbe.domain.member.entity.enums;
 
+import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
+import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +9,8 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.INVALID_AFFILIATION;
 
 @Getter
 @AllArgsConstructor
@@ -67,9 +71,20 @@ public enum AffiliationCode {
         throw new IllegalArgumentException("없는 단체 명입니다." + councilName);
     }
 
-    public static List<AffiliationCode> getDepartmentsByCollege(AffiliationCode college) {
+    public static List<AffiliationResponse> getDepartmentsByCollegeName(String collegeName) {
+        AffiliationCode college = Arrays.stream(AffiliationCode.values())
+                .filter(ac -> ac.getCouncilName().equals(collegeName))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(INVALID_AFFILIATION));
+
+        if (!college.getCouncilType().equals("단과대")) {
+            throw new BusinessException(INVALID_AFFILIATION);
+        }
+
+        // 단과대에 속한 학과를 필터링하여 반환합니다.
         return Arrays.stream(AffiliationCode.values())
                 .filter(code -> code.getCouncilType().equals("학과") && code.getVal() > college.getVal() && code.getVal() <= getMaxValForCollege(college))
+                .map(department -> AffiliationResponse.fromAffiliationResponse(department.getVal(), department.getCouncilName()))
                 .collect(Collectors.toList());
     }
 

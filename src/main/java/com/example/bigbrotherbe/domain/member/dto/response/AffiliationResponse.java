@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class AffiliationCollegeResponse {
+public class AffiliationResponse {
     private int val;
     private String councilName;
 
-    public static AffiliationCollegeResponse fromAffiliationCollegeResponse(int val, String councilName) {
-        return AffiliationCollegeResponse.builder()
+    public static AffiliationResponse fromAffiliationResponse(int val, String councilName) {
+        return AffiliationResponse.builder()
                 .val(val)
                 .councilName(councilName)
                 .build();
