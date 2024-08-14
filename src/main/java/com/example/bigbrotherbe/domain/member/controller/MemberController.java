@@ -53,7 +53,7 @@ public interface MemberController {
     @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleLost를 가져오는 값")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<AffiliationListDto>> test();
 
-    @GetMapping
+    @GetMapping("/member-information")
     @Operation(summary = "유저 상세 정보 조회")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberInfoResponse>> inquireMemberInfo();
 
@@ -93,4 +93,9 @@ ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Vo
     @PatchMapping("/information")
     @Operation(summary = "유저 상세 정보 변경")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<MemberInfoResponse>> changeMemberInfo(@RequestBody MemberInfoChangeRequest memberInfoChangeRequest);
+
+    @GetMapping()
+    @Operation(summary = "유저 전체 조회")
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<List<MemberInfoResponse>>> inquireAllUserInfo();
+
 }
