@@ -29,23 +29,7 @@ public class SwaggerConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("전체")
-                .pathsToMatch("/api/big-brother/**")
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi memberControllerApi() {
-        return GroupedOpenApi.builder()
-                .group("Member Controller")
-                .pathsToMatch("/api/big-brother/members/**")
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi faqControllerApi() {
-        return GroupedOpenApi.builder()
-                .group("FAQ Controller")
-                .pathsToMatch("/api/big-brother/faq/**")
+                .pathsToMatch("/api/v1/**")
                 .build();
     }
 
