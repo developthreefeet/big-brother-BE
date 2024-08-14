@@ -89,4 +89,9 @@ public enum AffiliationCode {
                 throw new IllegalArgumentException("해당 단과대는 존재하지 않습니다.");
         }
     }
+
+    @JsonValue
+    public String getAffiliationCode() {
+        return this.councilName;
+    }
 }
