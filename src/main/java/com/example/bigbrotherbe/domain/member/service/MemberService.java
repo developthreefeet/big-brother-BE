@@ -22,11 +22,11 @@ public interface MemberService {
 
     EmailVerificationResult verifiedCode(String email, String authCode);
 
-    EmailVerificationResult verificateEmail(String email);
+    EmailVerificationResult verificationDuplicateEmail(String email);
 
     boolean checkExistAffiliationById(Long affiliationId);
 
-    void changePasswrd(String email,String password);
+    void changePassword(String email,String password);
 
     void makeAffiliation();
 

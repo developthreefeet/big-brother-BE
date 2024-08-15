@@ -26,8 +26,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Component
@@ -167,5 +169,28 @@ public class JwtTokenProvider {
             .build()
             .parseClaimsJws(token)
             .getBody();
+    }
+
+    public TokenDto refreshToken(String refreshToken) {
+
+        String resolveToken = resolveToken(refreshToken);
+
+        if (validateToken(resolveToken)) {
+            String newAccessToken = createTokenByRefreshToken(resolveToken);
+            Authentication authentication = getAuthentication(newAccessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return TokenDto
+                .builder()
+                .accessToken(newAccessToken)
+                .refreshToken(resolveToken)
+                .build();
+        } else
+            throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
+    }
+    private String resolveToken(String token) {
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        throw new BusinessException(ErrorCode.ILLEGAL_HEADER_PATTERN);
     }
 }

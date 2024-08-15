@@ -41,7 +41,7 @@ public enum ErrorCode {
     NO_EXIST_RULE(HttpStatus.NOT_FOUND, "RULE-001", "존재하지 않는 회칙 입니다."),
 
     // AFFILIATION
-    NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 학생회 입니다."),
+    NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 소속 입니다."),
     INVALID_AFFILIATION(HttpStatus.BAD_REQUEST, "AFFILIATION-002", "해당 학생회는 단과대가 아닙니다."),
     NO_FOUND_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-003","해당 학생회 정보를 찾을 수 없습니다."),
 
@@ -64,7 +64,9 @@ public enum ErrorCode {
     MISMATCH_VERIFIED_CODE(HttpStatus.NOT_FOUND, "VERIFICATION-001", "이메일 인증 코드가 일치하지 않습니다."),
 
     // PATTERN
-    ILLEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다.");
+    ILLEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다."),
+    // AUTHENTICATION
+    NOT_AUTHENTICATE_REQUEST(HttpStatus.BAD_REQUEST, "AUTHENTICATION-001", "인증 실패한 요청입니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;

@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.member.util;
+package com.example.bigbrotherbe.domain.member.component;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;

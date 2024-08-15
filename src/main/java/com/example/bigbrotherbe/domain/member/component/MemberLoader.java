@@ -1,5 +1,6 @@
-package com.example.bigbrotherbe.domain.member.util;
+package com.example.bigbrotherbe.domain.member.component;
 
+import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -44,5 +45,9 @@ public class MemberLoader {
 
     public List<Member> getAllMember() {
         return memberRepository.findAll();
+    }
+
+    public Member signUp(SignUpDto signUpDto, String encodePassword) {
+        return saveMember(signUpDto.toEntity(signUpDto,encodePassword));
     }
 }

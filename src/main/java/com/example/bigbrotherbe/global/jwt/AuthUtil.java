@@ -1,18 +1,17 @@
 package com.example.bigbrotherbe.global.jwt;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
-
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +27,8 @@ public class AuthUtil {
     private final MemberRepository memberRepository;
     private final AffiliationMemberRepository affiliationMemberRepository;
     private final AffiliationRepository affiliationRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public Member getLoginMember() {
         try {
@@ -78,6 +79,17 @@ public class AuthUtil {
                 .map(optAffiliation -> optAffiliation.get().getAffiliation_id())
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(NO_FOUND_AFFILIATION));
+    }
+
+    public JwtToken createAuthenticationToken(String email, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication;
+        try {
+            authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        } catch (Exception e) {
+            throw new BusinessException(MISMATCH_PASSWORD);
+        }
+        return jwtTokenProvider.generateToken(authentication);
     }
 }
 
