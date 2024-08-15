@@ -60,12 +60,12 @@ public enum AffiliationCode {
 
     private final int val;
     private final String councilType;
-    private final String councilName;
+    private final String name;
 
 
     public static AffiliationCode fromCouncilName(String councilName) {
         for (AffiliationCode affiliationCodeIns : AffiliationCode.values()) {
-            if (affiliationCodeIns.councilName.equals(councilName)) {
+            if (affiliationCodeIns.name.equals(councilName)) {
                 return affiliationCodeIns;
             }
         }
@@ -74,7 +74,7 @@ public enum AffiliationCode {
 
     public static List<AffiliationResponse> getDepartmentsByCollegeName(String collegeName) {
         AffiliationCode college = Arrays.stream(AffiliationCode.values())
-                .filter(ac -> ac.getCouncilName().equals(collegeName))
+                .filter(ac -> ac.getName().equals(collegeName))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(INVALID_AFFILIATION));
 
@@ -85,7 +85,7 @@ public enum AffiliationCode {
         // 단과대에 속한 학과를 필터링하여 반환합니다.
         return Arrays.stream(AffiliationCode.values())
                 .filter(code -> code.getCouncilType().equals("학과") && code.getVal() > college.getVal() && code.getVal() <= getMaxValForCollege(college))
-                .map(department -> AffiliationResponse.fromAffiliationResponse(department.getVal(), department.getCouncilName()))
+                .map(department -> AffiliationResponse.fromAffiliationResponse(department.getVal(), department.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -108,6 +108,6 @@ public enum AffiliationCode {
 
     @JsonValue
     public String getAffiliationCode() {
-        return this.councilName;
+        return this.name;
     }
 }
