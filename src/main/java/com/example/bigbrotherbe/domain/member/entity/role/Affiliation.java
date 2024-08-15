@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.entity.role;
 
+import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,4 +29,8 @@ public class Affiliation {
 
     @Column
     private String presidentName;
+
+    public static Affiliation toEntity(AffiliationCode affiliationCode) {
+        return Affiliation.builder().affiliation_id((long)affiliationCode.getVal()).councilType(affiliationCode.getCouncilType()).name(affiliationCode.getName()).build();
+    }
 }
