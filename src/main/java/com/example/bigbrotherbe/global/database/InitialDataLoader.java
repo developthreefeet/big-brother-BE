@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.global.database;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
@@ -20,15 +21,10 @@ public class InitialDataLoader {
     public CommandLineRunner loadData(MemberRepository memberRepository, AffiliationRepository affiliationRepository,
                                       AffiliationMemberRepository affiliationMemberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (affiliationRepository.findByName("응용소프트웨어전공").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(1L).name("응용소프트웨어전공").councilType("학과").build());
-            }
-
-            if (affiliationRepository.findByName("디지털콘텐츠디자인학과").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(2L).name("디지털콘텐츠디자인학과").councilType("학과").build());
-            }
-            if (affiliationRepository.findByName("ICT융합대학").isEmpty()) {
-                affiliationRepository.save(Affiliation.builder().affiliation_id(3L).name("ICT융합대학").councilType("단과대").build());
+            for(AffiliationCode affiliationCode : AffiliationCode.values()){
+                if(affiliationRepository.findByName(affiliationCode.getName()).isEmpty()){
+                    affiliationRepository.save(Affiliation.toEntity(affiliationCode));
+                }
             }
             // Check if an admin user already exists
             if (memberRepository.findByUsername("admin").isEmpty()) {
@@ -38,17 +34,25 @@ public class InitialDataLoader {
                 admin.setEmail("developthreefeet@gmail.com");
                 admin.setUsername("admin");
                 memberRepository.save(admin);
-                Affiliation affiliation = affiliationRepository.findByName("응용소프트웨어전공")
-                        .orElseThrow(() -> new IllegalArgumentException("잘못된 소속 이름입니다."));
 
+
+                Affiliation college = Affiliation.toEntity(AffiliationCode.ICT);
                 // AffiliationMember 엔티티 생성
-                AffiliationMember affiliationMember = AffiliationMember.builder()
-                        .member(admin)
-                        .affiliation(affiliation)
-                        .role("ROLE_ADMIN")
-                        .build();
+                affiliationMemberRepository.save(AffiliationMember
+                    .builder()
+                    .member(admin)
+                    .affiliation(college)
+                    .role("ROLE_ADMIN")
+                    .build());
 
-                affiliationMemberRepository.save(affiliationMember);
+                Affiliation affiliation = Affiliation.toEntity(AffiliationCode.SOFTWARE_APPLICATIONS);
+                affiliationMemberRepository.save(AffiliationMember
+                    .builder()
+                    .member(admin)
+                    .affiliation(affiliation)
+                    .role("ROLE_ADMIN")
+                    .build());
+
             }
         };
     }

@@ -207,7 +207,7 @@ public class MemberServiceImpl implements MemberService {
     public List<AffiliationResponse> getColleges() {
         return Arrays.stream(AffiliationCode.values())
                 .filter(code -> code.getCouncilType().equals("단과대"))
-                .map(code -> AffiliationResponse.fromAffiliationResponse(code.getVal(), code.getCouncilName()))
+                .map(code -> AffiliationResponse.fromAffiliationResponse(code.getVal(), code.getName()))
                 .collect(Collectors.toList());
     }
 
