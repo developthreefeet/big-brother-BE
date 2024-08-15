@@ -1,8 +1,6 @@
 package com.example.bigbrotherbe.domain.campusNotice.entity;
 
 import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.domain.campusNotice.util.LambdaTimeDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,9 +33,7 @@ public class CampusNotice {
     @JoinColumn(name = "campus_notice_id")
     private List<File> files;
 
-    @JsonDeserialize(using = LambdaTimeDeserializer.class)
     private LocalDateTime createAt;
 
-    @JsonDeserialize(using = LambdaTimeDeserializer.class)
     private LocalDateTime updateAt;
 }
