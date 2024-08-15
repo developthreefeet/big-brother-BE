@@ -7,6 +7,7 @@ import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.checkerframework.checker.units.qual.A;
@@ -30,26 +31,32 @@ public class File extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "meetings_id")
+    @JsonIgnore
     private Meetings meetings;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "faq_id")
+    @JsonIgnore
     private FAQ faq;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "notice_id")
+    @JsonIgnore
     private Notice notice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rule_id")
+    @JsonIgnore
     private Rule rule;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "campus_notice_id")
+    @JsonIgnore
     private CampusNotice campusNotice;
 
 
