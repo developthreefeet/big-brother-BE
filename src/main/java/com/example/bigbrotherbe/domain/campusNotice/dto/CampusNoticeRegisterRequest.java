@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.campusNotice.dto;
 
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
-import com.example.bigbrotherbe.domain.campusNotice.util.CustomMultipartFile;
+import com.example.bigbrotherbe.domain.campusNotice.util.CampusNoticeMultipartFile;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
@@ -77,19 +77,8 @@ public class CampusNoticeRegisterRequest {
             String fileName = fileNames.get(i);
             String contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
 
-            multipartFiles.add(new CustomMultipartFile(fileContent, fileName, contentType));
+            multipartFiles.add(new CampusNoticeMultipartFile(fileContent, fileName, contentType));
         }
-//        for (String fileUrl : fileUrls){
-//            RestTemplate restTemplate = new RestTemplate();
-//            byte[] fileContent = restTemplate.getForObject(fileUrl, byte[].class);
-//            System.out.println(fileUrl);
-//
-//            // 파일명을 URL에서 추출
-//            String fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
-//
-//            // 파일 데이터를 CustomMultipartFile로 변환
-//            multipartFiles.add(new CustomMultipartFile(fileContent, fileName, "application/octet-stream"));
-//        }
         return multipartFiles;
     }
 }

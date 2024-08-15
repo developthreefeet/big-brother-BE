@@ -21,7 +21,7 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 @RequestMapping("/api/v1/admin/campusnotice")
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
-public class CampusNoticeAdminContoller {
+public class CampusNoticeAdminController {
     private final CampusNoticeService campusNoticeService;
 
     @GetMapping("/{campusNoticeId}")
@@ -31,13 +31,13 @@ public class CampusNoticeAdminContoller {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@RequestParam("campusNoticeTypeId") Long campusNoticeTypeId,
+    public ResponseEntity<ApiResponse<Page<CampusNotice>>> getCampusNoticeList(@RequestParam("campusNoticeType") String campusNoticeTypeString,
                                                                                @RequestParam(name = "page", defaultValue = PAGE_DEFAULT_VALUE) int page,
                                                                                @RequestParam(name = "size", defaultValue = SIZE_DEFAULT_VALUE) int size,
                                                                                @RequestParam(name = "search", required = false) String search) {
         Page<CampusNotice> campusNoticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        CampusNoticeType campusNoticeType = CampusNoticeType.getTypeById(campusNoticeTypeId);
+        CampusNoticeType campusNoticeType = CampusNoticeType.getTypeByName(campusNoticeTypeString);
         if (search != null && !search.isEmpty()) {
             campusNoticePage = campusNoticeService.searchCampusNotice(campusNoticeType, search, pageable);
         } else {

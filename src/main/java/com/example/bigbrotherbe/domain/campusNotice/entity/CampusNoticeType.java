@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CampusNoticeType {
-    GENERAL_NOTICE("https://www.mju.ac.kr/mjukr/255/subview.do", 1),
-    ACADEMIC_NOTICE("https://www.mju.ac.kr/mjukr/257/subview.do", 2);
+    GENERAL_NOTICE("https://www.mju.ac.kr/mjukr/255/subview.do", "일반공지"),
+    ACADEMIC_NOTICE("https://www.mju.ac.kr/mjukr/257/subview.do", "학사공지");
 
     private final String url;
-    private final int id;
+    private final String name;
 
-    public static CampusNoticeType getTypeById(Long id){
+    public static CampusNoticeType getTypeByName(String name){
         for (CampusNoticeType c : CampusNoticeType.values()){
-            if (id == c.id){
+            if (name.equals(c.name)){
                 return c;
             }
         }

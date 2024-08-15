@@ -6,13 +6,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CustomMultipartFile implements MultipartFile {
+public class CampusNoticeMultipartFile implements MultipartFile {
 
     private final byte[] fileContent;
     private final String fileName;
     private final String contentType;
 
-    public CustomMultipartFile(byte[] fileContent, String fileName, String contentType) {
+    public CampusNoticeMultipartFile(byte[] fileContent, String fileName, String contentType) {
         this.fileContent = fileContent;
         this.fileName = fileName;
         this.contentType = contentType;

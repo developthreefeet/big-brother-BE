@@ -25,6 +25,7 @@ public class File extends BaseTimeEntity {
 
     private String fileType;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String url;
 
     @ManyToOne(fetch = FetchType.EAGER)
