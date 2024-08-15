@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,7 @@ public class CampusNoticeServiceImpl implements CampusNoticeService {
     private final ObjectMapper objectMapper;
     private final FileService fileService;
 
+    @Transactional(rollbackFor = Exception.class)
     public void invokeLambda(String functionName, String payload, CampusNoticeType noticeType) {
         InvokeRequest invokeRequest = new InvokeRequest()
                 .withFunctionName(functionName)
