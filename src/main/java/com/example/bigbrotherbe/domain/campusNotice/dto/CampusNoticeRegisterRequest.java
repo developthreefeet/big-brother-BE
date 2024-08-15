@@ -32,7 +32,7 @@ public class CampusNoticeRegisterRequest {
     private List<String> fileUrls;
     private List<String> fileNames;
 
-    public CampusNotice toCampusNoticeEntity(FileService fileService){
+    public CampusNotice toCampusNoticeEntity(FileService fileService, CampusNoticeType noticeType){
         List<MultipartFile> multipartFiles = this.toFileEntity(fileUrls, fileNames);
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -51,6 +51,7 @@ public class CampusNoticeRegisterRequest {
                 .createAt(this.toLocalDateTime(createAt))
                 .updateAt(this.toLocalDateTime(updateAt))
                 .files(files)
+                .type(noticeType)
                 .build();
 
         if (files != null) {
