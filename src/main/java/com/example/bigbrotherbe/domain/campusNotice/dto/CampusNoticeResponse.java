@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,6 +18,8 @@ public class CampusNoticeResponse {
     private String content;
     private CampusNoticeType type;
     private List<String> urlList;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
     public static CampusNoticeResponse fromCampusNoticeResponse(CampusNotice campusNotice, List<String> urlList) {
         return CampusNoticeResponse.builder()
@@ -25,6 +28,8 @@ public class CampusNoticeResponse {
                 .content(campusNotice.getContent())
                 .type(campusNotice.getType())
                 .urlList(urlList)
+                .createAt(campusNotice.getCreateAt())
+                .updateAt(campusNotice.getUpdateAt())
                 .build();
     }
 }
