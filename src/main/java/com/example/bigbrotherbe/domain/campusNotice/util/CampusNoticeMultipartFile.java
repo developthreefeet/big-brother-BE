@@ -1,22 +1,18 @@
 package com.example.bigbrotherbe.domain.campusNotice.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 
+@RequiredArgsConstructor
 public class CampusNoticeMultipartFile implements MultipartFile {
 
     private final byte[] fileContent;
     private final String fileName;
     private final String contentType;
-
-    public CampusNoticeMultipartFile(byte[] fileContent, String fileName, String contentType) {
-        this.fileContent = fileContent;
-        this.fileName = fileName;
-        this.contentType = contentType;
-    }
 
     @Override
     public String getName() {
@@ -44,18 +40,18 @@ public class CampusNoticeMultipartFile implements MultipartFile {
     }
 
     @Override
-    public byte[] getBytes() throws IOException {
+    public byte[] getBytes() {
         return this.fileContent;
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() {
         return new ByteArrayInputStream(this.fileContent);
     }
 
     @Override
-    public void transferTo(java.io.File dest) throws IOException, IllegalStateException {
-        throw new UnsupportedOperationException("This method is not implemented.");
+    public void transferTo(File dest) {
+        //
     }
 }
 
