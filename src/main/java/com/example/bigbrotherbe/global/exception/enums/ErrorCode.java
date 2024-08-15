@@ -59,6 +59,7 @@ public enum ErrorCode {
     NO_EXIST_CAMPUS_NOTICE(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-002", "존재하지 않는 학교 공지사항 입니다."),
     FAIL_TO_JSON_PARSING(HttpStatus.BAD_REQUEST, "CAMPUS_NOTICE-003", "공지사항 페이지의 JSON 파싱에 실패하였습니다."),
     LAMBDA_FUNCTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "CAMPUS_NOTICE-004", "AWS Lambda 함수에서 오류가 발생했습니다."),
+    NO_EXIST_CAMPUS_NOTICE_TYPE(HttpStatus.NOT_FOUND, "CAMPUS_NOTICE-005", "유효하지 않은 학교 공지사항 타입입니다.."),
 
     // VERIFICATION
     MISMATCH_VERIFIED_CODE(HttpStatus.NOT_FOUND, "VERIFICATION-001", "이메일 인증 코드가 일치하지 않습니다."),
