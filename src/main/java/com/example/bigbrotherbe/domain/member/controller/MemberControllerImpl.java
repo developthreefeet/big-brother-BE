@@ -32,9 +32,7 @@ public class MemberControllerImpl implements MemberController {
     private final MemberService memberService;
 
     public ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
-        MemberResponse memberResponse = memberService.userSignUp(signUpDto);
-
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberResponse));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.userSignUp(signUpDto)));
     }
 
     public ResponseEntity<ApiResponse<JwtToken>> signIn(MemberRequest memberRequest) {
@@ -55,7 +53,7 @@ public class MemberControllerImpl implements MemberController {
     }
 
     public ResponseEntity<ApiResponse<EmailVerificationResult>> verificateEmail(String email) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.verificateEmail(email)));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.verificationDuplicateEmail(email)));
     }
 
     public ResponseEntity<ApiResponse<EmailVerificationResult>> sendMessage(EmailRequest emailRequest) {
@@ -70,7 +68,7 @@ public class MemberControllerImpl implements MemberController {
 
 
     public ResponseEntity<ApiResponse<Void>> changePassword(ChangePasswordRequest changePasswordRequest) {
-        memberService.changePasswrd(changePasswordRequest.email(), changePasswordRequest.password());
+        memberService.changePassword(changePasswordRequest.email(), changePasswordRequest.password());
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
