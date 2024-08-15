@@ -4,6 +4,7 @@ import com.example.bigbrotherbe.domain.campusNotice.dto.CampusNoticeResponse;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.service.CampusNoticeService;
+import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
 import static com.example.bigbrotherbe.global.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_CAMPUS_NOTICE_TYPE;
 import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
@@ -39,6 +41,9 @@ public class CampusNoticeController {
         Page<CampusNotice> campusNoticePage;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         CampusNoticeType campusNoticeType = CampusNoticeType.getTypeByName(campusNoticeTypeString);
+        if (campusNoticeType == null){
+            throw new BusinessException(NO_EXIST_CAMPUS_NOTICE_TYPE);
+        }
         if (search != null && !search.isEmpty()) {
             campusNoticePage = campusNoticeService.searchCampusNotice(campusNoticeType, search, pageable);
         } else {
