@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,6 +17,8 @@ public class NoticeResponse {
     private String content;
     private Long affiliationId;
     private List<String> urlList;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
     public static NoticeResponse fromNoticeResponse(Notice notice, List<String> urlList) {
         return NoticeResponse.builder()
@@ -24,6 +27,8 @@ public class NoticeResponse {
                 .content(notice.getContent())
                 .affiliationId(notice.getAffiliationId())
                 .urlList(urlList)
+                .createAt(notice.getCreateAt())
+                .updateAt(notice.getUpdateAt())
                 .build();
     }
 }

@@ -52,7 +52,7 @@ public class NoticeServiceImpl implements NoticeService {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.MEETINGS.getType())
+                    .fileType(FileType.NOTICE.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
