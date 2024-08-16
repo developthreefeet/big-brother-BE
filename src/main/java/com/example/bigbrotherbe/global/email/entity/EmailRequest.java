@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.email;
+package com.example.bigbrotherbe.global.email.entity;
 
 import lombok.Getter;
 
