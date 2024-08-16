@@ -32,7 +32,7 @@ public class EventAdminController {
     public ResponseEntity<ApiResponse<Void>> registerEvent(@RequestPart(value = "eventRegisterRequest") EventRegisterRequest eventRegisterRequest,
                                                            @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
         eventService.registerEvent(eventRegisterRequest, multipartFiles);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
     @PutMapping("/{eventId}")
