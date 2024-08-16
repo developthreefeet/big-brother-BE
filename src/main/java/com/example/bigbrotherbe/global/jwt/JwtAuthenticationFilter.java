@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.global.jwt;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.jwt.component.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
