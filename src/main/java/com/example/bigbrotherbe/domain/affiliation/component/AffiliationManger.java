@@ -26,7 +26,7 @@ public class AffiliationManger {
 
     public AffiliationMember createAfiiliationMember(Member savedMember, String affiliationName, Role role) {
         Affiliation affiliation =  findAffiliationByName(affiliationName);
-        AffiliationMember affiliationMember= AffiliationMember.builder()
+        AffiliationMember affiliationMember = AffiliationMember.builder()
             .member(savedMember)
             .affiliation(affiliation)
             .role(role.getRole())
