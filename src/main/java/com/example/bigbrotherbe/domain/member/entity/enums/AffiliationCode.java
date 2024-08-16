@@ -68,7 +68,7 @@ public enum AffiliationCode {
                 return affiliationCodeIns;
             }
         }
-        throw new IllegalArgumentException("없는 단체 명입니다." + councilName);
+        throw new BusinessException(NO_EXIST_AFFILIATION);
     }
 
     public static List<AffiliationResponse> getDepartmentsByCollegeName(String collegeName) {
