@@ -1,9 +1,10 @@
-package com.example.bigbrotherbe.domain.member.entity.role;
+package com.example.bigbrotherbe.domain.member.dto;
 
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.enums.CouncilType;
 import com.example.bigbrotherbe.domain.member.entity.enums.Role;
 
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,7 @@ public class AffiliationListDto {
     private final List<AffiliationType> affiliationTypeList = new ArrayList<>();
     private final String memberName;
 
-
-    public void addAffiliation(String councilType,String affiliation, String role) {
+    public void addAffiliation(String councilType, String affiliation, String role) {
         try {
             affiliationTypeList.add(AffiliationType
                 .builder()
