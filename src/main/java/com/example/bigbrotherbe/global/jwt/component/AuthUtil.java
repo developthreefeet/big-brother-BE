@@ -18,8 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import static com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode.STUDENT_COUNCIL;
-import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_PRESIDENT;
-import static com.example.bigbrotherbe.domain.member.entity.enums.Role.ROLE_USER;
+import static com.example.bigbrotherbe.domain.member.entity.enums.Role.*;
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Component
@@ -58,11 +57,12 @@ public class AuthUtil {
     public boolean checkPresidentRole(Long affiliationId) {
         Member member = getLoginMember();
         List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
-
         for (AffiliationMember affiliationMember : affiliationMemberList) {
-            if (affiliationMember.getAffiliation().getAffiliation_id().equals(affiliationId) &&
-                    affiliationMember.getRole().equals(ROLE_PRESIDENT.getRole())) {
-                return false;
+            if (affiliationMember.getAffiliation().getAffiliation_id().equals(affiliationId)) {
+                if (affiliationMember.getRole().equals(ROLE_PRESIDENT.getRole()) ||
+                        affiliationMember.getRole().equals(ROLE_ADMIN.getRole())) {
+                    return false;
+                }
             }
         }
         return true;
