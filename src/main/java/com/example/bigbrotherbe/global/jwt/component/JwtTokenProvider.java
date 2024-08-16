@@ -136,18 +136,6 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
-    public String getMemberEmailFromToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build().parseClaimsJws(token);
-            return claims.getBody().getSubject();
-        } catch (Exception e) {
-            log.error("Failed to extract username from token", e);
-            return null;
-        }
-    }
-
     public String createTokenByRefreshToken(String refreshToken) {
         Claims claims = getAllClaimsFromToken(refreshToken);
         Date now = new Date();
