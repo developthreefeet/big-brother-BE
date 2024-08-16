@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.notice.dto.response;
 
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,17 +17,17 @@ public class NoticeResponse {
     private String title;
     private String content;
     private Long affiliationId;
-    private List<String> urlList;
+    private List<FileResponse> fileInfo;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public static NoticeResponse fromNoticeResponse(Notice notice, List<String> urlList) {
+    public static NoticeResponse fromNoticeResponse(Notice notice, List<FileResponse> fileInfo) {
         return NoticeResponse.builder()
                 .noticeId(notice.getId())
                 .title(notice.getTitle())
                 .content(notice.getContent())
                 .affiliationId(notice.getAffiliationId())
-                .urlList(urlList)
+                .fileInfo(fileInfo)
                 .createAt(notice.getCreateAt())
                 .updateAt(notice.getUpdateAt())
                 .build();

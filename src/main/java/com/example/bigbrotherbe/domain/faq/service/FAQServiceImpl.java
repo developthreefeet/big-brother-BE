@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -110,12 +111,11 @@ public class FAQServiceImpl implements FAQService {
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
-
-        List<String> urlList = faq.getFiles().stream()
-                .map(File::getUrl)
+        List<FileResponse> fileInfo = faq.getFiles().stream()
+                .map(file -> FileResponse.of(file.getFileName(), file.getUrl()))
                 .toList();
 
-        return FAQResponse.fromFAQResponse(faq, urlList);
+        return FAQResponse.fromFAQResponse(faq, fileInfo);
     }
 
     @Override

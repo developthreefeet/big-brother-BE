@@ -2,6 +2,7 @@ package com.example.bigbrotherbe.domain.campusNotice.dto;
 
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,17 +18,17 @@ public class CampusNoticeResponse {
     private String title;
     private String content;
     private CampusNoticeType type;
-    private List<String> urlList;
+    private List<FileResponse> fileInfo;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public static CampusNoticeResponse fromCampusNoticeResponse(CampusNotice campusNotice, List<String> urlList) {
+    public static CampusNoticeResponse fromCampusNoticeResponse(CampusNotice campusNotice, List<FileResponse> fileInfo) {
         return CampusNoticeResponse.builder()
                 .noticeId(campusNotice.getId())
                 .title(campusNotice.getTitle())
                 .content(campusNotice.getContent())
                 .type(campusNotice.getType())
-                .urlList(urlList)
+                .fileInfo(fileInfo)
                 .createAt(campusNotice.getCreateAt())
                 .updateAt(campusNotice.getUpdateAt())
                 .build();

@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.faq.dto.response;
 
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,17 +17,17 @@ public class FAQResponse {
     private String title;
     private String content;
     private Long affiliationId;
-    private List<String> urlList;
+    private List<FileResponse> fileInfo;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public static FAQResponse fromFAQResponse(FAQ faq, List<String> urlList) {
+    public static FAQResponse fromFAQResponse(FAQ faq, List<FileResponse> fileInfo) {
         return FAQResponse.builder()
                 .faqId(faq.getId())
                 .title(faq.getTitle())
                 .content(faq.getContent())
                 .affiliationId(faq.getAffiliationId())
-                .urlList(urlList)
+                .fileInfo(fileInfo)
                 .createAt(faq.getCreateAt())
                 .updateAt(faq.getUpdateAt())
                 .build();

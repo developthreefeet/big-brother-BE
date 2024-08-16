@@ -24,10 +24,14 @@ public class File extends BaseTimeEntity {
     @Column(name = "file_id")
     private Long id;
 
+    @Column(name = "file_type")
     private String fileType;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "url", nullable = false, columnDefinition = "TEXT")
     private String url;
+
+    @Column(name = "file_name")
+    private String fileName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "meetings_id")
@@ -84,5 +88,7 @@ public class File extends BaseTimeEntity {
         this.rule = rule;
     }
 
-    public void linkCampusNotice(CampusNotice campusNotice) {this.campusNotice = campusNotice;}
+    public void linkCampusNotice(CampusNotice campusNotice) {
+        this.campusNotice = campusNotice;
+    }
 }

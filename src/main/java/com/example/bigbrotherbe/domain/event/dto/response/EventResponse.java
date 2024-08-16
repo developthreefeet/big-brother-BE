@@ -3,6 +3,7 @@ package com.example.bigbrotherbe.domain.event.dto.response;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,9 +22,9 @@ public class EventResponse {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Long affiliationId;
-    private List<String> urlList;
+    private List<FileResponse> fileInfo;
 
-    public static EventResponse fromEventResponse(Event event, List<String> urlList) {
+    public static EventResponse fromEventResponse(Event event, List<FileResponse> fileInfo) {
         return EventResponse.builder()
                 .meetingsId(event.getId())
                 .title(event.getTitle())
@@ -32,7 +33,7 @@ public class EventResponse {
                 .startDateTime(event.getStartDateTime())
                 .endDateTime(event.getEndDateTime())
                 .affiliationId(event.getAffiliationId())
-                .urlList(urlList)
+                .fileInfo(fileInfo)
                 .build();
     }
 }

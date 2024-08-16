@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -109,11 +110,11 @@ public class RuleServiceImpl implements RuleService {
         Rule rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
 
-        List<String> urlList = rule.getFiles().stream()
-                .map(File::getUrl)
+        List<FileResponse> fileInfo = rule.getFiles().stream()
+                .map(file -> FileResponse.of(file.getFileName(), file.getUrl()))
                 .toList();
 
-        return RuleResponse.fromRuleResponse(rule, urlList);
+        return RuleResponse.fromRuleResponse(rule, fileInfo);
     }
 
     @Override
