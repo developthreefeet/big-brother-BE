@@ -15,24 +15,28 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class EventResponse {
-    private Long meetingsId;
+    private Long eventId;
     private String title;
     private String content;
     private String target;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
     private Long affiliationId;
     private List<FileResponse> fileInfo;
 
     public static EventResponse fromEventResponse(Event event, List<FileResponse> fileInfo) {
         return EventResponse.builder()
-                .meetingsId(event.getId())
+                .eventId(event.getId())
                 .title(event.getTitle())
                 .content(event.getContent())
                 .target(event.getTarget())
                 .startDateTime(event.getStartDateTime())
                 .endDateTime(event.getEndDateTime())
                 .affiliationId(event.getAffiliationId())
+                .createAt(event.getCreateAt())
+                .updateAt(event.getUpdateAt())
                 .fileInfo(fileInfo)
                 .build();
     }
