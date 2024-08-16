@@ -37,7 +37,7 @@ public class CampusNoticeRegisterRequest {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.EVENT.getType())
+                    .fileType(FileType.CAMPUS_NOTICE.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
