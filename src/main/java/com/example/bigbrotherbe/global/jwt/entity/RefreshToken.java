@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.jwt;
+package com.example.bigbrotherbe.global.jwt.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

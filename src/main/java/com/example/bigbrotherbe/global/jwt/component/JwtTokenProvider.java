@@ -1,10 +1,11 @@
-package com.example.bigbrotherbe.global.jwt;
+package com.example.bigbrotherbe.global.jwt.component;
 
 import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.ACCESS_TOKEN;
 import static com.example.bigbrotherbe.global.jwt.entity.TokenDto.REFRESH_TOKEN;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,7 +36,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class JwtTokenProvider {
     private final Key key;
-    private static final long ACCESS_TIME = 10 * 60 * 1000L; // 1초
+    private static final long ACCESS_TIME = 10 * 60 * 1000L; // 10분
     private static final long REFRESH_TIME = 30 * 60 * 1000L; //30분
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -171,7 +172,7 @@ public class JwtTokenProvider {
             .getBody();
     }
 
-    public TokenDto refreshToken(String refreshToken) {
+    public TokenDto refreshAccessToken(String refreshToken) {
 
         String resolveToken = resolveToken(refreshToken);
 

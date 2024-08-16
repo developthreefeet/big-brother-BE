@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.jwt;
+package com.example.bigbrotherbe.global.jwt.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
