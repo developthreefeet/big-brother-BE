@@ -62,7 +62,6 @@ public enum AffiliationCode {
     private final String councilType;
     private final String name;
 
-
     public static AffiliationCode fromCouncilName(String councilName) {
         for (AffiliationCode affiliationCodeIns : AffiliationCode.values()) {
             if (affiliationCodeIns.name.equals(councilName)) {
@@ -82,7 +81,6 @@ public enum AffiliationCode {
             throw new BusinessException(INVALID_AFFILIATION);
         }
 
-        // 단과대에 속한 학과를 필터링하여 반환합니다.
         return Arrays.stream(AffiliationCode.values())
                 .filter(code -> code.getCouncilType().equals("학과") && code.getVal() > college.getVal() && code.getVal() <= getMaxValForCollege(college))
                 .map(department -> AffiliationResponse.fromAffiliationResponse(department.getVal(), department.getName()))
