@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.repository.CampusNoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -68,11 +69,11 @@ public class CampusNoticeServiceImpl implements CampusNoticeService {
         CampusNotice campusNotice = campusNoticeRepository.findById(campusNoticeId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_CAMPUS_NOTICE));
 
-        List<String> urlList = campusNotice.getFiles().stream()
-                .map(File::getUrl)
+        List<FileResponse> fileInfo = campusNotice.getFiles().stream()
+                .map(file -> FileResponse.of(file.getFileName(), file.getUrl()))
                 .toList();
 
-        return CampusNoticeResponse.fromCampusNoticeResponse(campusNotice, urlList);
+        return CampusNoticeResponse.fromCampusNoticeResponse(campusNotice, fileInfo);
     }
 
     @Override

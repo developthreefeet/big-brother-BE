@@ -31,7 +31,8 @@ public class FileServiceImpl implements FileService {
 
         multipartFileList.forEach(file -> {
             String url = s3Util.uploadFile(file, fileType);
-            File fileEntity = fileRepository.save(fileSaveDTO.toFileEntity(url));
+            String fileName = file.getOriginalFilename();
+            File fileEntity = fileRepository.save(fileSaveDTO.toFileEntity(url, fileName));
             files.add(fileEntity);
         });
 
@@ -44,7 +45,8 @@ public class FileServiceImpl implements FileService {
         String fileType = fileSaveDTO.getFileType();
         MultipartFile file = fileSaveDTO.getMultipartFile();
         String url = s3Util.uploadFile(file, fileType);
-        return fileRepository.save(fileSaveDTO.toFileEntity(url));
+        String fileName = file.getOriginalFilename();
+        return fileRepository.save(fileSaveDTO.toFileEntity(url, fileName));
     }
 
     @Override

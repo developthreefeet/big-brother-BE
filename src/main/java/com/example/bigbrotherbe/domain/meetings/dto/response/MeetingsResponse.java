@@ -1,6 +1,7 @@
 package com.example.bigbrotherbe.domain.meetings.dto.response;
 
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,18 +18,18 @@ public class MeetingsResponse {
     private String content;
     private boolean isPublic;
     private Long affiliationId;
-    private List<String> urlList;
+    private List<FileResponse> fileInfo;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public static MeetingsResponse fromMeetingsResponse(Meetings meetings, List<String> urlList) {
+    public static MeetingsResponse fromMeetingsResponse(Meetings meetings, List<FileResponse> fileInfo) {
         return MeetingsResponse.builder()
                 .meetingsId(meetings.getId())
                 .title(meetings.getTitle())
                 .content(meetings.getContent())
                 .isPublic(meetings.isPublic())
                 .affiliationId(meetings.getAffiliationId())
-                .urlList(urlList)
+                .fileInfo(fileInfo)
                 .createAt(meetings.getCreateAt())
                 .updateAt(meetings.getUpdateAt())
                 .build();

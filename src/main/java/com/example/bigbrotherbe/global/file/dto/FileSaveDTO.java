@@ -14,10 +14,11 @@ public class FileSaveDTO {
     private MultipartFile multipartFile;
     private String fileType;
 
-    public File toFileEntity(String url) {
+    public File toFileEntity(String url, String fileName) {
         return File.builder()
                 .fileType(fileType)
                 .url(url)
+                .fileName(fileName)
                 .build();
     }
 }

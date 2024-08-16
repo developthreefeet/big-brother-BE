@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -120,11 +121,11 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_EVENT));
 
-        List<String> urlList = event.getFiles().stream()
-                .map(File::getUrl)
+        List<FileResponse> fileInfo = event.getFiles().stream()
+                .map(file -> FileResponse.of(file.getFileName(), file.getUrl()))
                 .toList();
 
-        return EventResponse.fromEventResponse(event, urlList);
+        return EventResponse.fromEventResponse(event, fileInfo);
     }
 
     @Override

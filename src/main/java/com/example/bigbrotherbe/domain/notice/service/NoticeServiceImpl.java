@@ -11,6 +11,7 @@ import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
@@ -118,11 +119,11 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
-        List<String> urlList = notice.getFiles().stream()
-                .map(File::getUrl)
+        List<FileResponse> fileInfo = notice.getFiles().stream()
+                .map(file -> FileResponse.of(file.getFileName(), file.getUrl()))
                 .toList();
 
-        return NoticeResponse.fromNoticeResponse(notice, urlList);
+        return NoticeResponse.fromNoticeResponse(notice, fileInfo);
     }
 
     @Override
