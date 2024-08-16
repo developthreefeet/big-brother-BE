@@ -52,14 +52,14 @@ public class SignUpDto {
     @Schema(description = "학과, 전공", example = "응용소프트웨어전공")
     private String affiliation;
 
-    public Member toEntity(SignUpDto signUpDto, String encodePassword) {
-        if(!isVaildEmail(signUpDto.getEmail())){
+    public Member toEntity(String encodePassword) {
+        if(!isVaildEmail(email)){
             throw new BusinessException(ErrorCode.INVALID_EMAIL_FORMAT);
         }
         return Member.builder()
-            .username(signUpDto.getUsername())
+            .username(username)
             .password(encodePassword)
-            .email(signUpDto.getEmail())
+            .email(email)
             .is_active("true")
             .createAt(LocalDateTime.now())
             .updateAt(LocalDateTime.now())

@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.rule.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleRegisterRequest;
 import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
 import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
@@ -14,7 +14,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +33,14 @@ public class RuleServiceImpl implements RuleService {
     private final RuleRepository ruleRepository;
 
     private final FileService fileService;
-    private final MemberService memberService;
+    private final AffiliationService affiliationService;
 
     private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerRule(RuleRegisterRequest ruleRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(ruleRegisterRequest.getAffiliationId())) {
+        if (!affiliationService.checkExistAffiliationById(ruleRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
