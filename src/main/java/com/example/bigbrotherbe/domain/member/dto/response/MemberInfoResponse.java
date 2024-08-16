@@ -15,19 +15,6 @@ public class MemberInfoResponse {
         private final LocalDateTime createAt;
         private final LocalDateTime updateAt;
         private final AffiliationListDto affiliationListDto;
-
-        public static MemberInfoResponse form(Long id, String username, String email, LocalDateTime createAt, LocalDateTime updateAt,
-            AffiliationListDto affiliationListDto) {
-            return MemberInfoResponse
-                .builder()
-                .memberName(username)
-                .email(email)
-                .createAt(createAt)
-                .updateAt(updateAt)
-                .affiliationListDto(affiliationListDto)
-                .build();
-        }
-
     }
 
 

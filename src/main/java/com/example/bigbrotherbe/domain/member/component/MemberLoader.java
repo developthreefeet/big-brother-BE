@@ -1,6 +1,5 @@
 package com.example.bigbrotherbe.domain.member.component;
 
-import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.global.exception.BusinessException;

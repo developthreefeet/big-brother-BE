@@ -22,11 +22,4 @@ public class MemberChecker {
         }
     }
 
-    public void checkDuplicatedEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent()) {
-            throw new BusinessException(ErrorCode.EXIST_EMAIL);
-        }
-    }
-
 }
