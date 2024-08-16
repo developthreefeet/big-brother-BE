@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.member.dto.response;
 
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
+import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
