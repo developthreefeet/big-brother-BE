@@ -13,7 +13,7 @@ public enum CouncilType {
     }
 
     @JsonValue
-    public String getCouncilType() {
+    public String serializationValue() {
         return this.councilType;
     }
 
@@ -25,5 +25,4 @@ public enum CouncilType {
         }
         throw new IllegalArgumentException("없는 CouncilType입니다." + councilType);
     }
-
 }
