@@ -143,6 +143,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
             .setSubject(claims.getSubject())
             .claim("auth",claims.get("auth"))
+            .claim("type", ACCESS_TOKEN)
             .setExpiration(expiraion)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
