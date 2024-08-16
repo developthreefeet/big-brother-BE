@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         if (e != null) {
             response.setContentType("application/json");
+            response.setStatus(400);
             response.setCharacterEncoding("UTF-8");
             String jsonResponse = new ObjectMapper().writeValueAsString(ApiResponse.error(e.getErrorCode()));
             response.getWriter().write(jsonResponse);  // ApiResponse의 내용을 JSON으로 변환하여 작성
