@@ -107,7 +107,8 @@ public enum AffiliationCode {
     }
 
     @JsonValue
-    public String getAffiliationCode() {
+    public String serializationValue() {
         return this.name;
     }
+    // Lombok getter vs Json 방식 논점
 }
