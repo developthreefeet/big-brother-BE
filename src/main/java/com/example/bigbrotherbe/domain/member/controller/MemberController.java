@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 
-@RequestMapping(SecurityConfig.SERVER+"/members")
+@RequestMapping(SecurityConfig.SERVER + "/members")
 @Tag(name = "멤버", description = "회원가입,로그인 API")
 public interface MemberController {
 
@@ -50,7 +50,7 @@ public interface MemberController {
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<JwtToken>> signIn(@RequestBody MemberRequest memberRequest);
 
     @PostMapping("/test")
-    @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleLost를 가져오는 값")
+    @Operation(summary = "test용", description = "현재는 로그인 멤버의 AffiliationRoleList 가져오는 값")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<AffiliationListDto>> test();
 
     @GetMapping("/information")
@@ -85,10 +85,9 @@ public interface MemberController {
     @Operation(summary = "refresh 토큰으로 토큰 재 생성 요청")
     ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<TokenDto>> refreshToken(@RequestHeader("Authorization") String refreshToken);
 
-
     @DeleteMapping
     @Operation(summary = "유저 탈퇴")
-ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> memberDeleteSelf();
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<Void>> memberDeleteSelf();
 
     @PatchMapping("/information")
     @Operation(summary = "유저 상세 정보 변경")

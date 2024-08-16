@@ -49,7 +49,7 @@ public class CampusNoticeAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> crawlerNotice(){
+    public ResponseEntity<ApiResponse<Void>> crawlerNotice() {
         lambdaUtil.invokeLambda();
         return ResponseEntity.ok().build();
     }

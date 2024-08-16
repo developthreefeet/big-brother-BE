@@ -6,6 +6,7 @@ import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberReposi
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
+
 import java.util.List;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;
@@ -74,7 +75,7 @@ public class AuthUtil {
         }
 
         return affiliationMemberRepository.findAllByMemberId(memberId).stream()
-                .map(am -> affiliationRepository.findById(am.getId()))
+                .map(am -> affiliationRepository.findById(am.getAffiliation().getAffiliation_id()))
                 .filter(optAffiliation -> optAffiliation.isPresent() &&
                         affiliation.equals(optAffiliation.get().getCouncilType()))
                 .map(optAffiliation -> optAffiliation.get().getAffiliation_id())

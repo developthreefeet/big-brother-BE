@@ -51,7 +51,7 @@ public class CampusNoticeServiceImpl implements CampusNoticeService {
             CampusNoticeRegisterRequest[] campusNoticeRegisterRequests =
                     objectMapper.readValue(body, CampusNoticeRegisterRequest[].class);
             List<CampusNotice> campusNotices = new ArrayList<>();
-            for (CampusNoticeRegisterRequest campusNoticeRegisterRequest : campusNoticeRegisterRequests){
+            for (CampusNoticeRegisterRequest campusNoticeRegisterRequest : campusNoticeRegisterRequests) {
                 CampusNotice campusNotice = campusNoticeRegisterRequest.toCampusNoticeEntity(fileService, noticeType);
                 campusNotices.add(campusNotice);
             }
