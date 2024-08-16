@@ -83,7 +83,7 @@ public interface MemberController {
 
     @GetMapping("/refresh")
     @Operation(summary = "refresh 토큰으로 토큰 재 생성 요청")
-    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<TokenDto>> refreshToken(@RequestHeader("Authorization") String refreshToken);
+    ResponseEntity<com.example.bigbrotherbe.global.exception.response.ApiResponse<TokenDto>> refreshToken(@RequestHeader(value = "Authorization",required = false) String refreshToken);
 
     @DeleteMapping
     @Operation(summary = "유저 탈퇴")
