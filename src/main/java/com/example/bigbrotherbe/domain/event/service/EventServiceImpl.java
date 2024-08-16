@@ -1,12 +1,12 @@
 package com.example.bigbrotherbe.domain.event.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.event.dto.request.EventRegisterRequest;
 import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
 import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -14,7 +14,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,16 +31,14 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-
-    private final MemberService memberService;
+    private final AffiliationService affiliationService;
     private final FileService fileService;
-
     private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerEvent(EventRegisterRequest eventRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(eventRegisterRequest.getAffiliationId())) {
+        if (!affiliationService.checkExistAffiliationById(eventRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 

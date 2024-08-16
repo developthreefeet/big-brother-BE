@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.transactions.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
@@ -11,7 +11,7 @@ import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
 
-    private final MemberService memberService;
+    private final AffiliationService affiliationService;
     private final OcrService ocrService;
     private final FileService fileService;
 
@@ -44,7 +44,7 @@ public class TransactionsServiceImpl implements TransactionsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(MultipartFile multipartFile, Long affiliationId) {
-        if (!memberService.checkExistAffiliationById(affiliationId)) {
+        if (!affiliationService.checkExistAffiliationById(affiliationId)) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 

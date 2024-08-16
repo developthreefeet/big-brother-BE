@@ -1,9 +1,9 @@
 package com.example.bigbrotherbe.domain.notice.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
@@ -15,7 +15,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,14 +34,14 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
 
     private final FileService fileService;
-    private final MemberService memberService;
+    private final AffiliationService affiliationService;
 
     private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)   // 트랜잭션 시작 및 커밋 -> 모든 예외상황 발생시 롤백
     public void register(NoticeRegisterRequest noticeRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(noticeRegisterRequest.getAffiliationId())) {
+        if (!affiliationService.checkExistAffiliationById(noticeRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 

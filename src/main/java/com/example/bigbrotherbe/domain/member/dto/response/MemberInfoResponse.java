@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.member.dto.response;
 
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
+import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,19 +15,6 @@ public class MemberInfoResponse {
         private final LocalDateTime createAt;
         private final LocalDateTime updateAt;
         private final AffiliationListDto affiliationListDto;
-
-        public static MemberInfoResponse form(Long id, String username, String email, LocalDateTime createAt, LocalDateTime updateAt,
-            AffiliationListDto affiliationListDto) {
-            return MemberInfoResponse
-                .builder()
-                .memberName(username)
-                .email(email)
-                .createAt(createAt)
-                .updateAt(updateAt)
-                .affiliationListDto(affiliationListDto)
-                .build();
-        }
-
     }
 
 

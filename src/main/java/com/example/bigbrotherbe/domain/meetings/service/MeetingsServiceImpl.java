@@ -1,12 +1,12 @@
 package com.example.bigbrotherbe.domain.meetings.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsRegisterRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.request.MeetingsUpdateRequest;
 import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -14,8 +14,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
-import io.lettuce.core.ScriptOutputType;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
 
 import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
@@ -34,20 +31,17 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class MeetingsServiceImpl implements MeetingsService {
 
     private final MeetingsRepository meetingsRepository;
-
     private final FileService fileService;
-    private final MemberService memberService;
-
+    private final AffiliationService affiliationService;
     private final AuthUtil authUtil;
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void registerMeetings(MeetingsRegisterRequest meetingsRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(meetingsRegisterRequest.getAffiliationId())) {
+        if (!affiliationService.checkExistAffiliationById(meetingsRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
-
         if (authUtil.checkCouncilRole(meetingsRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }

@@ -1,10 +1,11 @@
-package com.example.bigbrotherbe.global.jwt;
+package com.example.bigbrotherbe.global.jwt.component;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
+import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
 import java.util.List;
 
 import com.example.bigbrotherbe.global.exception.BusinessException;

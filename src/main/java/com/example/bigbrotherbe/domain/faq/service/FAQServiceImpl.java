@@ -1,12 +1,12 @@
 package com.example.bigbrotherbe.domain.faq.service;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
 import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -14,7 +14,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.AuthUtil;
+import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,14 +32,14 @@ public class FAQServiceImpl implements FAQService {
     private final FAQRepository faqRepository;
 
     private final FileService fileService;
-    private final MemberService memberService;
+    private final AffiliationService affiliationService;
 
     private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)   // 트랜잭션 시작 및 커밋 -> 모든 예외상황 발생시 롤백
     public void register(FAQRegisterRequest faqRegisterRequest, List<MultipartFile> multipartFiles) {
-        if (!memberService.checkExistAffiliationById(faqRegisterRequest.getAffiliationId())) {
+        if (!affiliationService.checkExistAffiliationById(faqRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 

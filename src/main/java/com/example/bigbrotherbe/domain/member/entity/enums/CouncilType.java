@@ -1,8 +1,6 @@
 package com.example.bigbrotherbe.domain.member.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Getter;
-
 public enum CouncilType {
     GENERAL_STUDENTS_ASSOCIATION("총학"),
     COLLEGE("단과대"),
@@ -13,7 +11,7 @@ public enum CouncilType {
     }
 
     @JsonValue
-    public String getCouncilType() {
+    public String serializationValue() {
         return this.councilType;
     }
 
@@ -25,5 +23,4 @@ public enum CouncilType {
         }
         throw new IllegalArgumentException("없는 CouncilType입니다." + councilType);
     }
-
 }

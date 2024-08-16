@@ -1,5 +1,6 @@
 package com.example.bigbrotherbe.domain.member.controller;
 
+import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.dto.request.ChangePasswordRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberInfoChangeRequest;
 import com.example.bigbrotherbe.domain.member.dto.request.MemberRequest;
@@ -7,13 +8,15 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationListDto;
-import com.example.bigbrotherbe.global.email.EmailRequest;
-import com.example.bigbrotherbe.global.email.EmailVerificationResult;
+import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
+import com.example.bigbrotherbe.global.email.entity.EmailRequest;
+import com.example.bigbrotherbe.global.email.entity.EmailVerificationResult;
+import com.example.bigbrotherbe.global.email.component.MailService;
 import com.example.bigbrotherbe.global.exception.response.ApiResponse;
-import com.example.bigbrotherbe.global.jwt.JwtToken;
+import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
+import com.example.bigbrotherbe.global.jwt.component.JwtTokenProvider;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,9 @@ import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCES
 public class MemberControllerImpl implements MemberController {
 
     private final MemberService memberService;
+    private final AffiliationService affiliationService;
+    private final MailService mailService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<ApiResponse<MemberResponse>> signUp(SignUpDto signUpDto) {
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.userSignUp(signUpDto)));
@@ -53,17 +59,17 @@ public class MemberControllerImpl implements MemberController {
     }
 
     public ResponseEntity<ApiResponse<EmailVerificationResult>> verificateEmail(String email) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.verificationDuplicateEmail(email)));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, mailService.verificationDuplicateEmail(email)));
     }
 
     public ResponseEntity<ApiResponse<EmailVerificationResult>> sendMessage(EmailRequest emailRequest) {
-        memberService.sendCodeToEmail(emailRequest.getEmail());
+        mailService.sendCodeToEmail(emailRequest.getEmail());
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, EmailVerificationResult.builder().authResult(true).build()));
     }
 
 
     public ResponseEntity<ApiResponse<EmailVerificationResult>> verificationEmail(String email, String code) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.verifiedCode(email, code)));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, mailService.verifiedCode(email, code)));
     }
 
 
@@ -73,17 +79,17 @@ public class MemberControllerImpl implements MemberController {
     }
 
     public ResponseEntity<ApiResponse<List<AffiliationResponse>>> getCollegesList() {
-        List<AffiliationResponse> collegesList = memberService.getColleges();
+        List<AffiliationResponse> collegesList = affiliationService.getColleges();
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, collegesList));
     }
 
     public ResponseEntity<ApiResponse<List<AffiliationResponse>>> getDepartmentList(String councilName) {
-        List<AffiliationResponse> departmentsList = memberService.getDepartments(councilName);
+        List<AffiliationResponse> departmentsList = affiliationService.getDepartments(councilName);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS, departmentsList));
     }
 
     public ResponseEntity<ApiResponse<TokenDto>> refreshToken(String refreshToken) {
-        return ResponseEntity.ok(ApiResponse.success(SUCCESS, memberService.refreshToken(refreshToken)));
+        return ResponseEntity.ok(ApiResponse.success(SUCCESS, jwtTokenProvider.refreshAccessToken(refreshToken)));
     }
 
     @Override
