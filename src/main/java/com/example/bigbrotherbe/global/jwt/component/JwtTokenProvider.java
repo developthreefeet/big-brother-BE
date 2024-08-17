@@ -9,7 +9,6 @@ import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -105,7 +104,7 @@ public class JwtTokenProvider {
             String tokenType = claims.get("type", String.class);
 
             if (ACCESS_TOKEN.equals(tokenType)) {
-                throw new BusinessException(ErrorCode.ACCESS_Token_Expired);
+                throw new BusinessException(ErrorCode.ACCESS_TOKEN_EXPIRED);
             } else if (REFRESH_TOKEN.equals(tokenType)) {
                 throw new BusinessException(ErrorCode.REFRESH_Token_Expired);
             } else {
