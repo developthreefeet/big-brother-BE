@@ -15,6 +15,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.file.util.FileUtil;
 import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,7 @@ public class RuleServiceImpl implements RuleService {
     private final AffiliationService affiliationService;
 
     private final AuthUtil authUtil;
+    private final FileUtil fileUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +50,8 @@ public class RuleServiceImpl implements RuleService {
         if (authUtil.checkPresidentRole(ruleRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NOT_PRESIDENT_MEMBER);
         }
+
+        fileUtil.checkPdfFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -74,6 +78,8 @@ public class RuleServiceImpl implements RuleService {
     public void updateRule(Long ruleId, RuleUpdateRequest ruleUpdateRequest, List<MultipartFile> multipartFiles) {
         Rule rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_RULE));
+
+        fileUtil.checkPdfFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {

@@ -15,6 +15,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.file.util.FileUtil;
 import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,10 +33,12 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class MeetingsServiceImpl implements MeetingsService {
 
     private final MeetingsRepository meetingsRepository;
+
     private final FileService fileService;
     private final AffiliationService affiliationService;
-    private final AuthUtil authUtil;
 
+    private final AuthUtil authUtil;
+    private final FileUtil fileUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -46,6 +49,8 @@ public class MeetingsServiceImpl implements MeetingsService {
         if (authUtil.checkCouncilRole(meetingsRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
+
+        fileUtil.checkPdfFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -76,6 +81,8 @@ public class MeetingsServiceImpl implements MeetingsService {
         if (authUtil.checkCouncilRole(meetings.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
+
+        fileUtil.checkPdfFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
