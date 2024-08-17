@@ -20,7 +20,7 @@ public class Rule extends BaseTimeEntity {
     @Column(name = "rule_id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(nullable = false, name = "title")
     private String title;
 
     @Column(name = "affiliation_id")
