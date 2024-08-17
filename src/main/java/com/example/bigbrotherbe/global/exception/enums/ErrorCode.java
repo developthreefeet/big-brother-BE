@@ -48,6 +48,7 @@ public enum ErrorCode {
     // FILE
     FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001", "파일 업로드에 실패하였습니다."),
     FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002", "파일 삭제에 실패하였습니다."),
+    INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "FILE-003", "이미지 파일이 아닙니다."),
 
     // TRANSACTIONS
     FAIL_TO_LONG_PARSING(HttpStatus.BAD_REQUEST, "TRANSACTIONS-001", "long 타입 파싱에 실패했습니다."),
