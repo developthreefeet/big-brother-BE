@@ -26,7 +26,7 @@ public class CampusNotice {
     @Column(nullable = false, name = "campus_notice_type")
     private CampusNoticeType type;
 
-    @Column(nullable = false, name = "content", columnDefinition = "TEXT")
+    @Column(nullable = false, name = "content", columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @OneToMany
