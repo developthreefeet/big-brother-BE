@@ -16,14 +16,13 @@ public enum ErrorCode {
     NO_EXIST_EMAIL(HttpStatus.NOT_FOUND, "MEMBER-005", "존재하지 않는 이메일입니다."),
     INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "MEMBER-006", "올바르지 않은 이메일 형식입니다."),
     NO_EXIST_MEMBER(HttpStatus.NOT_FOUND, "MEMBER-007", "존재하지 않는 유저입니다."),
-    MISMATCH_PASSWORD(HttpStatus.NOT_FOUND,"MEMBER-008", "비밀번호가 올바르지 않습니다."),
+    MISMATCH_PASSWORD(HttpStatus.NOT_FOUND, "MEMBER-008", "비밀번호가 올바르지 않습니다."),
     NOT_COUNCIL_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-008", "해당 학생회 멤버가 아닙니다."),
     NOT_PRESIDENT_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER-009", "해당 학생회 회장이 아닙니다."),
 
-
     // TOKEN
-    ACCESS_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_001", "만료된 access 토큰입니다."),
-    REFRESH_Token_Expired(HttpStatus.BAD_REQUEST,  "TOKEN_002", "만료된 refresh 토큰입니다."),
+    ACCESS_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "TOKEN_001", "만료된 access 토큰입니다."),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "TOKEN_002", "만료된 refresh 토큰입니다."),
 
     // MEETINGS
     NO_EXIST_MEETINGS(HttpStatus.NOT_FOUND, "MEETINGS-001", "존재하지 않는 회의록 입니다."),
@@ -43,11 +42,13 @@ public enum ErrorCode {
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 소속 입니다."),
     INVALID_AFFILIATION(HttpStatus.BAD_REQUEST, "AFFILIATION-002", "해당 학생회는 단과대가 아닙니다."),
-    NO_FOUND_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-003","해당 학생회 정보를 찾을 수 없습니다."),
+    NO_FOUND_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-003", "해당 학생회 정보를 찾을 수 없습니다."),
 
     // FILE
     FAIL_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-001", "파일 업로드에 실패하였습니다."),
     FAIL_TO_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "FILE-002", "파일 삭제에 실패하였습니다."),
+    INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "FILE-003", "이미지 파일이 아닙니다."),
+    INVALID_PDF_TYPE(HttpStatus.BAD_REQUEST, "FILE-004", "PDF 파일이 아닙니다."),
 
     // TRANSACTIONS
     FAIL_TO_LONG_PARSING(HttpStatus.BAD_REQUEST, "TRANSACTIONS-001", "long 타입 파싱에 실패했습니다."),
@@ -66,6 +67,7 @@ public enum ErrorCode {
 
     // PATTERN
     ILLEGAL_HEADER_PATTERN(HttpStatus.BAD_REQUEST, "PATTERN-001", "헤더의 형식이 맞지 않습니다."),
+
     // AUTHENTICATION
     NOT_AUTHENTICATE_REQUEST(HttpStatus.BAD_REQUEST, "AUTHENTICATION-001", "인증 실패한 요청입니다.");
 

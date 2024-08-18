@@ -58,11 +58,15 @@ public class AuthUtil {
         Member member = getLoginMember();
         List<AffiliationMember> affiliationMemberList = affiliationMemberRepository.findAllByMemberId(member.getId());
         for (AffiliationMember affiliationMember : affiliationMemberList) {
+
             if (affiliationMember.getAffiliation().getAffiliation_id().equals(affiliationId)) {
-                if (affiliationMember.getRole().equals(ROLE_PRESIDENT.getRole()) ||
-                        affiliationMember.getRole().equals(ROLE_ADMIN.getRole())) {
+                if (affiliationMember.getRole().equals(ROLE_PRESIDENT.getRole())) {
                     return false;
                 }
+            }
+
+            if (affiliationMember.getRole().equals(ROLE_ADMIN.getRole())) {
+                return false;
             }
         }
         return true;

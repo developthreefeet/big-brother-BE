@@ -22,16 +22,16 @@ public class Meetings extends BaseTimeEntity {
     @Column(name = "meetings_id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(nullable = false, name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(nullable = false, name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "is_public")
     private boolean isPublic;
 
-    @Column(name = "affiliation_id")
+    @Column(nullable = false, name = "affiliation_id")
     private Long affiliationId;
 
     @JsonIgnore

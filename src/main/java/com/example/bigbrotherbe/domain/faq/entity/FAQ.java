@@ -17,7 +17,7 @@ import java.util.List;
 public class FAQ extends BaseTimeEntity {
     @Id                                                 //pk
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값 자동 생성
-    @Column(name = "faq_id", updatable = false, unique = true, nullable = false)
+    @Column(name = "faq_id", updatable = false, unique = true)
     private Long id;
 
     @Column(nullable = false, name = "title")
@@ -26,7 +26,7 @@ public class FAQ extends BaseTimeEntity {
     @Column(nullable = false, name = "content", columnDefinition = "TEXT") // 긴 문자열
     private String content;
 
-    @Column
+    @Column(nullable = false, name = "affiliation_id")
     private Long affiliationId;
 
     @OneToMany

@@ -22,10 +22,10 @@ public class Event extends BaseTimeEntity {
     @Column(name = "event_id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(nullable = false, name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(nullable = false, name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "target")
@@ -37,7 +37,7 @@ public class Event extends BaseTimeEntity {
     @Column(name = "end_datetime")
     private LocalDateTime endDateTime;
 
-    @Column(name = "affiliation_id")
+    @Column(nullable = false, name = "affiliation_id")
     private Long affiliationId;
 
     @JsonIgnore

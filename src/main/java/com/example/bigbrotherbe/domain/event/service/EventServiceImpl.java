@@ -15,6 +15,7 @@ import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.file.util.FileUtil;
 import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,8 +33,11 @@ import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+
     private final AffiliationService affiliationService;
     private final FileService fileService;
+
+    private final FileUtil fileUtil;
     private final AuthUtil authUtil;
 
     @Override
@@ -46,6 +50,8 @@ public class EventServiceImpl implements EventService {
         if (authUtil.checkCouncilRole(eventRegisterRequest.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
+
+        fileUtil.CheckImageFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
@@ -76,6 +82,8 @@ public class EventServiceImpl implements EventService {
         if (authUtil.checkCouncilRole(event.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
+
+        fileUtil.CheckImageFiles(multipartFiles);
 
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
