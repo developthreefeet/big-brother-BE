@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomerCorsFilter implements Filter {
     private final List<String> allowedOrigins = Arrays.asList(
-        DOMAIN_URL,"프론트 ip 넣는 곳"
+        DOMAIN_URL,"*"
     );
 
     @Override
@@ -29,10 +29,10 @@ public class CustomerCorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        String origin = request.getHeader("Origin");
-        if (allowedOrigins.contains(origin)) {
-            response.setHeader("Access-Control-Allow-Origin", origin);
-        }
+//        String origin = request.getHeader("Origin");
+//        if (allowedOrigins.contains(origin)) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+//        }
         // CORS 허용한 Origin
         response.setHeader("Access-Control-Allow-Credentials", "true");
         // 자격이 포함된 요청 받기
