@@ -29,12 +29,13 @@ public class CustomerCorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-//        String origin = request.getHeader("Origin");
+        String origin = request.getHeader("Origin");
+        response.setHeader("Access-Control-Allow-Origin", origin);
 //        if (allowedOrigins.contains(origin)) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Origin", origin);
 //        }
         // CORS 허용한 Origin
-//        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         // 자격이 포함된 요청 받기
         response.setHeader("Access-Control-Allow-Methods","*");
         // http 메서드 전체 다 허용
