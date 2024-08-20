@@ -34,7 +34,7 @@ public class CustomerCorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
 //        }
         // CORS 허용한 Origin
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
         // 자격이 포함된 요청 받기
         response.setHeader("Access-Control-Allow-Methods","*");
         // http 메서드 전체 다 허용
