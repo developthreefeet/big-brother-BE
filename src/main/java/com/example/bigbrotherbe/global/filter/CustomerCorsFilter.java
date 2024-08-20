@@ -37,7 +37,7 @@ public class CustomerCorsFilter implements Filter {
         // CORS 허용한 Origin
         response.setHeader("Access-Control-Allow-Credentials", "true");
         // 자격이 포함된 요청 받기
-        response.setHeader("Access-Control-Allow-Methods","*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         // http 메서드 전체 다 허용
         response.setHeader("Access-Control-Max-Age", "3600");
         // 프리플라이트(preflight) 요청의 캐시 시간을 정의합니다.
