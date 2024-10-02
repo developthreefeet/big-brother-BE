@@ -9,6 +9,7 @@ import com.example.bigbrotherbe.global.exception.BusinessException;
 import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
 import com.example.bigbrotherbe.global.jwt.entity.TokenDto;
+import com.example.bigbrotherbe.global.security.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,8 +20,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -42,9 +41,12 @@ public class JwtTokenProvider {
     private static final long ACCESS_TIME = 10 * 60 * 1000L; // 10분
     private static final long REFRESH_TIME = 30 * 60 * 1000L; //30분
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+    private final CustomUserDetailsService customerDetailsService;
+
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey,CustomUserDetailsService customerDetailsService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.customerDetailsService = customerDetailsService;
     }
 
     // Member 정보를 가지고 Access Token, RefreshToken을 생성하는 메서드
@@ -80,21 +82,15 @@ public class JwtTokenProvider {
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        UserDetails principal = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities);
-        log.info("Authorities from token: {}", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        UserDetails principal = customerDetailsService.loadUserByUsername(
+            claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
 
     public boolean validateToken(String token) {
 
         try {
-            Claims claims = Jwts.parserBuilder()
+        Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
@@ -188,4 +184,5 @@ public class JwtTokenProvider {
         }
         throw new BusinessException(ErrorCode.ILLEGAL_HEADER_PATTERN);
     }
+
 }

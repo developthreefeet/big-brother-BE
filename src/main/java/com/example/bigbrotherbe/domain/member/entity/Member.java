@@ -37,7 +37,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Member implements UserDetails {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,27 +68,6 @@ public class Member implements UserDetails {
     // 정적 필드로 정의된 정규식 패턴 객체
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.affiliations.stream()
-                .map(affiliationMember -> new SimpleGrantedAuthority(affiliationMember.getRole()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
 
     @Builder
     public Member(String username, String password, String email, String is_active, LocalDateTime createAt, LocalDateTime updateAt) {
@@ -103,11 +82,6 @@ public class Member implements UserDetails {
         this.updateAt = createAt;
     }
 
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
     public void changePassword(String memberPass) {
         this.password = memberPass;
