@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.domain.member.entity;
+package com.example.bigbrotherbe.domain.member.entity.role;
 
-import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
+import com.example.bigbrotherbe.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

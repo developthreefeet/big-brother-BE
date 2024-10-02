@@ -6,7 +6,7 @@ import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberReposi
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
-import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
+import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
