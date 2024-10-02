@@ -1,6 +1,6 @@
-package com.example.bigbrotherbe.domain.member.entity.role;
+package com.example.bigbrotherbe.domain.member.entity;
 
-import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter

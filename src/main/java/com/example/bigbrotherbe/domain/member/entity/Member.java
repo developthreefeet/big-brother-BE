@@ -1,7 +1,5 @@
 package com.example.bigbrotherbe.domain.member.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
