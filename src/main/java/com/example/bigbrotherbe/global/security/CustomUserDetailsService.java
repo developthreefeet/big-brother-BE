@@ -1,9 +1,11 @@
 package com.example.bigbrotherbe.global.security;
 
+import com.example.bigbrotherbe.domain.member.entity.CustomerDetails;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
+import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,15 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        return memberRepository.findByEmail(userEmail).map(this::createUserDetails).orElseThrow(()-> new UsernameNotFoundException("해당하는 멤버를 찾을 수 없습니다."));
+        Member member =  memberRepository.findByEmail(userEmail).orElseThrow(() -> new BusinessException(
+            ErrorCode.NO_EXIST_EMAIL));
+        return new CustomerDetails(member);
     }
 
-    // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 return
-    private UserDetails createUserDetails(Member member) {
-        return User.builder()
-            .username(member.getEmail())
-            .password(member.getPassword())
-            .authorities(member.getAuthorities())
-            .build();
-        }
     }

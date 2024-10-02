@@ -89,13 +89,13 @@ public class AuthUtil {
 
     public JwtToken createAuthenticationToken(String email, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication authentication;
         try {
-            authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            Authentication authentication = authenticationManagerBuilder.getObject()
+                .authenticate(authenticationToken);
+            return jwtTokenProvider.generateToken(authentication);
         } catch (Exception e) {
             throw new BusinessException(MISMATCH_PASSWORD);
         }
-        return jwtTokenProvider.generateToken(authentication);
     }
 }
 
