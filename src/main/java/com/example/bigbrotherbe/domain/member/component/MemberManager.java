@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.member.component;
 
-import com.example.bigbrotherbe.domain.affiliation.component.AffiliationManger;
+import com.example.bigbrotherbe.domain.affiliation.component.AffiliationManager;
 import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
@@ -29,7 +29,7 @@ public class MemberManager {
     private final MemberChecker memberChecker;
     private final MemberDeleter memberDeleter;
     private final MemberSaver memberSaver;
-    private final AffiliationManger affiliationManger;
+    private final AffiliationManager affiliationManager;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -38,8 +38,8 @@ public class MemberManager {
         String encodePassword = passwordEncoder.encode(signUpDto.getPassword());
         Member member = signUpDto.toEntity(encodePassword);
         Member savedMember = memberSaver.saveMember(member);
-        AffiliationMember collegeMember = affiliationManger.createAfiiliationMember(savedMember,signUpDto.getCollege(), Role.ROLE_USER);
-        AffiliationMember affiliationMember = affiliationManger.createAfiiliationMember(savedMember,signUpDto.getAffiliation(),Role.ROLE_USER);
+        AffiliationMember collegeMember = affiliationManager.createAfiiliationMember(savedMember,signUpDto.getCollege(), Role.ROLE_USER);
+        AffiliationMember affiliationMember = affiliationManager.createAfiiliationMember(savedMember,signUpDto.getAffiliation(),Role.ROLE_USER);
 
         return MemberResponse.form(
             savedMember.getId(),
@@ -60,7 +60,7 @@ public class MemberManager {
 
     public AffiliationListDto getMemberAffiliationRoleList() {
         Member member = authUtil.getLoginMember();
-        return affiliationListToEntity(member.getUsername(), affiliationManger.findAllByMemberId(member.getId()));
+        return affiliationListToEntity(member.getUsername(), affiliationManager.findAllByMemberId(member.getId()));
     }
 
     public Member getLoginMember() {
