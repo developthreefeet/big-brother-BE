@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.affiliation.service;
 
-import com.example.bigbrotherbe.domain.affiliation.component.AffiliationManger;
+import com.example.bigbrotherbe.domain.affiliation.component.AffiliationManager;
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 
@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AffiliationServiceImpl implements AffiliationService {
 
-    private final AffiliationManger affiliationManger;
+    private final AffiliationManager affiliationManager;
 
     private final String CollegeKoreanText = "단과대";
 
     @Override
     public boolean checkExistAffiliationById(Long affiliationId) {
-        return affiliationManger.existsById(affiliationId);
+        return affiliationManager.existsById(affiliationId);
     }
 
 

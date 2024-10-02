@@ -63,12 +63,5 @@ public class SecurityConfig {
         // BCrypt Encoder 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    public static String getCurrentUserName(){
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || authentication.getName() == null){
-            throw new RuntimeException("No authentication information");
-        }
-        return authentication.getName();
-    }
 
 }

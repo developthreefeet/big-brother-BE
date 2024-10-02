@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AffiliationManger {
+public class AffiliationManager {
     private final AffiliationRepository affiliationRepository;
     private final AffiliationMemberRepository affiliationMemberRepository;
 
