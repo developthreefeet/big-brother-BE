@@ -1,8 +1,7 @@
 package com.example.bigbrotherbe.domain.rule.dto.request;
 
-import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
-import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.file.entity.File;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

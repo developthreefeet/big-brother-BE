@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.notice.dto.request;
 
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.file.entity.File;
 import lombok.*;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.member.entity.enums;
 
 import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
-import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.common.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.INVALID_AFFILIATION;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
+import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.INVALID_AFFILIATION;
+import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.NO_EXIST_AFFILIATION;
 
 @Getter
 @AllArgsConstructor

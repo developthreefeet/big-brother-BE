@@ -6,7 +6,7 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
-import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 
 

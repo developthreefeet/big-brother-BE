@@ -2,13 +2,13 @@ package com.example.bigbrotherbe.domain.affiliation.component;
 
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.entity.enums.Role;
+import com.example.bigbrotherbe.domain.member.entity.role.Role;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
+import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.common.exception.BusinessException;
+import com.example.bigbrotherbe.common.exception.enums.ErrorCode;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

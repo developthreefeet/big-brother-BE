@@ -4,20 +4,19 @@ import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.domain.member.service.MemberService;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
-import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
-import com.example.bigbrotherbe.global.file.dto.FileResponse;
-import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
-import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
-import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.file.enums.FileType;
-import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
+import com.example.bigbrotherbe.common.exception.BusinessException;
+import com.example.bigbrotherbe.common.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.file.dto.FileDeleteDTO;
+import com.example.bigbrotherbe.file.dto.FileResponse;
+import com.example.bigbrotherbe.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.file.dto.FileUpdateDTO;
+import com.example.bigbrotherbe.file.entity.File;
+import com.example.bigbrotherbe.file.enums.FileType;
+import com.example.bigbrotherbe.file.service.FileService;
+import com.example.bigbrotherbe.auth.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
+import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +74,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(rollbackFor = Exception.class)
     public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
         if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
@@ -99,7 +98,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long noticeId) {
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
         if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);

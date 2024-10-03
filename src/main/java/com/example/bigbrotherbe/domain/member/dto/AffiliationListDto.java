@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.member.dto;
 
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.enums.CouncilType;
-import com.example.bigbrotherbe.domain.member.entity.enums.Role;
+import com.example.bigbrotherbe.domain.member.entity.role.Role;
 
 import com.example.bigbrotherbe.domain.member.entity.role.AffiliationType;
 import java.util.ArrayList;

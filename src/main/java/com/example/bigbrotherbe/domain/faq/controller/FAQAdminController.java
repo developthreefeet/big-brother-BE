@@ -5,8 +5,8 @@ import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.service.FAQService;
-import com.example.bigbrotherbe.global.constant.Constant;
-import com.example.bigbrotherbe.global.exception.response.ApiResponse;
+import com.example.bigbrotherbe.common.constant.Constant;
+import com.example.bigbrotherbe.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
 
 @Slf4j
 @RestController
