@@ -6,14 +6,14 @@ import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpda
 import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.entity.Transactions;
 import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
-import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.file.enums.FileType;
-import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
-import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
-import com.example.bigbrotherbe.global.ocr.service.OcrService;
+import com.example.bigbrotherbe.common.exception.BusinessException;
+import com.example.bigbrotherbe.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.file.entity.File;
+import com.example.bigbrotherbe.file.enums.FileType;
+import com.example.bigbrotherbe.file.service.FileService;
+import com.example.bigbrotherbe.auth.util.AuthUtil;
+import com.example.bigbrotherbe.ocr.dto.OcrDTO;
+import com.example.bigbrotherbe.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 
 @Service

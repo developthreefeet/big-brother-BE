@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.member.repository;
 
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
+import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

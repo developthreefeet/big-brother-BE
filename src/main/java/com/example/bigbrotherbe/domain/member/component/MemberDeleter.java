@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberDeleter {
+
     private final MemberRepository memberRepository;
+
     public void deleteMember(Member member) {
         memberRepository.delete(member);
     }

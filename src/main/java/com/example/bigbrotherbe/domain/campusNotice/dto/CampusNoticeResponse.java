@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.campusNotice.dto;
 
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
-import com.example.bigbrotherbe.global.file.dto.FileResponse;
+import com.example.bigbrotherbe.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

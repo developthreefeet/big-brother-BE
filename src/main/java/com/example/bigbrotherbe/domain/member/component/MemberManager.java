@@ -5,14 +5,16 @@ import com.example.bigbrotherbe.domain.member.dto.request.SignUpDto;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.domain.member.entity.enums.Role;
+import com.example.bigbrotherbe.domain.member.entity.role.Role;
 import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
-import com.example.bigbrotherbe.domain.member.entity.role.AffiliationMember;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
-import com.example.bigbrotherbe.global.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
+import com.example.bigbrotherbe.auth.util.AuthUtil;
+import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -38,23 +40,23 @@ public class MemberManager {
         String encodePassword = passwordEncoder.encode(signUpDto.getPassword());
         Member member = signUpDto.toEntity(encodePassword);
         Member savedMember = memberSaver.saveMember(member);
-        AffiliationMember collegeMember = affiliationManager.createAfiiliationMember(savedMember,signUpDto.getCollege(), Role.ROLE_USER);
-        AffiliationMember affiliationMember = affiliationManager.createAfiiliationMember(savedMember,signUpDto.getAffiliation(),Role.ROLE_USER);
+        AffiliationMember collegeMember = affiliationManager.createAfiiliationMember(savedMember, signUpDto.getCollege(), Role.ROLE_USER);
+        AffiliationMember affiliationMember = affiliationManager.createAfiiliationMember(savedMember, signUpDto.getAffiliation(), Role.ROLE_USER);
 
         return MemberResponse.form(
-            savedMember.getId(),
-            savedMember.getUsername(),
-            savedMember.getEmail(),
-            savedMember.getCreateAt(),
-            collegeMember.getAffiliation().getName(),
-            affiliationMember.getAffiliation().getName()
+                savedMember.getId(),
+                savedMember.getUsername(),
+                savedMember.getEmail(),
+                savedMember.getCreateAt(),
+                collegeMember.getAffiliation().getName(),
+                affiliationMember.getAffiliation().getName()
         );
     }
 
     @Transactional
     public JwtToken signIn(String email, String password) {
         memberLoader.findByMemberEmail(email);
-        return authUtil.createAuthenticationToken(email,password);
+        return authUtil.createAuthenticationToken(email, password);
     }
 
 
@@ -72,6 +74,7 @@ public class MemberManager {
         Member member = memberLoader.findByMemberEmail(email);
         member.changePassword(passwordEncoder.encode(password));
     }
+
     @Transactional
     public void deleteSelf() {
         Member member = authUtil.getLoginMember();
@@ -95,23 +98,23 @@ public class MemberManager {
     public MemberInfoResponse findUserByEmail(String email) {
         Member member = memberLoader.findByMemberEmail(email);
         return MemberInfoResponse
-            .builder()
-            .email(member.getEmail())
-            .memberName(member.getUsername())
-            .createAt(member.getCreateAt())
-            .updateAt(member.getUpdateAt())
-            .affiliationListDto(getMemberAffiliationRoleList())
-            .build();
+                .builder()
+                .email(member.getEmail())
+                .memberName(member.getUsername())
+                .createAt(member.getCreateAt())
+                .updateAt(member.getUpdateAt())
+                .affiliationListDto(getMemberAffiliationRoleList())
+                .build();
     }
 
     public MemberInfoResponse toMemberInfoResponse(Member member) {
         return MemberInfoResponse.builder()
-            .email(member.getEmail())
-            .memberName(member.getUsername())
-            .createAt(member.getCreateAt())
-            .updateAt(member.getUpdateAt())
-            .affiliationListDto(getMemberAffiliationRoleList())
-            .build();
+                .email(member.getEmail())
+                .memberName(member.getUsername())
+                .createAt(member.getCreateAt())
+                .updateAt(member.getUpdateAt())
+                .affiliationListDto(getMemberAffiliationRoleList())
+                .build();
     }
 
     private AffiliationListDto affiliationListToEntity(String userName, List<AffiliationMember> affiliationMemberList) {
@@ -126,7 +129,7 @@ public class MemberManager {
 
     private boolean isUserRoleOnly(Member member) {
         return member.getAffiliations().stream()
-            .allMatch(affiliationMember -> "ROLE_USER".equals(affiliationMember.getRole()));
+                .allMatch(affiliationMember -> "ROLE_USER".equals(affiliationMember.getRole()));
     }
 
 }

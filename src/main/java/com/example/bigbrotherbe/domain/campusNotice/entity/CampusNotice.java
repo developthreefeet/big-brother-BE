@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.campusNotice.entity;
 
-import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.file.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
 

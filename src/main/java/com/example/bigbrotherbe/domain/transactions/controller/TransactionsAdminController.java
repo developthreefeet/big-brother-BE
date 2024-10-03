@@ -4,7 +4,7 @@ package com.example.bigbrotherbe.domain.transactions.controller;
 import com.example.bigbrotherbe.domain.transactions.dto.request.TransactionsUpdateRequest;
 import com.example.bigbrotherbe.domain.transactions.dto.response.TransactionsResponse;
 import com.example.bigbrotherbe.domain.transactions.service.TransactionsService;
-import com.example.bigbrotherbe.global.exception.response.ApiResponse;
+import com.example.bigbrotherbe.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
