@@ -2,8 +2,8 @@ package com.example.bigbrotherbe.domain.member.component;
 
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
-import com.example.bigbrotherbe.common.exception.BusinessException;
-import com.example.bigbrotherbe.common.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.enums.ErrorCode;
 
 import java.util.List;
 import java.util.Optional;

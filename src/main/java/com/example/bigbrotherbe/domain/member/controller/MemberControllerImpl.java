@@ -9,15 +9,15 @@ import com.example.bigbrotherbe.domain.member.dto.response.AffiliationResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberInfoResponse;
 import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
-import com.example.bigbrotherbe.email.entity.EmailRequest;
-import com.example.bigbrotherbe.email.entity.EmailVerificationResult;
-import com.example.bigbrotherbe.email.component.MailService;
-import com.example.bigbrotherbe.common.exception.response.ApiResponse;
-import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
+import com.example.bigbrotherbe.global.email.entity.EmailRequest;
+import com.example.bigbrotherbe.global.email.entity.EmailVerificationResult;
+import com.example.bigbrotherbe.global.email.component.MailService;
+import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.auth.jwt.dto.response.JwtToken;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
-import com.example.bigbrotherbe.auth.jwt.service.JwtTokenService;
-import com.example.bigbrotherbe.auth.jwt.dto.TokenDto;
+import com.example.bigbrotherbe.global.auth.jwt.service.JwtTokenService;
+import com.example.bigbrotherbe.global.auth.jwt.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode.SUCCESS;
 
 @Slf4j
 @RequiredArgsConstructor

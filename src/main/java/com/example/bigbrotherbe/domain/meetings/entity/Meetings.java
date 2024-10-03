@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.meetings.entity;
 
 import com.example.bigbrotherbe.domain.BaseTimeEntity;
-import com.example.bigbrotherbe.file.entity.File;
+import com.example.bigbrotherbe.global.file.entity.File;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

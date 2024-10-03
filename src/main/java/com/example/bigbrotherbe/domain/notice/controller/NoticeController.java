@@ -3,8 +3,8 @@ package com.example.bigbrotherbe.domain.notice.controller;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.notice.service.NoticeService;
-import com.example.bigbrotherbe.common.constant.Constant;
-import com.example.bigbrotherbe.common.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.common.constant.Constant;
+import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode.SUCCESS;
 
 @Slf4j                                          // 로깅 기능 추가
 @RestController                                 // RESTful 웹서비스 컨트롤러

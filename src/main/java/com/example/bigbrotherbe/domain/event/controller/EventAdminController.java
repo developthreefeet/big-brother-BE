@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.event.dto.request.EventUpdateRequest;
 import com.example.bigbrotherbe.domain.event.dto.response.EventResponse;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.event.service.EventService;
-import com.example.bigbrotherbe.common.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.common.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.common.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.global.common.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.common.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
