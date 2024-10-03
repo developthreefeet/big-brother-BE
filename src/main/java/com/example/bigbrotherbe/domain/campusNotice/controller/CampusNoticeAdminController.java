@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.service.CampusNoticeService;
 import com.example.bigbrotherbe.domain.campusNotice.util.LambdaUtil;
-import com.example.bigbrotherbe.common.exception.response.ApiResponse;
+import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.bigbrotherbe.common.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.common.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
-import static com.example.bigbrotherbe.common.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.global.common.constant.Constant.GetContent.PAGE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.common.constant.Constant.GetContent.SIZE_DEFAULT_VALUE;
+import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode.SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/admin/campusnotice")

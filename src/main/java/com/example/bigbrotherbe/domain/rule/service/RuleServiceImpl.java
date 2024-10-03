@@ -7,16 +7,16 @@ import com.example.bigbrotherbe.domain.rule.dto.request.RuleUpdateRequest;
 import com.example.bigbrotherbe.domain.rule.dto.response.RuleResponse;
 import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
-import com.example.bigbrotherbe.common.exception.BusinessException;
-import com.example.bigbrotherbe.file.dto.FileDeleteDTO;
-import com.example.bigbrotherbe.file.dto.FileResponse;
-import com.example.bigbrotherbe.file.dto.FileSaveDTO;
-import com.example.bigbrotherbe.file.dto.FileUpdateDTO;
-import com.example.bigbrotherbe.file.entity.File;
-import com.example.bigbrotherbe.file.enums.FileType;
-import com.example.bigbrotherbe.file.service.FileService;
-import com.example.bigbrotherbe.file.util.FileUtil;
-import com.example.bigbrotherbe.auth.util.AuthUtil;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
+import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
+import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
+import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
+import com.example.bigbrotherbe.global.file.entity.File;
+import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.file.service.FileService;
+import com.example.bigbrotherbe.global.file.util.FileUtil;
+import com.example.bigbrotherbe.global.auth.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.notice.dto.response;
 
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.file.dto.FileResponse;
+import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
