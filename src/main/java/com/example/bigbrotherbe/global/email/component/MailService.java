@@ -3,7 +3,7 @@ package com.example.bigbrotherbe.global.email.component;
 import com.example.bigbrotherbe.domain.member.entity.EMailVerification;
 import com.example.bigbrotherbe.domain.member.repository.MailRepository;
 import com.example.bigbrotherbe.global.email.entity.Email;
-import com.example.bigbrotherbe.global.email.entity.EmailVerificationResult;
+import com.example.bigbrotherbe.global.email.dto.EmailVerificationResult;
 import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import com.example.bigbrotherbe.global.common.exception.enums.ErrorCode;
 import java.time.Duration;

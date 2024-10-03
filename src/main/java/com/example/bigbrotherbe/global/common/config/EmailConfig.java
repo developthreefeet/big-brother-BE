@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.email;
+package com.example.bigbrotherbe.global.common.config;
 
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;

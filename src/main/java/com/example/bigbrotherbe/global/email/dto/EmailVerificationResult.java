@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.global.email.entity;
+package com.example.bigbrotherbe.global.email.dto;
 
 
 import lombok.AllArgsConstructor;

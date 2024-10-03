@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain;
+package com.example.bigbrotherbe.global.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

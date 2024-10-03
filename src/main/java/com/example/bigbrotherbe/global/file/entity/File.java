@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.global.file.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
@@ -10,7 +10,6 @@ import com.example.bigbrotherbe.domain.rule.entity.Rule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.checkerframework.checker.units.qual.A;
 
 @Entity
 @Getter
