@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.event.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

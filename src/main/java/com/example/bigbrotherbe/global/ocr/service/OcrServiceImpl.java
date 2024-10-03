@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.global.ocr.service;
 
-import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
+import com.example.bigbrotherbe.global.ocr.dto.OcrDto;
 import com.example.bigbrotherbe.global.ocr.util.OcrUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class OcrServiceImpl implements OcrService {
     private final OcrUtil ocrUtil;
 
     @Override
-    public OcrDTO extractText(MultipartFile multipartFile) {
+    public OcrDto extractText(MultipartFile multipartFile) {
         // ocr로 모든 text 추출한 거
         String extractedText = ocrUtil.extractTextFromPDF(multipartFile);
 
@@ -23,6 +23,6 @@ public class OcrServiceImpl implements OcrService {
         String parseAccountNumber = ocrUtil.parseAccountNumber(extractedText);
 
         // parsing 가공해서 응답
-        return OcrDTO.fromOcrResponse(parseTransactions, parseAccountNumber);
+        return OcrDto.fromOcrResponse(parseTransactions, parseAccountNumber);
     }
 }

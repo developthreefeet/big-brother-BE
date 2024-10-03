@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.faq.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 import com.example.bigbrotherbe.global.file.entity.File;
 import jakarta.persistence.*;
 import lombok.*;

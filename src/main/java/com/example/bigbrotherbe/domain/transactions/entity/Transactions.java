@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.transactions.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
+import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 
 import com.example.bigbrotherbe.global.file.entity.File;
 import jakarta.persistence.*;

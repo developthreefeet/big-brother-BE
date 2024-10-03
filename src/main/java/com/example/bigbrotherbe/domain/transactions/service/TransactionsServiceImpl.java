@@ -12,7 +12,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.auth.util.AuthUtil;
-import com.example.bigbrotherbe.global.ocr.dto.OcrDTO;
+import com.example.bigbrotherbe.global.ocr.dto.OcrDto;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,7 +54,7 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
-        OcrDTO ocrDTO = ocrService.extractText(multipartFile);
+        OcrDto ocrDTO = ocrService.extractText(multipartFile);
 
         List<String[]> parseTransactions = ocrDTO.getParseTransactions();
         String parseAccountNumber = ocrDTO.getParseAccountNumber();
