@@ -7,7 +7,7 @@ import static com.example.bigbrotherbe.auth.jwt.dto.TokenDto.REFRESH_TOKEN;
 
 import com.example.bigbrotherbe.common.exception.BusinessException;
 import com.example.bigbrotherbe.common.exception.enums.ErrorCode;
-import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 import com.example.bigbrotherbe.auth.jwt.dto.TokenDto;
 import com.example.bigbrotherbe.auth.custom.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
@@ -36,6 +36,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @Component
 public class JwtTokenService {
+
     private final Key key;
     private static final long ACCESS_TIME = 10 * 60 * 1000L; // 10분
     private static final long REFRESH_TIME = 30 * 60 * 1000L; //30분
@@ -51,8 +52,9 @@ public class JwtTokenService {
     // Member 정보를 가지고 Access Token, RefreshToken을 생성하는 메서드
     public JwtToken generateToken(Authentication authentication) {
         // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
-                Collectors.joining(","));
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
         TokenDto tokenDto = createAllToken(authentication.getName(), authorities);
 
@@ -63,18 +65,6 @@ public class JwtTokenService {
                 .build();
     }
 
-    private String createToken(String email, String authorities, String type) {
-        long now = new Date().getTime();
-        long expiration = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
-        return Jwts.builder()
-                .setSubject(email)
-                .claim("auth", authorities)
-                .claim("type", type)
-                .setExpiration(new Date(now + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
         log.info("Parsed claims: {}", claims);
@@ -82,14 +72,14 @@ public class JwtTokenService {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
         UserDetails principal = customerDetailsService.loadUserByUsername(
-            claims.getSubject());
+                claims.getSubject());
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
 
     public boolean validateToken(String token) {
 
         try {
-        Jwts.parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
@@ -123,18 +113,6 @@ public class JwtTokenService {
     }
 
 
-    private Claims parseClaims(String accessToken) {
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(accessToken)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
-    }
-
     public String createTokenByRefreshToken(String refreshToken) {
         Claims claims = getAllClaimsFromToken(refreshToken);
         Date now = new Date();
@@ -152,13 +130,6 @@ public class JwtTokenService {
         return new TokenDto(createToken(email, role, ACCESS_TOKEN), createToken(email, role, REFRESH_TOKEN));
     }
 
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 
     public TokenDto refreshAccessToken(String refreshToken) {
 
@@ -184,4 +155,36 @@ public class JwtTokenService {
         throw new BusinessException(ErrorCode.ILLEGAL_HEADER_PATTERN);
     }
 
+    private String createToken(String email, String authorities, String type) {
+        long now = new Date().getTime();
+        long expiration = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("auth", authorities)
+                .claim("type", type)
+                .setExpiration(new Date(now + expiration))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 }

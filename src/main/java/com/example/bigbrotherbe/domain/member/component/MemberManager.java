@@ -10,7 +10,7 @@ import com.example.bigbrotherbe.domain.member.entity.role.Affiliation;
 import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
 import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
 import com.example.bigbrotherbe.auth.util.AuthUtil;
-import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 
 import java.util.List;
 import java.util.stream.Collectors;

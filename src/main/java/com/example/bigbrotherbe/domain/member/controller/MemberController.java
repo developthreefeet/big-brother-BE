@@ -10,7 +10,7 @@ import com.example.bigbrotherbe.domain.member.dto.response.MemberResponse;
 import com.example.bigbrotherbe.domain.member.dto.AffiliationListDto;
 import com.example.bigbrotherbe.email.entity.EmailRequest;
 import com.example.bigbrotherbe.email.entity.EmailVerificationResult;
-import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 import com.example.bigbrotherbe.auth.jwt.dto.TokenDto;
 import com.example.bigbrotherbe.common.config.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;

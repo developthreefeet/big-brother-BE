@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class FAQServiceImpl implements FAQService {
@@ -70,7 +72,7 @@ public class FAQServiceImpl implements FAQService {
     @Transactional(rollbackFor = Exception.class)
     public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
         FAQ faq = faqRepository.findById(faqId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
         if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
@@ -94,7 +96,7 @@ public class FAQServiceImpl implements FAQService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long faqId) {
         FAQ faq = faqRepository.findById(faqId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
         if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);

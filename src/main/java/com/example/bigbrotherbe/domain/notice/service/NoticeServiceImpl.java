@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.example.bigbrotherbe.common.exception.enums.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
@@ -72,7 +74,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(rollbackFor = Exception.class)
     public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
         if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
@@ -96,7 +98,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long noticeId) {
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_NOTICE));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
         if (authUtil.checkCouncilRole(notice.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);

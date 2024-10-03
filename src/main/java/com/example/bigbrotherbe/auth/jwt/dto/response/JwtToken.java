@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.auth.jwt.entity;
+package com.example.bigbrotherbe.auth.jwt.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

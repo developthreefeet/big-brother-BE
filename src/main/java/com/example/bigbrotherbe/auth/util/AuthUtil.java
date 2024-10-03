@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.member.entity.AffiliationMember;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationMemberRepository;
 import com.example.bigbrotherbe.domain.member.repository.AffiliationRepository;
 import com.example.bigbrotherbe.domain.member.repository.MemberRepository;
-import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 
 import java.util.List;
 
@@ -90,8 +90,8 @@ public class AuthUtil {
 
 
     public JwtToken createAuthenticationToken(String email, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
             Authentication authentication = authenticationManagerBuilder.getObject()
                     .authenticate(authenticationToken);
             return jwtTokenService.generateToken(authentication);

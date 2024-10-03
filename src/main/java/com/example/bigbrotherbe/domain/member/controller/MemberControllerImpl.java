@@ -13,7 +13,7 @@ import com.example.bigbrotherbe.email.entity.EmailRequest;
 import com.example.bigbrotherbe.email.entity.EmailVerificationResult;
 import com.example.bigbrotherbe.email.component.MailService;
 import com.example.bigbrotherbe.common.exception.response.ApiResponse;
-import com.example.bigbrotherbe.auth.jwt.entity.JwtToken;
+import com.example.bigbrotherbe.auth.jwt.dto.response.JwtToken;
 import com.example.bigbrotherbe.domain.member.service.MemberService;
 
 import com.example.bigbrotherbe.auth.jwt.service.JwtTokenService;
