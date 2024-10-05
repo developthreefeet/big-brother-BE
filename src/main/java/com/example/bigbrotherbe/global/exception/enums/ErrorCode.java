@@ -39,6 +39,10 @@ public enum ErrorCode {
     // Rule
     NO_EXIST_RULE(HttpStatus.NOT_FOUND, "RULE-001", "존재하지 않는 회칙 입니다."),
 
+    // Comment
+    NO_EXIST_COMMENT(HttpStatus.NOT_FOUND, "COMMENT-001", "존재하지 않는 댓글 입니다."),
+    NOT_FOUNT_ENTITY(HttpStatus.NOT_FOUND, "COMMENT-002", "존재하지 않는 계시글 입니다."),
+
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 소속 입니다."),
     INVALID_AFFILIATION(HttpStatus.BAD_REQUEST, "AFFILIATION-002", "해당 학생회는 단과대가 아닙니다."),
