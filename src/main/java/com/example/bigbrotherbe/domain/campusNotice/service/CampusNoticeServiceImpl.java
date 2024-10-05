@@ -8,7 +8,7 @@ import com.example.bigbrotherbe.domain.campusNotice.dto.CampusNoticeResponse;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.repository.CampusNoticeRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

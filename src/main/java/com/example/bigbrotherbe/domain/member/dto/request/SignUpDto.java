@@ -3,8 +3,8 @@ package com.example.bigbrotherbe.domain.member.dto.request;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 
 
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.enums.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

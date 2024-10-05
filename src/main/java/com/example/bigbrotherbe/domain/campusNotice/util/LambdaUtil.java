@@ -2,7 +2,7 @@ package com.example.bigbrotherbe.domain.campusNotice.util;
 
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.service.CampusNoticeService;
-import com.example.bigbrotherbe.global.constant.Constant;
+import com.example.bigbrotherbe.global.common.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

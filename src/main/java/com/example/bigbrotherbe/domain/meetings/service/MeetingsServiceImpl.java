@@ -7,7 +7,7 @@ import com.example.bigbrotherbe.domain.meetings.dto.response.MeetingsResponse;
 import com.example.bigbrotherbe.domain.meetings.entity.Meetings;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileDeleteDTO;
 import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
@@ -16,7 +16,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.file.util.FileUtil;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
+import com.example.bigbrotherbe.global.auth.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

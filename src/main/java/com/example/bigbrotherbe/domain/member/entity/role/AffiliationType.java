@@ -2,8 +2,6 @@ package com.example.bigbrotherbe.domain.member.entity.role;
 
 import com.example.bigbrotherbe.domain.member.entity.enums.AffiliationCode;
 import com.example.bigbrotherbe.domain.member.entity.enums.CouncilType;
-import com.example.bigbrotherbe.domain.member.entity.enums.Role;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

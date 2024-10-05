@@ -7,15 +7,14 @@ import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
 import com.example.bigbrotherbe.domain.faq.repository.FAQRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.file.enums.FileType;
 import com.example.bigbrotherbe.global.file.service.FileService;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
+import com.example.bigbrotherbe.global.auth.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,7 +69,7 @@ public class FAQServiceImpl implements FAQService {
     @Transactional(rollbackFor = Exception.class)
     public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
         FAQ faq = faqRepository.findById(faqId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
         if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
@@ -96,7 +93,7 @@ public class FAQServiceImpl implements FAQService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long faqId) {
         FAQ faq = faqRepository.findById(faqId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_FAQ));
+                .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
         if (authUtil.checkCouncilRole(faq.getAffiliationId())) {
             throw new BusinessException(NOT_COUNCIL_MEMBER);

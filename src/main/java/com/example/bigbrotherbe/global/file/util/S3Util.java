@@ -2,10 +2,9 @@ package com.example.bigbrotherbe.global.file.util;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URL;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_TO_DELETE;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.FAIL_TO_UPLOAD;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.FAIL_TO_DELETE;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.FAIL_TO_UPLOAD;
 
 
 @Component

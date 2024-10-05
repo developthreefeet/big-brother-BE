@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.global.file.util;
 
-import com.example.bigbrotherbe.global.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.INVALID_IMAGE_TYPE;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.INVALID_PDF_TYPE;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.INVALID_IMAGE_TYPE;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.INVALID_PDF_TYPE;
 
 @Component
 @RequiredArgsConstructor

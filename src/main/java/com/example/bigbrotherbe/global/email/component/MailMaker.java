@@ -1,8 +1,8 @@
 package com.example.bigbrotherbe.global.email.component;
 
 import com.example.bigbrotherbe.global.email.entity.Email;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.exception.enums.ErrorCode;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
+import com.example.bigbrotherbe.global.common.exception.enums.ErrorCode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
