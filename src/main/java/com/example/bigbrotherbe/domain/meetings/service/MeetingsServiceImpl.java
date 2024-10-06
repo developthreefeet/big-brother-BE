@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class MeetingsServiceImpl implements MeetingsService {
