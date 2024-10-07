@@ -5,7 +5,7 @@ import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.util.CampusNoticeMultipartFile;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.common.enums.EntityType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import lombok.*;
 import org.springframework.http.MediaType;
@@ -37,7 +37,7 @@ public class CampusNoticeRegisterRequest {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.CAMPUS_NOTICE.getType())
+                    .fileType(EntityType.CAMPUS_NOTICE_TYPE.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 

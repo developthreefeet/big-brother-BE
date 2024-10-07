@@ -6,7 +6,6 @@ import com.example.bigbrotherbe.domain.comment.dto.CommentUpdateRequest;
 
 public interface CommentService {
     public void registerComment(CommentRegisterRequest commentRegisterRequest);
-    public void registerReply(CommentReplyRequest commentReplyRequest);
     public void updateComment(Long id, CommentUpdateRequest commentUpdateRequest);
     public void deleteComment(Long id);
 }
