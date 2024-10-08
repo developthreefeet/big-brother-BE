@@ -4,7 +4,6 @@ import com.example.bigbrotherbe.domain.comment.dto.CommentRegisterRequest;
 import com.example.bigbrotherbe.domain.like.dto.LikeDeleteRequest;
 import com.example.bigbrotherbe.domain.like.dto.LikeRegisterRequest;
 import com.example.bigbrotherbe.domain.like.service.LikeService;
-
 import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +19,13 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestPart(value = "likeRegisterRequest") LikeRegisterRequest likeRegisterRequest){
+    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestBody LikeRegisterRequest likeRegisterRequest){
         this.likeService.registerLike(likeRegisterRequest);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 
     @DeleteMapping()
-    public ResponseEntity<ApiResponse<Void>> deleteComment(@RequestPart(value = "likeDeleteRequest") LikeDeleteRequest likeDeleteRequest) {
+    public ResponseEntity<ApiResponse<Void>> deleteComment(@RequestBody LikeDeleteRequest likeDeleteRequest) {
         this.likeService.deleteLike(likeDeleteRequest);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }

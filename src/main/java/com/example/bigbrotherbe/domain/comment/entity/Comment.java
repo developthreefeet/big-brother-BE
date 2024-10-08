@@ -1,19 +1,21 @@
 package com.example.bigbrotherbe.domain.comment.entity;
 
-
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.global.common.enums.EntityType;
 import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE comment_id = ?")
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,12 @@ public class Comment extends BaseTimeEntity {
 
     @Column(name = "content")
     private String content;
+
+    @Enumerated // enum type 명시
+    private EntityType entityType;
+
+    @Column(nullable = false)
+    private boolean deleted = Boolean.FALSE;
 
     @JsonIgnore
     @ManyToOne
@@ -66,6 +74,8 @@ public class Comment extends BaseTimeEntity {
     public void update(String content) {
         this.content = content;
     }
+
+    public void setEntityType(EntityType entityType){this.entityType = entityType;}
 
     public void linkNotice(Notice notice) {
         this.notice = notice;

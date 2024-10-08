@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class CommentRegisterRequest {
+    private Long parentId;
     private String content;
     private String entityType;
     private Long entityId;
@@ -14,6 +15,13 @@ public class CommentRegisterRequest {
         return Comment.builder()
                 .content(this.content)
                 .members(member)
+                .build();
+    }
+    public Comment toCommentEntity(Member member, Comment parent){
+        return Comment.builder()
+                .content(this.content)
+                .members(member)
+                .parent(parent)
                 .build();
     }
 }
