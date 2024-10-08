@@ -41,7 +41,15 @@ public enum ErrorCode {
 
     // Comment
     NO_EXIST_COMMENT(HttpStatus.NOT_FOUND, "COMMENT-001", "존재하지 않는 댓글 입니다."),
-    NOT_FOUNT_ENTITY(HttpStatus.NOT_FOUND, "COMMENT-002", "존재하지 않는 계시글 입니다."),
+    NOT_REGISTER_MEMBER(HttpStatus.BAD_REQUEST, "COMMENT-002", "댓글을 작성한 유저가 아닙니다."),
+
+    // like
+    NO_EXIST_LIKE(HttpStatus.NOT_FOUND, "LIKE-001", "존재하지 않는 좋아요 입니다."),
+    ALREADY_EXIST_LIKE(HttpStatus.CONFLICT, "LIKE-002", "이미 존재하는 좋아요 입니다."),
+
+    // Entity
+    NOT_FOUNT_ENTITY(HttpStatus.NOT_FOUND, "ENTITY-001", "존재하지 않는 게시글 입니다."),
+    NO_ENTITY_TYPE(HttpStatus.NOT_FOUND, "ENTITY-002", "존재하지 않는 게시글 타입 입니다."),
 
     // AFFILIATION
     NO_EXIST_AFFILIATION(HttpStatus.NOT_FOUND, "AFFILIATION-001", "존재하지 않는 소속 입니다."),

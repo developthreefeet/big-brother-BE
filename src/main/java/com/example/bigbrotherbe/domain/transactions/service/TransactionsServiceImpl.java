@@ -9,7 +9,7 @@ import com.example.bigbrotherbe.domain.transactions.repository.TransactionsRepos
 import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.common.enums.EntityType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.auth.util.AuthUtil;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDto;
@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*;
 
 
 @Service
@@ -75,7 +77,7 @@ public class TransactionsServiceImpl implements TransactionsService {
 
         // pdf 저장
         FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                .fileType(FileType.TRANSACTIONS.getType())
+                .fileType(EntityType.TRANSACTIONS_TYPE.getType())
                 .multipartFile(multipartFile)
                 .build();
 

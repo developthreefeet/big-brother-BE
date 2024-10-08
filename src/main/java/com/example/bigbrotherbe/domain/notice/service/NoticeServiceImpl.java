@@ -13,7 +13,7 @@ import com.example.bigbrotherbe.global.file.dto.FileResponse;
 import com.example.bigbrotherbe.global.file.dto.FileSaveDTO;
 import com.example.bigbrotherbe.global.file.dto.FileUpdateDTO;
 import com.example.bigbrotherbe.global.file.entity.File;
-import com.example.bigbrotherbe.global.file.enums.FileType;
+import com.example.bigbrotherbe.global.common.enums.EntityType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.auth.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class NoticeServiceImpl implements NoticeService {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
-                    .fileType(FileType.NOTICE.getType())
+                    .fileType(EntityType.NOTICE_TYPE.getType())
                     .multipartFileList(multipartFiles)
                     .build();
 
@@ -80,7 +82,7 @@ public class NoticeServiceImpl implements NoticeService {
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
             FileUpdateDTO fileUpdateDTO = FileUpdateDTO.builder()
-                    .fileType(FileType.NOTICE.getType())
+                    .fileType(EntityType.NOTICE_TYPE.getType())
                     .multipartFileList(multipartFiles)
                     .files(notice.getFiles())
                     .build();
@@ -102,7 +104,7 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
         FileDeleteDTO fileDeleteDTO = FileDeleteDTO.builder()
-                .fileType(FileType.NOTICE.getType())
+                .fileType(EntityType.NOTICE_TYPE.getType())
                 .files(notice.getFiles())
                 .build();
 
