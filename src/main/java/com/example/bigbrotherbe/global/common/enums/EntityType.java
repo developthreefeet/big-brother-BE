@@ -21,8 +21,9 @@ public enum EntityType {
 
     private final int val;
     private final String type;
-    public static EntityType getEntityType(String entity){
-        switch (entity){
+
+    public static EntityType getEntityType(String entity) {
+        switch (entity) {
             case Constant.Entity.NOTICE:
                 return NOTICE_TYPE;
             case Constant.Entity.FAQ:

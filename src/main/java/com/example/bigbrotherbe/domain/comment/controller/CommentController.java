@@ -18,7 +18,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestBody CommentRegisterRequest commentRegisterRequest){
+    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestBody CommentRegisterRequest commentRegisterRequest) {
         this.commentService.registerComment(commentRegisterRequest);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
@@ -31,7 +31,7 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public ResponseEntity<ApiResponse<Void>> updateComment(@PathVariable("commentId") Long id,
-                                              @RequestBody CommentUpdateRequest commentUpdateRequest){
+                                                           @RequestBody CommentUpdateRequest commentUpdateRequest) {
         this.commentService.updateComment(id, commentUpdateRequest);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }

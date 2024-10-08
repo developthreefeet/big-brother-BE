@@ -25,19 +25,20 @@ import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*
 
 @Service
 @RequiredArgsConstructor
-public class LikeServiceImpl implements LikeService{
-    private final LikeRepository likeRepository;
+public class LikeServiceImpl implements LikeService {
 
+    private final LikeRepository likeRepository;
     private final NoticeRepository noticeRepository;
 
     private final AuthUtil authUtil;
+
     @Override
     public void registerLike(LikeRegisterRequest likeRegisterRequest) {
         Member member = authUtil.getLoginMember();
 
         String entityType = likeRegisterRequest.getEntityType();
         Long entityId = likeRegisterRequest.getEntityId();
-        if (this.likeRepository.existsById(new LikeId(member, entityId, EntityType.getEntityType(entityType)))){
+        if (this.likeRepository.existsById(new LikeId(member, entityId, EntityType.getEntityType(entityType)))) {
             throw new BusinessException(ALREADY_EXIST_LIKE);
         }
 

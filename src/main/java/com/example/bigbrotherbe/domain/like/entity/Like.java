@@ -22,6 +22,7 @@ import lombok.*;
 @IdClass(LikeId.class)
 @Table(name = "likes")
 public class Like {
+
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

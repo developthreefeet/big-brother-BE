@@ -16,10 +16,11 @@ import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/like")
 public class LikeController {
+
     private final LikeService likeService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestBody LikeRegisterRequest likeRegisterRequest){
+    public ResponseEntity<ApiResponse<Void>> registerComment(@RequestBody LikeRegisterRequest likeRegisterRequest) {
         this.likeService.registerLike(likeRegisterRequest);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
