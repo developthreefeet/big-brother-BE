@@ -4,12 +4,14 @@ import com.example.bigbrotherbe.domain.comment.dto.CommentRegisterRequest;
 import com.example.bigbrotherbe.domain.like.dto.LikeDeleteRequest;
 import com.example.bigbrotherbe.domain.like.dto.LikeRegisterRequest;
 import com.example.bigbrotherbe.domain.like.service.LikeService;
-import com.example.bigbrotherbe.global.exception.response.ApiResponse;
+
+import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.bigbrotherbe.global.exception.enums.SuccessCode.SUCCESS;
+import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode.SUCCESS;
+
 
 @RestController
 @RequiredArgsConstructor

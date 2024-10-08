@@ -1,9 +1,10 @@
 package com.example.bigbrotherbe.domain.comment.entity;
 
-import com.example.bigbrotherbe.domain.BaseTimeEntity;
+
 import com.example.bigbrotherbe.domain.event.entity.Event;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
+import com.example.bigbrotherbe.global.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

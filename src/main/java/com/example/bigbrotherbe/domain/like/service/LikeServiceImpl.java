@@ -9,12 +9,14 @@ import com.example.bigbrotherbe.domain.like.repository.LikeRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
+
+import com.example.bigbrotherbe.global.auth.util.AuthUtil;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NOT_FOUNT_ENTITY;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.NOT_FOUNT_ENTITY;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class LikeServiceImpl implements LikeService{
     private final NoticeRepository noticeRepository;
 
     private final AuthUtil authUtil;
+
     @Override
     public void registerLike(LikeRegisterRequest likeRegisterRequest) {
         Member member = authUtil.getLoginMember();

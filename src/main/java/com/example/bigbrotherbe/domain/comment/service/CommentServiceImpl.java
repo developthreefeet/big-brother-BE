@@ -9,23 +9,26 @@ import com.example.bigbrotherbe.domain.comment.repository.CommentRepository;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
-import com.example.bigbrotherbe.global.exception.BusinessException;
-import com.example.bigbrotherbe.global.jwt.component.AuthUtil;
+
+import com.example.bigbrotherbe.global.auth.util.AuthUtil;
+import com.example.bigbrotherbe.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NOT_FOUNT_ENTITY;
-import static com.example.bigbrotherbe.global.exception.enums.ErrorCode.NO_EXIST_COMMENT;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.NOT_FOUNT_ENTITY;
+import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.NO_EXIST_COMMENT;
+
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
-    private final CommentRepository commentRepository;
+public class CommentServiceImpl implements CommentService {
 
+    private final CommentRepository commentRepository;
     private final EventRepository eventRepository;
     private final NoticeRepository noticeRepository;
 
     private final AuthUtil authUtil;
+
     @Override
     public void registerComment(CommentRegisterRequest commentRegisterRequest) {
         Member member = authUtil.getLoginMember();
@@ -64,30 +67,30 @@ public class CommentServiceImpl implements CommentService{
         commentRepository.delete(comment);
     }
 
-    private void setCommentEntity(Comment comment, String entityType, Long entityId){
+    private void setCommentEntity(Comment comment, String entityType, Long entityId) {
         /*
         comment와 관계를 맺은 entity 연결
          */
-        if (entityType.equals(EntityType.NOTICE.getType())){
+        if (entityType.equals(EntityType.NOTICE.getType())) {
             comment.linkNotice(noticeRepository.findById(entityId)
                     .orElseThrow(() -> new BusinessException(NOT_FOUNT_ENTITY)));
-        }else if(entityType.equals(EntityType.EVENT.getType())){
+        } else if (entityType.equals(EntityType.EVENT.getType())) {
             comment.linkEvent(this.eventRepository.findById(entityId)
                     .orElseThrow(() -> new BusinessException(NOT_FOUNT_ENTITY)));
-        }else {
+        } else {
             throw new BusinessException(NOT_FOUNT_ENTITY);
         }
     }
 
-    private void setCommentEntity(Comment comment, Comment parent){
+    private void setCommentEntity(Comment comment, Comment parent) {
         /*
         부모 comment외 관계를 맺은 entity 연결
          */
-        if(parent.getNotice() != null){
+        if (parent.getNotice() != null) {
             comment.linkNotice(parent.getNotice());
-        }else if(parent.getEvent() != null){
+        } else if (parent.getEvent() != null) {
             comment.linkEvent(parent.getEvent());
-        }else{
+        } else {
             throw new BusinessException(NOT_FOUNT_ENTITY);
         }
     }
