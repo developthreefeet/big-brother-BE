@@ -81,7 +81,7 @@ dependencies {
 //    implementation 'software.amazon.awssdk:http-client-netty:2.20.0'
     implementation 'software.amazon.awssdk:sagemakerruntime:2.20.92'
     implementation 'software.amazon.awssdk:sdk-core:2.20.92'
-    implementation 'software.amazon.awssdk:http-client-netty:2.20.92'
+//    implementation 'software.amazon.awssdk:http-client-netty:2.20.92'
 
     // OCR
     implementation 'org.apache.pdfbox:pdfbox:2.0.27'

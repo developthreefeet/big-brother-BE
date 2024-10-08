@@ -10,6 +10,7 @@ import com.example.bigbrotherbe.domain.like.entity.Like;
 import com.example.bigbrotherbe.domain.like.repository.LikeRepository;
 import com.example.bigbrotherbe.domain.meetings.repository.MeetingsRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
+import com.example.bigbrotherbe.domain.notice.entity.Notice;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.domain.rule.repository.RuleRepository;
 import com.example.bigbrotherbe.global.auth.util.AuthUtil;
@@ -24,17 +25,20 @@ import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*
 
 @Service
 @RequiredArgsConstructor
-public class LikeServiceImpl implements LikeService{
+public class LikeServiceImpl implements LikeService {
+
     private final LikeRepository likeRepository;
+    private final NoticeRepository noticeRepository;
 
     private final AuthUtil authUtil;
+
     @Override
     public void registerLike(LikeRegisterRequest likeRegisterRequest) {
         Member member = authUtil.getLoginMember();
 
         String entityType = likeRegisterRequest.getEntityType();
         Long entityId = likeRegisterRequest.getEntityId();
-        if (this.likeRepository.existsById(new LikeId(member, entityId, EntityType.getEntityType(entityType)))){
+        if (this.likeRepository.existsById(new LikeId(member, entityId, EntityType.getEntityType(entityType)))) {
             throw new BusinessException(ALREADY_EXIST_LIKE);
         }
 
@@ -45,6 +49,8 @@ public class LikeServiceImpl implements LikeService{
     @Override
     public void deleteLike(LikeDeleteRequest likeDeleteRequest) {
         Member member = authUtil.getLoginMember();
+        Notice notice = this.noticeRepository.findById(likeDeleteRequest.getEntityId())
+                .orElseThrow(() -> new BusinessException(NOT_FOUNT_ENTITY));
 
         EntityType entityType = EntityType.getEntityType(likeDeleteRequest.getEntityType());
         Optional<Like> like = this.likeRepository.findById(new LikeId(member, likeDeleteRequest.getEntityId(), entityType));

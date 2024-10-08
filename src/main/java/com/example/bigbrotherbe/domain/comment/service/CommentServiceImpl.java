@@ -3,6 +3,7 @@ package com.example.bigbrotherbe.domain.comment.service;
 import com.example.bigbrotherbe.domain.comment.dto.CommentRegisterRequest;
 import com.example.bigbrotherbe.domain.comment.dto.CommentUpdateRequest;
 import com.example.bigbrotherbe.domain.comment.entity.Comment;
+
 import com.example.bigbrotherbe.domain.comment.repository.CommentRepository;
 import com.example.bigbrotherbe.domain.event.repository.EventRepository;
 import com.example.bigbrotherbe.domain.member.entity.Member;
@@ -18,26 +19,27 @@ import static com.example.bigbrotherbe.global.common.exception.enums.ErrorCode.*
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     private final EventRepository eventRepository;
     private final NoticeRepository noticeRepository;
 
     private final AuthUtil authUtil;
+
     @Override
     public void registerComment(CommentRegisterRequest commentRegisterRequest) {
         Member member = authUtil.getLoginMember();
         Comment comment;
-        if (commentRegisterRequest.getParentId() != null){
+        if (commentRegisterRequest.getParentId() != null) {
             Comment parentComment = commentRepository.findById(commentRegisterRequest.getParentId())
                     .orElseThrow(() -> new BusinessException(NO_EXIST_COMMENT));
-            if (parentComment.isDeleted()){
+            if (parentComment.isDeleted()) {
                 throw new BusinessException(NO_EXIST_COMMENT);
             }
             comment = commentRegisterRequest.toCommentEntity(member, parentComment);
             this.setCommentEntity(comment, parentComment);
-        }else{
+        } else {
             comment = commentRegisterRequest.toCommentEntity(member);
             this.setCommentEntity(comment, commentRegisterRequest.getEntityType(), commentRegisterRequest.getEntityId());
         }
@@ -50,10 +52,10 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_COMMENT));
 
-        if (!comment.getMembers().equals(authUtil.getLoginMember())){
+        if (!comment.getMembers().equals(authUtil.getLoginMember())) {
             throw new BusinessException(NOT_REGISTER_MEMBER);
         }
-        if (comment.isDeleted()){
+        if (comment.isDeleted()) {
             throw new BusinessException(NO_EXIST_COMMENT);
         }
         comment.update(commentUpdateRequest.getContent());
@@ -65,21 +67,21 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_COMMENT));
 
-        if (!comment.getMembers().equals(authUtil.getLoginMember())){
+        if (!comment.getMembers().equals(authUtil.getLoginMember())) {
             throw new BusinessException(NOT_REGISTER_MEMBER);
         }
-        if (comment.isDeleted()){
+        if (comment.isDeleted()) {
             throw new BusinessException(NO_EXIST_COMMENT);
         }
         commentRepository.delete(comment);
     }
 
-    private void setCommentEntity(Comment comment, String entityType, Long entityId){
+    private void setCommentEntity(Comment comment, String entityType, Long entityId) {
         /*
         comment와 관계를 맺은 entity 연결
          */
         EntityType type;
-        switch (entityType){
+        switch (entityType) {
             case Constant.Entity.NOTICE:
                 comment.linkNotice(noticeRepository.findById(entityId)
                         .orElseThrow(() -> new BusinessException(NOT_FOUNT_ENTITY)));
@@ -96,12 +98,12 @@ public class CommentServiceImpl implements CommentService{
         this.setCommentEntityType(comment, type);
     }
 
-    private void setCommentEntity(Comment comment, Comment parent){
+    private void setCommentEntity(Comment comment, Comment parent) {
         /*
         부모 comment와 관계를 맺은 entity 연결
          */
         EntityType type = EntityType.getEntityType(parent.getEntityType().getType());
-        switch (parent.getEntityType().getType()){
+        switch (parent.getEntityType().getType()) {
             case Constant.Entity.NOTICE:
                 comment.linkNotice(parent.getNotice());
                 break;
@@ -114,7 +116,7 @@ public class CommentServiceImpl implements CommentService{
         this.setCommentEntityType(comment, type);
     }
 
-    private void setCommentEntityType(Comment comment, EntityType entityType){
+    private void setCommentEntityType(Comment comment, EntityType entityType) {
         comment.setEntityType(entityType);
     }
 }

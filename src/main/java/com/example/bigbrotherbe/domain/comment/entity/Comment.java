@@ -17,6 +17,7 @@ import org.hibernate.annotations.SQLDelete;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE comment SET deleted = true WHERE comment_id = ?")
 public class Comment extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -75,7 +76,9 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void setEntityType(EntityType entityType){this.entityType = entityType;}
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
 
     public void linkNotice(Notice notice) {
         this.notice = notice;
