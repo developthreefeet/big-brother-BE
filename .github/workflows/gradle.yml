@@ -72,4 +72,4 @@ jobs:
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킨다..
       - name: docker run new container
-        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 -e TZ=Asia/Seoul --env-file /home/ubuntu/env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
+        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 -e TZ=Asia/Seoul --env-file /home/ubuntu/snap/env1.list ${{ secrets.DOCKERHUB_USERNAME }}/big-brother-demo
