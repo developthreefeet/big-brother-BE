@@ -37,8 +37,8 @@ public class MeetingsServiceImpl implements MeetingsService {
     private final FileService fileService;
     private final AffiliationService affiliationService;
 
-    private final AuthUtil authUtil;
     private final FileUtil fileUtil;
+    private final AuthUtil authUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
