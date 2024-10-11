@@ -51,10 +51,10 @@ public class RuleServiceImpl implements RuleService {
             throw new BusinessException(NOT_PRESIDENT_MEMBER);
         }
 
-        fileUtil.checkPdfFiles(multipartFiles);
-
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
+            fileUtil.checkPdfFiles(multipartFiles);
+
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(EntityType.RULE_TYPE.getType())
                     .multipartFileList(multipartFiles)

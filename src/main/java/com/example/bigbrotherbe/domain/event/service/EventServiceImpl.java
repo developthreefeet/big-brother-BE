@@ -51,10 +51,10 @@ public class EventServiceImpl implements EventService {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
-        fileUtil.CheckImageFiles(multipartFiles);
-
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
+            fileUtil.CheckImageFiles(multipartFiles);
+
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(EntityType.EVENT_TYPE.getType())
                     .multipartFileList(multipartFiles)
