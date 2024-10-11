@@ -50,10 +50,10 @@ public class MeetingsServiceImpl implements MeetingsService {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
-        fileUtil.checkPdfFiles(multipartFiles);
-
         List<File> files = null;
         if (fileService.checkExistRequestFile(multipartFiles)) {
+            fileUtil.checkPdfFiles(multipartFiles);
+
             FileSaveDTO fileSaveDTO = FileSaveDTO.builder()
                     .fileType(EntityType.MEETINGS_TYPE.getType())
                     .multipartFileList(multipartFiles)

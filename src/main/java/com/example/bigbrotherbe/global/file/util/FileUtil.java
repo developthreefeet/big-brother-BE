@@ -40,4 +40,11 @@ public class FileUtil {
                     throw new BusinessException(INVALID_PDF_TYPE);
                 });
     }
+
+    public void checkPdfFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.equals(MediaType.APPLICATION_PDF_VALUE)) {
+            throw new BusinessException(INVALID_PDF_TYPE);
+        }
+    }
 }

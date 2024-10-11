@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface TransactionsService {
-    void register(MultipartFile multipartFile, Long affiliationId);
+    void register(MultipartFile multipartFiles, Long affiliationId);
 
     void update(Long transactionsId, TransactionsUpdateRequest transactionsUpdateRequest);
 

@@ -31,7 +31,7 @@ public class RuleAdminController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> registerRule(@RequestPart(value = "ruleRegisterRequest") RuleRegisterRequest ruleRegisterRequest,
-                                                          @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
+                                                          @RequestPart(value = "file") List<MultipartFile> multipartFiles) {
         ruleService.registerRule(ruleRegisterRequest, multipartFiles);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }

@@ -12,6 +12,7 @@ import com.example.bigbrotherbe.global.file.entity.File;
 import com.example.bigbrotherbe.global.common.enums.EntityType;
 import com.example.bigbrotherbe.global.file.service.FileService;
 import com.example.bigbrotherbe.global.auth.util.AuthUtil;
+import com.example.bigbrotherbe.global.file.util.FileUtil;
 import com.example.bigbrotherbe.global.ocr.dto.OcrDto;
 import com.example.bigbrotherbe.global.ocr.service.OcrService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class TransactionsServiceImpl implements TransactionsService {
     private final FileService fileService;
 
     private final AuthUtil authUtil;
+    private final FileUtil fileUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -48,7 +50,7 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new BusinessException(NO_EXIST_AFFILIATION);
         }
 
-        if (multipartFile == null || multipartFile.isEmpty()) {
+        if (multipartFile == null) {
             throw new BusinessException(EMPTY_FILE);
         }
 
@@ -56,8 +58,9 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new BusinessException(NOT_COUNCIL_MEMBER);
         }
 
-        OcrDto ocrDTO = ocrService.extractText(multipartFile);
+        fileUtil.checkPdfFile(multipartFile);
 
+        OcrDto ocrDTO = ocrService.extractText(multipartFile);
         List<String[]> parseTransactions = ocrDTO.getParseTransactions();
         String parseAccountNumber = ocrDTO.getParseAccountNumber();
 
