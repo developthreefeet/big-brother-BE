@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LambdaUtil {
+public class CrawlerUtil {
 
     private final CampusNoticeService campusNoticeService;
 
@@ -18,9 +18,9 @@ public class LambdaUtil {
         for (CampusNoticeType noticeType : CampusNoticeType.values()){
             String payload = "{\"queryStringParameters\": {" +
                     "\"url\": \"" + noticeType.getUrl() + "\"," +
-                    "\"base_url\": \"" + Constant.Lambda.BASE_URL + "\"" +
+                    "\"base_url\": \"" + Constant.Crawler.BASE_URL + "\"" +
                     "}}";
-            campusNoticeService.invokeLambda(Constant.Lambda.FUNCTION_NAME, payload, noticeType);
+            campusNoticeService.invokeLambda(Constant.Crawler.FUNCTION_NAME, payload, noticeType);
         }
     }
 }
