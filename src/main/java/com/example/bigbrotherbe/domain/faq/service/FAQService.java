@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.faq.service;
 
-import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQUpdateRequest;
 import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface FAQService {
     public void register(FAQRegisterRequest faqRegisterRequest, List<MultipartFile> multipartFiles);
 
-    public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles);
+    public void modify(Long faqId, FAQUpdateRequest faqUpdateRequest, List<MultipartFile> multipartFiles);
 
     public void delete(Long faqId);
 

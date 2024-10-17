@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.faq.controller;
 
-import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQUpdateRequest;
 import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
@@ -38,9 +38,9 @@ public class FAQAdminController {
 
     @PutMapping("/{faqId}")
     public ResponseEntity<ApiResponse<Void>> modifyFAQ(@PathVariable("faqId") Long faqId,
-                                                       @RequestPart(value = "faqModifyRequest") FAQModifyRequest faqModifyRequest,
+                                                       @RequestPart(value = "faqUpdateRequest") FAQUpdateRequest faqUpdateRequest,
                                                        @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
-        faqService.modify(faqId, faqModifyRequest, multipartFiles);
+        faqService.modify(faqId, faqUpdateRequest, multipartFiles);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 

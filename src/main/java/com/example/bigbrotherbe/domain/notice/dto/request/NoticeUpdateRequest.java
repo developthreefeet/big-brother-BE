@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.faq.dto.request;
+package com.example.bigbrotherbe.domain.notice.dto.request;
 
 import lombok.*;
 
@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FAQModifyRequest {
+public class NoticeUpdateRequest {
     private String title;
     private String content;
+
 }
