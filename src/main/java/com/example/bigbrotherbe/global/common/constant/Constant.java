@@ -6,7 +6,7 @@ public class Constant {
         public static final String SIZE_DEFAULT_VALUE = "10";
     }
 
-    public static class Lambda{
+    public static class Crawler {
         public static final String FUNCTION_NAME = "campusNoticeCrawler";
         public static final String BASE_URL = "https://www.mju.ac.kr";
     }
@@ -17,6 +17,10 @@ public class Constant {
 
     public static class Url{
         public static final String DOMAIN_URL = "https://api.mju-bigbrother.xyz";
+    }
+
+    public static class LLM{
+        public static final String FUNCTION_NAME = "callBedrock";
     }
 
     public static class Entity{

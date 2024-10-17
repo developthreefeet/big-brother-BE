@@ -1,4 +1,4 @@
-package com.example.bigbrotherbe.domain.campusNotice.config;
+package com.example.bigbrotherbe.global.common.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -21,11 +21,13 @@ public class LambdaConfig {
     private String region;
 
     @Bean
+    // 자격증명 생성
     public BasicAWSCredentials awsCredentials() {
         return new BasicAWSCredentials(accessKey, secretKey);
     }
 
     @Bean
+    // Lambda 서비스 접근 클라이언트 생성
     public AWSLambda awsLambda(BasicAWSCredentials awsCredentials) {
         return AWSLambdaClientBuilder.standard()
                 .withRegion(Regions.fromName(region))

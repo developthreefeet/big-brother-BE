@@ -4,7 +4,7 @@ import com.example.bigbrotherbe.domain.campusNotice.dto.CampusNoticeResponse;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNotice;
 import com.example.bigbrotherbe.domain.campusNotice.entity.CampusNoticeType;
 import com.example.bigbrotherbe.domain.campusNotice.service.CampusNoticeService;
-import com.example.bigbrotherbe.domain.campusNotice.util.LambdaUtil;
+import com.example.bigbrotherbe.domain.campusNotice.util.CrawlerUtil;
 import com.example.bigbrotherbe.global.common.exception.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ import static com.example.bigbrotherbe.global.common.exception.enums.SuccessCode
 @RequiredArgsConstructor
 public class CampusNoticeAdminController {
     private final CampusNoticeService campusNoticeService;
-    private final LambdaUtil lambdaUtil;
+    private final CrawlerUtil crawlerUtil;
 
     @GetMapping("/{campusNoticeId}")
     public ResponseEntity<ApiResponse<CampusNoticeResponse>> getCampusNoticeById(@PathVariable("campusNoticeId") Long campusNoticeId) {
@@ -50,7 +50,7 @@ public class CampusNoticeAdminController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> crawlerNotice() {
-        lambdaUtil.invokeLambda();
+        crawlerUtil.invokeLambda();
         return ResponseEntity.ok().build();
     }
 }
