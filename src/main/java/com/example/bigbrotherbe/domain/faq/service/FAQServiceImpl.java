@@ -1,7 +1,7 @@
 package com.example.bigbrotherbe.domain.faq.service;
 
 import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
-import com.example.bigbrotherbe.domain.faq.dto.request.FAQModifyRequest;
+import com.example.bigbrotherbe.domain.faq.dto.request.FAQUpdateRequest;
 import com.example.bigbrotherbe.domain.faq.dto.request.FAQRegisterRequest;
 import com.example.bigbrotherbe.domain.faq.dto.response.FAQResponse;
 import com.example.bigbrotherbe.domain.faq.entity.FAQ;
@@ -69,7 +69,7 @@ public class FAQServiceImpl implements FAQService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modify(Long faqId, FAQModifyRequest faqModifyRequest, List<MultipartFile> multipartFiles) {
+    public void modify(Long faqId, FAQUpdateRequest faqUpdateRequest, List<MultipartFile> multipartFiles) {
         FAQ faq = faqRepository.findById(faqId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_FAQ));
 
@@ -88,7 +88,7 @@ public class FAQServiceImpl implements FAQService {
             files = fileService.updateFile(fileUpdateDTO);
         }
 
-        faq.update(faqModifyRequest.getTitle(), faqModifyRequest.getContent(), files);
+        faq.update(faqUpdateRequest.getTitle(), faqUpdateRequest.getContent(), files);
     }
 
     @Override

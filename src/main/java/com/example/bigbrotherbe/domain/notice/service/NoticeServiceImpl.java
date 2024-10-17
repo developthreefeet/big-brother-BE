@@ -4,7 +4,7 @@ import com.example.bigbrotherbe.domain.affiliation.service.AffiliationService;
 import com.example.bigbrotherbe.domain.member.entity.Member;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
-import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeUpdateRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.repository.NoticeRepository;
 import com.example.bigbrotherbe.global.common.exception.BusinessException;
@@ -71,7 +71,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles) {
+    public void modify(Long noticeId, NoticeUpdateRequest noticeUpdateRequest, List<MultipartFile> multipartFiles) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new BusinessException(NO_EXIST_NOTICE));
 
@@ -90,7 +90,7 @@ public class NoticeServiceImpl implements NoticeService {
             files = fileService.updateFile(fileUpdateDTO);
         }
 
-        notice.update(noticeModifyRequest.getTitle(), noticeModifyRequest.getContent(), files);
+        notice.update(noticeUpdateRequest.getTitle(), noticeUpdateRequest.getContent(), files);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.notice.controller;
 
-import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeUpdateRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
@@ -38,9 +38,9 @@ public class NoticeAdminController {
 
     @PutMapping("/{noticeId}")
     public ResponseEntity<ApiResponse<Void>> modifyNotice(@PathVariable("noticeId") Long noticeId,
-                                                          @RequestPart(value = "noticeModifyRequest") NoticeModifyRequest noticeModifyRequest,
+                                                          @RequestPart(value = "noticeUpdateRequest") NoticeUpdateRequest noticeUpdateRequest,
                                                           @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) {
-        noticeService.modify(noticeId, noticeModifyRequest, multipartFiles);
+        noticeService.modify(noticeId, noticeUpdateRequest, multipartFiles);
         return ResponseEntity.ok(ApiResponse.success(SUCCESS));
     }
 

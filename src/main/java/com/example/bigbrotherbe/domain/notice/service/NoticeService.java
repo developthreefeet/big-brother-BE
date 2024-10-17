@@ -1,6 +1,6 @@
 package com.example.bigbrotherbe.domain.notice.service;
 
-import com.example.bigbrotherbe.domain.notice.dto.request.NoticeModifyRequest;
+import com.example.bigbrotherbe.domain.notice.dto.request.NoticeUpdateRequest;
 import com.example.bigbrotherbe.domain.notice.dto.request.NoticeRegisterRequest;
 import com.example.bigbrotherbe.domain.notice.dto.response.NoticeResponse;
 import com.example.bigbrotherbe.domain.notice.entity.Notice;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoticeService {
     public void register(NoticeRegisterRequest noticeRegisterRequest, List<MultipartFile> multipartFiles);
 
-    public void modify(Long noticeId, NoticeModifyRequest noticeModifyRequest, List<MultipartFile> multipartFiles);
+    public void modify(Long noticeId, NoticeUpdateRequest noticeUpdateRequest, List<MultipartFile> multipartFiles);
 
     public void delete(Long noticeId);
 
