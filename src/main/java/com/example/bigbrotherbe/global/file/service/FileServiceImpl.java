@@ -59,7 +59,7 @@ public class FileServiceImpl implements FileService {
         String fileType = fileUpdateDTO.getFileType();
 
         files.forEach(file -> {
-            String fileName = file.getUrl().split("/")[3];
+            String fileName = file.getUrl().split("/")[4];
             s3Util.deleteFile(fileType + "/" + fileName);
         });
 
@@ -82,7 +82,7 @@ public class FileServiceImpl implements FileService {
 
         String fileType = deleteDTO.getFileType();
         files.forEach(file -> {
-            String fileName = file.getUrl().split("/")[3];
+            String fileName = file.getUrl().split("/")[4];
             s3Util.deleteFile(fileType + "/" + fileName);
         });
     }
