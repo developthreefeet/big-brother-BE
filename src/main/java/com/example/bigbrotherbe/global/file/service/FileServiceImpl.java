@@ -65,8 +65,10 @@ public class FileServiceImpl implements FileService {
 
         multipartFileList.forEach(file -> {
             String url = s3Util.uploadFile(file, fileType);
+            String fileName = file.getOriginalFilename();
+
             files.forEach(fileEntity -> {
-                fileEntity.update(url);
+                fileEntity.update(url, fileName);
                 updatedFiles.add(fileEntity);
             });
         });

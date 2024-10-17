@@ -63,8 +63,9 @@ public class File extends BaseTimeEntity {
     private CampusNotice campusNotice;
 
 
-    public void update(String url) {
+    public void update(String url, String fileName) {
         this.url = url;
+        this.fileName = fileName;
     }
 
     public void linkMeeting(Meetings meetings) {
